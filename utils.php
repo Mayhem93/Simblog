@@ -8,7 +8,7 @@
  * @return void
  */
 
-function setHTTP(int $code) {
+function setHTTP($code) {
 	switch($code) {
 		case 404:
 	}

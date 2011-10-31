@@ -7,15 +7,17 @@ class Blog_Plugin {
 	private $description 	= "";
 	private $date 			= "";
 	private $author 		= "";
+	private $disabled;
 	
-	protected function __construct(String $name) {
-		$conf = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
-		$this->name = $conf->get(null,'name');
-		$this->type = $conf->get(null,'type');
-		$this->description = $conf->get(null,'description');
-		$this->date = $conf->get(null, 'date');
-		$this->author = $conf->get(null, 'author');
+	public function __construct($name) {
 		
+		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
+		$this->name = $config->get(null,'name');
+		$this->type = $config->get(null,'type');
+		$this->description = $config->get(null,'description');
+		$this->date = $config->get(null, 'date');
+		$this->author = $config->get(null, 'author');
+		$this->disabled = $config->getBool(null,'disabled',false); 
 	}
 	
 	public function getType() {
@@ -38,10 +40,18 @@ class Blog_Plugin {
 		return $this->author;
 	}
 	
+	public function isDisabled() {
+		return $this->disabled;
+	}
+	
 	/**
 	 * 
 	 * To be overwritten.
 	 */
 	public function render() {}
+	
+	public function __toString() {
+		return $this->getName();
+	}
 	
 }
