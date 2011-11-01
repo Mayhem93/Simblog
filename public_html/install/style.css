@@ -1,7 +1,11 @@
 @CHARSET "UTF-8";
 
+p, label {
+	font-family: Georgia;
+}
+
 div.container { 
-	width: 46%;
+	width: 800px;
 	position: relative;
 	top: 70px;
 	margin-left: auto;
@@ -12,4 +16,61 @@ div.container {
 	-moz-box-shadow: 5px 5px 5px #999;
 	-webkit-box-shadow: 5px 5px 5px #999;
 	box-shadow: 5px 8px 5px #999;
+	padding-left: 10px;
+	border-radius: 25px;
+}
+
+div.header-title {
+	border-bottom: thin;
+	border-bottom-color: black;
+	border-bottom-style: solid;
+	margin-bottom: 20px	;
+	margin-top: -20px;
+	width: 780px;
+}
+
+div.section {
+	display: block;
+}
+
+label {
+	width: 200px;
+	display: inline-block;
+}
+
+p.header-title {
+	font-size: 2em;
+	font-weight: bold;
+	height: 15px;
+	display: block;
+}
+
+ol {
+	list-style: none;
+	padding-left: 10px;
+}
+
+li {
+	margin-bottom: 10px;
+}
+
+p.optional{
+	color: gray;
+	font-size: 0.6em;
+	margin-top: 0px;
+}
+
+input {
+	border: thin;
+	border-color: #36C;
+	border-style: solid;
+	border-radius: 4px;
+	background-color: #CCF;
+	font-family: monospace;
+	text-align: center;
+	display: inline-block;
+}
+
+input:hover {
+	border-color: #000;
 }

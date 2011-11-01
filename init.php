@@ -5,18 +5,21 @@ if(!defined('IN_SITE'))
 
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',BLOG_PUBLIC_ROOT.'/..');
-DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'/../plugins');
+DEFINE('PLUGIN_DIR',BLOG_ROOT.'/plugins');
+
+include 'libs/Lite.php';
+include 'libs/class.MySQL.php';
+include 'smarty/Smarty.class.php';
 
 include 'utils.php';
-include 'smarty/Smarty.class.php';
-include 'libs/class.MySQL.php';
-include 'libs/Lite.php';
+include 'settings.php';
 include 'internal/Plugin.class.php';
 include 'internal/Plugin.controller.php';
 
 // The "super global" of the web site
 global $simblog;
 $simblog = array();
+$simblog['db'] = new MySQL();
 
 $smarty = new Smarty();
 $smarty->setCacheDir('templates_c');
