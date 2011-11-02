@@ -11,6 +11,8 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		$this->populatePluginList();
 	}
 	
+	public function __clone();
+	
 	/**
 	 * 
 	 * Uses singleton design pattern.
@@ -67,7 +69,20 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	
 	private function isValid($name) {
 		// TODO: More validation checks.
-		return file_exists('../plugins/'.$name.'/plugin.conf');
+		$file_name = '../plugins/'.$name.'/plugin.conf';
+		if(!file_exists($file_name)) {
+			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			return false;	
+		}
+		if(!is_writable($file_name)) {
+			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			return false;
+		}
+		if(!is_readable($file_name)) {
+			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			return false;
+		}
+		return true;
 	}
 	
 	public function current() {

@@ -23,7 +23,7 @@ class Blog_Plugin {
 		
 		$dir = new DirectoryIterator(PLUGIN_DIR.'/'.$name);
 		foreach($dir as $d)
-			if(!$d->isFile()) {
+			if($d->isFile()) {
 				if(substr($d->getBasename(), -1, 3) == '.js')
 					$this->js_files[] = (string)$d;
 				else if(substr($d->getBasename(), -1, 4) == '.css')
@@ -55,11 +55,19 @@ class Blog_Plugin {
 		return $this->disabled;
 	}
 	
+	public function getCSSfiles() {
+		return $this->css_files;
+	}
+	
+	public function getJSfiles() {
+		return $this->js_files;
+	}
+	
 	/**
 	 * 
 	 * To be overwritten.
 	 */
-	public abstract function render();
+	public function render();
 	
 	public function __toString() {
 		return $this->getName();

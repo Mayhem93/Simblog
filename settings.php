@@ -1,16 +1,14 @@
 <?php
-if(!defined('IN_SITE'))
-	header('HTTP/1.1 404 Not Found');
-
-global $simblog;
-
 //TODO: some global configurations like database and other useful stuff.
 
 $config_file = new Config_Lite(BLOG_ROOT.'/global.conf');
 
 #General
-$simblog['conf']['install_plugin_default']	=	$config_file->get("General","install_plugin_default");
-$simblog['conf']['disable_plugins']			=	$config_file->getBool("General","disable_plugins");
+$simblog['conf']['install_plugin_default']	=	$config_file->get("General", "install_plugin_default");
+$simblog['conf']['disable_plugins']			=	$config_file->getBool("General", "disable_plugins");
+$simblog['conf']['author_name']				= 	$config_file->get("General", "author_name");
+$simblog['conf']['blog_title']				= 	$config_file->get("General", "blog_title");
+$simblog['conf']['email']					=	$config_file->get("General", "email");
 
 #Database
 define('MYSQL_HOST',		$config_file->get("Database","host"));
