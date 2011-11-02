@@ -60,6 +60,14 @@ p.optional{
 	margin-top: 0px;
 }
 
+label.explanation {
+	width: 200px;
+	font-size: 0.7em;
+	text-align: right;
+	float: right;
+	padding-right: 20px;
+}
+
 input {
 	border: thin;
 	border-color: #36C;

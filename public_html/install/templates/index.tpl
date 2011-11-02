@@ -22,8 +22,9 @@
 				<input id="email" name="email" type="text" size="20" />
 			</li>
 			<li>
-				<label for="disabled_plugins">E-mail address (public): </label>
+				<label for="disabled_plugins">Install as disabled: </label>
 				<input id="disabled_plugins" name="disabled_plugins" type="checkbox" />
+				<label class="explanation" for="disabled_plugins">Will install plugins as disabled by default. </label>
 			</li>
 		</ol>
 	</div>
