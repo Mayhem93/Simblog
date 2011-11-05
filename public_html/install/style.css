@@ -22,7 +22,7 @@ a.success_link {
 div.container { 
 	width: 800px;
 	position: relative;
-	top: 70px;
+	top: 0px;
 	margin-left: auto;
 	margin-right: auto;
 	border-color: black;
@@ -95,7 +95,8 @@ input {
 }
 
 input.submit {
-	width: 70px;
+	width: 80px;
+	height: 30px;
 	margin-left: 330px;
 	margin-bottom: 20px;
 	font-family: georgia;
@@ -103,10 +104,15 @@ input.submit {
 	-webkit-box-shadow: 2px 2px 2px #999;
 	box-shadow: 2px 2px 2px #999;
 	border-style: outset;
+	border-width: medium;
 }
 
 input.submit:active {
+	-moz-box-shadow: 0;
+	-webkit-box-shadow: 0;
+	box-shadow: 0;
 	border-style: inset;
+	border-color: lime;
 }
 
 input:hover {

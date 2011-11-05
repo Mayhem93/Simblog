@@ -2,7 +2,6 @@
 
 DEFINE('IN_SITE',true);
 include 'smarty/Smarty.class.php';
-include '../../libs/class.MySQL.php';
 include '../../libs/Lite.php';
 
 $smarty = new Smarty();
@@ -14,7 +13,6 @@ if(!count($_POST)) {
 	$smarty->assign('stage','stage1');
 }
 else {
-	//TODO: set configurations and display page with errors if errors exist
 	$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
 	$db = mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
 	$stage = 'success';
@@ -23,9 +21,21 @@ else {
 		$smarty->assign("mysql_error",true);
 		$smarty->assign("mysql_error_msg", "Could not connect to database server.");
 	}
+	else if(!mysql_select_db($_POST['database'])) {
+		$stage = 'stage1';
+		$smarty->assign("mysql_error",true);
+		$smarty->assign("mysql_error_msg", mysql_error());
+	}
 	else {
 		//TODO: execute SQL file
+		/*It is very important that the sql file uses ';' as a delimiter
+		  between statements. Other workaround would be to use shell exec.
+		*/
+		$sql = explode(';',file_get_contents("database.sql"));
+		foreach ($sql as $query)
+			mysql_query($query,$db);
 	}
+	
 	if(is_writable(realpath(getcwd()."/../.."))) {
 		$config_file = new Config_Lite(getcwd()."/../../global.conf");
 		
