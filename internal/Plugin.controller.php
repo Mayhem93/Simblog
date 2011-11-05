@@ -11,7 +11,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		$this->populatePluginList();
 	}
 	
-	public function __clone();
+	public function __clone() {}
 	
 	/**
 	 * 

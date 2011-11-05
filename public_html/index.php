@@ -2,7 +2,7 @@
 
 DEFINE('IN_SITE', true);
 
-require '../init.php';
+require realpath('../init.php');
 
 if(!isset($_GET['action']))
 	$_GET['action'] = 'show';

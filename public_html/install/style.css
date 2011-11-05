@@ -4,6 +4,16 @@ p, label {
 	font-family: Georgia;
 }
 
+p.success{
+	font-size: 1.5em;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+a.success_link {
+	margin-bottom: 15px;
+}	
+
 div.container { 
 	width: 800px;
 	position: relative;
@@ -77,6 +87,21 @@ input {
 	font-family: monospace;
 	text-align: center;
 	display: inline-block;
+}
+
+input.submit {
+	width: 70px;
+	margin-left: 330px;
+	margin-bottom: 20px;
+	font-family: georgia;
+	-moz-box-shadow: 2px 2px 2px #999;
+	-webkit-box-shadow: 2px 2px 2px #999;
+	box-shadow: 2px 2px 2px #999;
+	border-style: outset;
+}
+
+input.submit:active {
+	border-style: inset;
 }
 
 input:hover {

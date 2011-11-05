@@ -22,6 +22,7 @@ function setHTTP($code) {
  */
 
 function throwError($text) {
+	header('Content-type: text/plain');
 	echo $text;
 	exit();
 }

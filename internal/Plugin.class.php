@@ -67,7 +67,7 @@ class Blog_Plugin {
 	 * 
 	 * To be overwritten.
 	 */
-	public function render();
+	public function render(){}
 	
 	public function __toString() {
 		return $this->getName();
