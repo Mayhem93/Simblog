@@ -10,6 +10,11 @@ p.success{
 	font-weight: bold;
 }
 
+p.error {
+	color: red;
+	font-size: 0.7em;
+}
+
 a.success_link {
 	margin-bottom: 15px;
 }	

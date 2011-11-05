@@ -1,6 +1,9 @@
 <form method="post" action="index.php">
 	<div class="header-title">
 		<p class="header-title">General configuration</p>
+		{if $not_writable}
+		<p class="error">Error: The root folder is not writeable.</p>
+		{/if}
 	</div>
 	<div class="section">
 		<ol>
@@ -25,6 +28,9 @@
 	</div>
 	<div class="header-title">
 		<p class="header-title">Database configuration</p>
+		{if $mysql_error}
+			<p class="error">Database error: {$mysql_error_msg}</p>
+		{/if}
 	</div>
 	<div class="section">
 		<ol>
@@ -47,6 +53,10 @@
 			<li>
 				<label for="database_name">Database name: </label>
 				<input id="database_name" name="database" type="text" size="20" />
+			</li>
+			<li>
+				<label for="tbl_prefix">*  Table Prefix: </label>
+				<input id="tbl_prefix" name="tbl_prefix" type="text" size="20" />
 			</li>
 		</ol>
 		<p class="optional">* Denotes optional</p>
