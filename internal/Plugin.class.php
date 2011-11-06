@@ -12,7 +12,7 @@ class Blog_Plugin {
 	private $js_files		= array();
 	private $css_files		= array();
 	
-	protected function __construct($name) {
+	public function __construct($name) {
 		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
 		$this->name = $config->get(null,'name');
 		$this->type = $config->get(null,'type');
@@ -24,11 +24,12 @@ class Blog_Plugin {
 		$dir = new DirectoryIterator(PLUGIN_DIR.'/'.$name);
 		foreach($dir as $d)
 			if($d->isFile()) {
-				if(substr($d->getBasename(), -1, 3) == '.js')
+				if(substr((string)$d, -3) == '.js')
 					$this->js_files[] = (string)$d;
-				else if(substr($d->getBasename(), -1, 4) == '.css')
+				else if(substr((string)$d, -4) == '.css')
 					$this->css_files[] = (string)$d;
 			}
+		
 	}
 	
 	public function getType() {

@@ -2,8 +2,9 @@
 
 class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	
-	private static $instance;
+	private static $instance = null;
 	private $plugin_list = array();
+	private $plugin_keys = array();
 	private $position;
 	
 	private function __construct() {
@@ -53,40 +54,43 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	 * @return void
 	 */
 	private function populatePluginList() {
-		$dir = new DirectoryIterator('../plugins');
+		$dir = new DirectoryIterator(PLUGIN_DIR);
 		foreach ($dir as $d)
 			if(!$d->isDot() && $d->isDir()) 
-				if($this->isValid((string)$d))
+				if($this->isValid((string)$d)) {
+					//TODO: make test plugin and init them here
 					$this->plugin_list[(string)$d] = new Blog_Plugin((string)$d);
+					$this->plugin_keys[] = (string)$d;
+				}
 	}
 	
 	/**
 	 * 
 	 * Checks if a plugin is valid. Used internally.
 	 * @param String $name - plugin name.
-	 * @return Plugin_Controller boolean - True if it's valid, false otherwise.
+	 * @return boolean - True if it's valid, false otherwise.
 	 */
 	
 	private function isValid($name) {
 		// TODO: More validation checks.
-		$file_name = '../plugins/'.$name.'/plugin.conf';
+		$file_name = PLUGIN_DIR.'/'.$name.'/plugin.conf';
 		if(!file_exists($file_name)) {
-			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)."does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			return false;	
 		}
 		if(!is_writable($file_name)) {
-			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)."is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			return false;
 		}
 		if(!is_readable($file_name)) {
-			notifyMessage('Configuration file'.realpath('../plugins/'.$name.'/plugin.conf')."is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)."is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			return false;
 		}
 		return true;
 	}
 	
 	public function current() {
-		return $this->plugin_list[$this->position];
+		return $this->plugin_list[$this->plugin_keys[$this->position]];
 	}
 	
 	public function rewind() {
@@ -98,11 +102,11 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	}
 	
 	public function key() {
-		return $this->position;
+		return $this->plugin_keys[$this->position];
 	}
 	
 	public function valid() {
-		return isset($this->plugin_list[$this->position]);
+		return isset($this->plugin_keys[$this->position]);
 	}
 	
 	public function offsetExists($offset) {
