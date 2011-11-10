@@ -59,7 +59,8 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 			if(!$d->isDot() && $d->isDir()) 
 				if($this->isValid((string)$d)) {
 					//TODO: make test plugin and init them here
-					$this->plugin_list[(string)$d] = new Blog_Plugin((string)$d);
+					$class = ucfirst((string)$d);
+					$this->plugin_list[(string)$d] = new $class;
 					$this->plugin_keys[] = (string)$d;
 				}
 	}
@@ -72,21 +73,34 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	 */
 	
 	private function isValid($name) {
-		// TODO: More validation checks.
 		$file_name = PLUGIN_DIR.'/'.$name.'/plugin.conf';
+		$class_file = realpath(PLUGIN_DIR.'/'.$name.'/'.$name.'.class.php');
+		$valid = true;
+		
 		if(!file_exists($file_name)) {
 			notifyMessage('Configuration file'.realpath($file_name)."does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
-			return false;	
+			$valid = false;	
 		}
 		if(!is_writable($file_name)) {
 			notifyMessage('Configuration file'.realpath($file_name)."is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
-			return false;
+			$valid = false;	
 		}
 		if(!is_readable($file_name)) {
 			notifyMessage('Configuration file'.realpath($file_name)."is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
-			return false;
+			$valid = false;	
 		}
-		return true;
+		if(!is_readable($class_file)) {
+			notifyMessage("Class file for plugin ".$name." is not readable or does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			$valid = false;	
+		}
+		else {
+			include $class_file;
+			if(!class_exists(ucfirst($name))) {
+				notifyMessage("Class name in ".$name." plugin does not match ".ucfirst($name).". The plugin was not loaded.", MSG_ERROR);
+				$valid = false;	
+			}
+		}
+		return $valid;
 	}
 	
 	public function current() {

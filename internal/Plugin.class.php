@@ -1,6 +1,6 @@
 <?php
 
-class Blog_Plugin {
+abstract class Blog_Plugin {
 	
 	private $type			= "";
 	private $name 			= "";
@@ -29,7 +29,6 @@ class Blog_Plugin {
 				else if(substr((string)$d, -4) == '.css')
 					$this->css_files[] = (string)$d;
 			}
-		
 	}
 	
 	public function getType() {
@@ -68,7 +67,7 @@ class Blog_Plugin {
 	 * 
 	 * To be overwritten.
 	 */
-	public function render(){}
+	abstract public function render();
 	
 	public function __toString() {
 		return $this->getName();

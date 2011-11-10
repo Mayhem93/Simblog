@@ -12,7 +12,7 @@ switch($_GET['action']) {
 		$plugin_css = array();
 		$plugin_js = array();
 		//TODO: make it work
-		foreach($simblog['plugin_manager'] as $plugin => $name) {
+		foreach($simblog['plugin_manager'] as $name => $plugin) {
 			if(count($plugin->css_files) >= 1) {
 				$simblog['smarty']->assign('plugin_css_files',$plugin->getCSSfiles());
 				$plugin_css[] = $name;
