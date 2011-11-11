@@ -11,13 +11,13 @@ switch($_GET['action']) {
 	case 'show': 
 		$plugin_css = array();
 		$plugin_js = array();
-		//TODO: make it work
+		
 		foreach($simblog['plugin_manager'] as $name => $plugin) {
-			if(count($plugin->css_files) >= 1) {
+			if(count($plugin->getCSSfiles()) >= 1) {
 				$simblog['smarty']->assign('plugin_css_files',$plugin->getCSSfiles());
 				$plugin_css[] = $name;
 			}
-			if(count($plugin->js_files) >= 1) {
+			if(count($plugin->getJSfiles()) >= 1) {
 				$simblog['smarty']->assign('plugin_js_files',$plugin->getJSfiles());
 				$plugin_js[] = $name;
 			}

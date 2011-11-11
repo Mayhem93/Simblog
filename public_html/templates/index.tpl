@@ -6,7 +6,7 @@
 {foreach $plugin_css_files as $css}
 <link rel="stylesheet" type="text/css" href="plugins/{$plugin_css[$css@index]}/{$css}" />
 {/foreach}
-{foreach $plugin_js_fiels as $js}
+{foreach $plugin_js_files as $js}
 <script type="text/javascript" src="plugins/{$plugin_js[$js@index]}/{$js}"></script>
 {/foreach}
 {debug}
