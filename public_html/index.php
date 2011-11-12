@@ -21,6 +21,7 @@ switch($_GET['action']) {
 				$simblog['smarty']->assign('plugin_js_files',$plugin->getJSfiles());
 				$plugin_js[] = $name;
 			}
+			$plugin->render();
 		}
 		
 		$simblog['smarty']->assign('plugin_css',$plugin_css);

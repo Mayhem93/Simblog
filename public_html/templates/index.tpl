@@ -9,7 +9,6 @@
 {foreach $plugin_js_files as $js}
 <script type="text/javascript" src="plugins/{$plugin_js[$js@index]}/{$js}"></script>
 {/foreach}
-{debug}
 </head>
 <body>
 <p>Work in progress, contact: {$email}.</p>

@@ -58,7 +58,6 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		foreach ($dir as $d)
 			if(!$d->isDot() && $d->isDir()) 
 				if($this->isValid((string)$d)) {
-					//TODO: make test plugin and init them here
 					$class = ucfirst((string)$d);
 					$this->plugin_list[(string)$d] = new $class;
 					$this->plugin_keys[] = (string)$d;

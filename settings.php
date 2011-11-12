@@ -1,10 +1,8 @@
 <?php
-//TODO: some global configurations like database and other useful stuff.
-
 $config_file = new Config_Lite(BLOG_ROOT.'/global.conf');
 
-#General
 try {
+	#General
 	$simblog['conf']['install_plugin_default']	=	$config_file->get("General", "install_plugin_default");
 	$simblog['conf']['disable_plugins']			=	$config_file->getBool("General", "disable_plugins");
 	$simblog['conf']['author_name']				= 	$config_file->get("General", "author_name");

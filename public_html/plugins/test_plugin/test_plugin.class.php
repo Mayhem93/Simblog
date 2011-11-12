@@ -7,6 +7,10 @@ class Test_Plugin extends Blog_Plugin {
 	}
 	
 	public function render() {
-		echo "test_plugin render";
+		
+	}
+	
+	public function admin() {
+		
 	}
 }
