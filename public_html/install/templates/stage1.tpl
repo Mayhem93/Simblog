@@ -1,7 +1,7 @@
 <form method="post" action="index.php">
 	<div class="header-title">
 		<p class="header-title">General configuration</p>
-		{if $not_writable}
+		{if isset($not_writable)}
 		<p class="error">Error: The root folder is not writeable.</p>
 		{/if}
 	</div>
@@ -10,25 +10,39 @@
 			<li>
 				<label for="author">Author: </label>
 				<input id="author" name="author" type="text" size="20" />
+				{if isset($inputErrors.title)}
+				<p class="error">Author cannot be empty.</p>
+				{/if}
 			</li>
 			<li>
 				<label for="title">Blog title: </label>
 				<input id="title" name="title" type="text" size="20" />
+				{if isset($inputErrors.title)}
+				<p class="error">Title cannot be empty.</p>
+				{/if}
 			</li>
 			<li>
 				<label for="email">E-mail address (public): </label>
 				<input id="email" name="email" type="text" size="20" />
+				{if isset($inputErrors.email)}
+				<p class="error">E-mail address cannot be empty.</p>
+				{/if}
 			</li>
 			<li>
 				<label for="disabled_plugins">Install as disabled: </label>
 				<input id="disabled_plugins" name="disabled_plugins" type="checkbox" />
 				<label class="explanation" for="disabled_plugins">Will install plugins as disabled by default. </label>
 			</li>
+			<li>
+				<label for="db_support">SQL database support: </label>
+				<input id="db_support" name="db_support" type="checkbox" checked="checked" />
+				<label class="explanation" for="db_support">You can install this without a SQL database.</label>
+			</li>
 		</ol>
 	</div>
 	<div class="header-title">
 		<p class="header-title">Database configuration</p>
-		{if $mysql_error}
+		{if isset($mysql_error)}
 			<p class="error">Database error: {$mysql_error_msg}</p>
 		{/if}
 	</div>
