@@ -11,14 +11,10 @@ DEFINE('MSG_NOTICE',0);
 DEFINE('MSG_WARNING',1);
 DEFINE('MSG_ERROR', 2);
 
-include BLOG_ROOT.'/libs/Lite.php';
-include BLOG_ROOT.'/libs/class.MySQL.php';
+require_once BLOG_ROOT."/internal/SPL_autoload.php";
 include 'smarty/Smarty.class.php';
-
 include BLOG_ROOT.'/utils.php';
 include BLOG_ROOT.'/settings.php';
-include BLOG_ROOT.'/internal/Plugin.class.php';
-include BLOG_ROOT.'/internal/Plugin.controller.php';
 
 $simblog['db'] = new MySQL();
 $simblog['plugin_manager'] = Plugin_Controller::init();

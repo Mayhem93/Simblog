@@ -1,4 +1,4 @@
-<form method="post" action="index.php">
+<form method="post" action="">
 	<div class="header-title">
 		<p class="header-title">General configuration</p>
 		{if isset($not_writable)}
@@ -31,12 +31,12 @@
 			<li>
 				<label for="disabled_plugins">Install as disabled: </label>
 				<input id="disabled_plugins" name="disabled_plugins" type="checkbox" />
-				<label class="explanation" for="disabled_plugins">Will install plugins as disabled by default. </label>
+				<span class="explanation">Will install plugins as disabled by default. </span>
 			</li>
 			<li>
 				<label for="db_support">SQL database support: </label>
 				<input id="db_support" name="db_support" type="checkbox" checked="checked" />
-				<label class="explanation" for="db_support">You can install this without a SQL database.</label>
+				<span class="explanation">You can install this without a SQL database. </span>
 			</li>
 		</ol>
 	</div>

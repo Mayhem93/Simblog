@@ -57,7 +57,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		$dir = new DirectoryIterator(PLUGIN_DIR);
 		foreach ($dir as $d)
 			if(!$d->isDot() && $d->isDir()) 
-				if($this->isValid((string)$d)) {
+				if($this->isValidPlugin((string)$d)) {
 					$class = ucfirst((string)$d);
 					$this->plugin_list[(string)$d] = new $class;
 					$this->plugin_keys[] = (string)$d;
@@ -71,7 +71,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	 * @return boolean - True if it's valid, false otherwise.
 	 */
 	
-	private function isValid($name) {
+	private function isValidPlugin($name) {
 		$file_name = PLUGIN_DIR.'/'.$name.'/plugin.conf';
 		$class_file = realpath(PLUGIN_DIR.'/'.$name.'/'.$name.'.class.php');
 		$valid = true;
@@ -91,13 +91,6 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		if(!is_readable($class_file)) {
 			notifyMessage("Class file for plugin ".$name." is not readable or does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			$valid = false;	
-		}
-		else {
-			include $class_file;
-			if(!class_exists(ucfirst($name))) {
-				notifyMessage("Class name in ".$name." plugin does not match ".ucfirst($name).". The plugin was not loaded.", MSG_ERROR);
-				$valid = false;	
-			}
 		}
 		return $valid;
 	}

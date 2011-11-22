@@ -2,7 +2,7 @@
 
 DEFINE('IN_SITE',true);
 include 'smarty/Smarty.class.php';
-include '../../libs/Lite.php';
+include '../../libs/Config_Lite.class.php';
 
 $smarty = new Smarty();
 $smarty->setTemplateDir('templates');
