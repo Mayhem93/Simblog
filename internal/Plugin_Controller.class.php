@@ -56,7 +56,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	private function populatePluginList() {
 		$dir = new DirectoryIterator(PLUGIN_DIR);
 		foreach ($dir as $d)
-			if(!$d->isDot() && $d->isDir()) 
+			if(!$d->isDot() && $d->isDir())
 				if($this->isValidPlugin((string)$d)) {
 					$class = ucfirst((string)$d);
 					$this->plugin_list[(string)$d] = new $class;
@@ -77,15 +77,15 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 		$valid = true;
 		
 		if(!file_exists($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)."does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)." does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			$valid = false;	
 		}
 		if(!is_writable($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)."is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)." is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			$valid = false;	
 		}
 		if(!is_readable($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)."is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			notifyMessage('Configuration file'.realpath($file_name)." is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
 			$valid = false;	
 		}
 		if(!is_readable($class_file)) {

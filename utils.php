@@ -36,6 +36,8 @@ function throwError($text) {
  */
 
 function notifyMessage($text, $type) {
+	global $simblog;
+	
 	$simblog['messages'][$type][] = $text;
 }
 
