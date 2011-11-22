@@ -16,7 +16,9 @@ include 'smarty/Smarty.class.php';
 include BLOG_ROOT.'/utils.php';
 include BLOG_ROOT.'/settings.php';
 
-$simblog['db'] = new MySQL();
+if($simblog['conf']['database_support'])
+	$simblog['db'] = new MySQL();
+
 $simblog['plugin_manager'] = Plugin_Controller::init();
 $simblog['smarty'] = new Smarty();
 $simblog['smarty']->setCacheDir('templates_c');

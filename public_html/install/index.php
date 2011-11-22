@@ -13,28 +13,32 @@ if(!count($_POST)) {
 	$smarty->assign('stage','stage1');
 }
 else {
-	$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
-	$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
-	$stage = 'success';	//we presume that the data provided is correct
-	
-	if(!$db) {
-		$stage = 'stage1';
-		$smarty->assign("mysql_error",true);
-		$smarty->assign("mysql_error_msg", "Could not connect to database server.");
-	}
-	else if(!mysql_select_db($_POST['database'])) {
-		$stage = 'stage1';
-		$smarty->assign("mysql_error",true);
-		$smarty->assign("mysql_error_msg", mysql_error());
-	}
-	else {
-		//TODO: execute SQL file
-		/*It is very important that the sql file uses ';' as a delimiter
-		between statements. Other workaround would be to use shell exec.
-		*/
+	if(!file_exists("../posts"))
+		mkdir("../posts");
+	if(isset($_POST['db_support'])) {
+		$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
+		$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
+		$stage = 'success';	//we presume that the data provided is correct
+		
+		if(!$db) {
+			$stage = 'stage1';
+			$smarty->assign("mysql_error",true);
+			$smarty->assign("mysql_error_msg", "Could not connect to database server.");
+		}
+		else if(!mysql_select_db($_POST['database'])) {
+			$stage = 'stage1';
+			$smarty->assign("mysql_error",true);
+			$smarty->assign("mysql_error_msg", mysql_error());
+		}
+		else {
+			//TODO: execute SQL file
+			/*It is very important that the sql file uses ';' as a delimiter
+			between statements. Other workaround would be to use shell exec.
+			*/
 		$sql = explode(';',file_get_contents("database.sql"));
 		foreach ($sql as $query)
 			mysql_query($query,$db);
+		}
 	}
 	
 	$inputErrors = array();
@@ -55,13 +59,14 @@ else {
 			$config_file->set("General", "email", $_POST['email']);
 			$config_file->set("General", "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
 			$config_file->set("General", "disable_plugins", false);
+			$config_file->set("General", "database_support", isset($_POST['db_support']));
 			
 			#Database
-			$config_file->set("Database", "host", $_POST['hostname']);
-			$config_file->set("Database", "port", $port);
-			$config_file->set("Database", "user", $_POST['username']);
-			$config_file->set("Database", "password", $_POST['password']);
-			$config_file->set("Database", "database", $_POST['database']);
+			$config_file->set("Database", "host", isset($_POST['hostname']) ? $_POST['hostname'] : "");
+			$config_file->set("Database", "port", isset($port) ? $port : "");
+			$config_file->set("Database", "user", isset($_POST['username']) ? $_POST['username'] : "");
+			$config_file->set("Database", "password", isset($_POST['password']) ? $_POST['password'] : "");
+			$config_file->set("Database", "database", isset($_POST['database']) ? $_POST['database'] : "");
 			$config_file->save();
 		}
 		else

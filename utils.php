@@ -38,3 +38,10 @@ function throwError($text) {
 function notifyMessage($text, $type) {
 	$simblog['messages'][$type][] = $text;
 }
+
+function cleanInput() {
+	foreach($_POST as $key => $content) 
+		$_POST[$key] = mysql_escape_string($content);
+	foreach($_GET as $key => $content)
+		$_GET[$key] = mysql_escape_string($content);
+}

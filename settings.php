@@ -8,12 +8,15 @@ try {
 	$simblog['conf']['author_name']				= 	$config_file->get("General", "author_name");
 	$simblog['conf']['blog_title']				= 	$config_file->get("General", "blog_title");
 	$simblog['conf']['email']					=	$config_file->get("General", "email");
+	$simblog['conf']['database_support']		=	$config_file->getBool("General", "database_support");
 	
 	#Database
-	define('MYSQL_HOST',		$config_file->get("Database","host"));
-	define('MYSQL_USER',		$config_file->get("Database","user"));
-	define('MYSQL_PASS',		$config_file->get("Database","password"));
-	define('MYSQL_NAME',		$config_file->get("Database","database"));
+	if($simblog['conf']['database_support']) {
+		define('MYSQL_HOST',		$config_file->get("Database","host"));
+		define('MYSQL_USER',		$config_file->get("Database","user"));
+		define('MYSQL_PASS',		$config_file->get("Database","password"));
+		define('MYSQL_NAME',		$config_file->get("Database","database"));
+	}
 }
 catch (Config_Lite_Exception_UnexpectedValue $e) {
 	throwError("Error: ".$e->getMessage().".\nFile \"global.conf\" may not be configured correctly or does not exit.");
