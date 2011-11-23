@@ -7,6 +7,7 @@ $simblog = array();
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
 DEFINE('PLUGIN_DIR',realpath(BLOG_PUBLIC_ROOT.'/plugins'));
+DEFINE('POSTS_DIR',realpath(BLOG_PUBLIC_ROOT."/posts"));
 DEFINE('MSG_NOTICE',0);
 DEFINE('MSG_WARNING',1);
 DEFINE('MSG_ERROR', 2);

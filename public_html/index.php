@@ -31,4 +31,16 @@ switch($_GET['action']) {
 		$simblog['smarty']->assign('blog_title',$simblog['conf']['blog_title']);
 		$simblog['smarty']->display('index.tpl');
 		break;
+		
+	case 'addpost': 
+		//the user interface to add posts
+		if(!count($_POST)) {
+			//TODO add posts user interface
+		}
+		//where the posts are added
+		else {
+			cleanInput();
+			Posts::addPost($_POST['title'], $_POST['content']);
+		}
+		break;
 }
