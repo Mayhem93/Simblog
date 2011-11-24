@@ -15,6 +15,8 @@ if(!count($_POST)) {
 else {
 	if(!file_exists("../posts"))
 		mkdir("../posts");
+	if(!file_exists("../comments"))
+		mkdir("../comments");
 	if(isset($_POST['db_support'])) {
 		$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
 		$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);

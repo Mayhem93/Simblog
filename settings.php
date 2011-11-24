@@ -9,6 +9,7 @@ try {
 	$simblog['conf']['blog_title']				= 	$config_file->get("General", "blog_title");
 	$simblog['conf']['email']					=	$config_file->get("General", "email");
 	$simblog['conf']['database_support']		=	$config_file->getBool("General", "database_support");
+	$simblog['conf']['no_posts_per_page']		=	10;
 	
 	#Database
 	if($simblog['conf']['database_support']) {
