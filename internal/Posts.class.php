@@ -158,6 +158,32 @@ class Posts {
 			return $comments;
 		}
 	}
-	public static function addComment($postid, $content, $author){}
-	public static function deleteComment($commentid){}
+	public static function addComment($postid, $content, $author){
+		global $simblog;
+		
+		if($simblog['conf']['database_support']) {
+			//TODO
+		}
+		else {
+			$comment_id = time();
+			$comment_file = fopen(COMMENTS_DIR."/{$postid}/{$comment_id}.json");
+			$json = array();
+			
+			$json['content'] = $content;
+			$json['author'] = $authot;
+			$json['date'] = date("d F Y, g:i:s a");
+			
+			fwrite($comment_file, json_encode($json));
+		}
+		
+	}
+	public static function deleteComment($commentid, $postid=null){
+		global $simblog;
+		
+		if($simblog['conf']['database_support']) {
+			//TODO
+		}
+		else 
+			unlink(COMMENTS_DIR."/{$postid}/{$commentid}.json");
+	}
 }

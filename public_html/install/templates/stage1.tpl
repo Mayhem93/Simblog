@@ -38,6 +38,20 @@
 				<input id="db_support" name="db_support" type="checkbox" checked="checked" />
 				<span class="explanation">You can install this without a SQL database. </span>
 			</li>
+			<li>
+				<label for="admin_username">Administrator username: </label>
+				<input id="admin_username" name="admin_username" type="text" size="20" />
+				{if isset($inputErrors.admin_username)}
+				<p class="error">This field cannot be empty.</p>
+				{/if}
+			</li>
+			<li>
+				<label for="admin_password">Administrator password: </label>
+				<input id="admin_password" name="admin_password" type="text" size="20" />
+				{if isset($inputErrors.admin_password)}
+				<p class="error">This field cannot be empty.</p>
+				{/if}
+			</li>
 		</ol>
 	</div>
 	<div class="header-title">

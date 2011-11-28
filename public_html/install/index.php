@@ -17,10 +17,11 @@ else {
 		mkdir("../posts");
 	if(!file_exists("../comments"))
 		mkdir("../comments");
+	$stage = 'success';	//we presume that the data provided is correct
+	
 	if(isset($_POST['db_support'])) {
 		$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
 		$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
-		$stage = 'success';	//we presume that the data provided is correct
 		
 		if(!$db) {
 			$stage = 'stage1';
@@ -51,6 +52,10 @@ else {
 		$inputErrors['title'] = true;
 	if($_POST['email'] == "")
 		$inputErrors['email'] = true;
+	if($_POST['admin_username'] == "")
+		$inputErrors['admin_username'] = true;
+	if($_POST['admin_password'] == "")
+		$inputErrors['admin_password'] = true;
 	
 	if(is_writable(realpath(getcwd()."/../.."))) {
 		if(!count($inputErrors)) {

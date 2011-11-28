@@ -78,8 +78,8 @@ p.optional{
 span.explanation {
 	width: 300px;
 	font-size: 0.8em;
-	text-align: left;
 	position: relative;
+	text-align: right;
 	padding-right: 20px;
 	display: inline;
 	margin-left: 150px;
