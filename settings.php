@@ -10,6 +10,8 @@ try {
 	$simblog['conf']['email']					=	$config_file->get("General", "email");
 	$simblog['conf']['database_support']		=	$config_file->getBool("General", "database_support");
 	$simblog['conf']['no_posts_per_page']		=	10;
+	$simblog['conf']['admin_username']			=	$config_file->get("General", "admin_username");
+	$simblog['conf']['admin_password']			=	$config_file->get("General", "admin_password");
 	
 	#Database
 	if($simblog['conf']['database_support']) {

@@ -67,6 +67,8 @@ else {
 			$config_file->set("General", "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
 			$config_file->set("General", "disable_plugins", false);
 			$config_file->set("General", "database_support", isset($_POST['db_support']));
+			$config_file->set("General", "admin_username", $_POST['admin_usernmae']);
+			$config_file->set("General", "admin_password", $_POST['admin_password']);
 			
 			#Database
 			$config_file->set("Database", "host", isset($_POST['hostname']) ? $_POST['hostname'] : "");

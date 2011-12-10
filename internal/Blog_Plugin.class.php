@@ -9,8 +9,9 @@ abstract class Blog_Plugin {
 	private $author 		= "";
 	private $disabled;
 	
-	private $js_files		= array();
-	private $css_files		= array();
+	private $js_file		= "";
+	private $css_file		= "";
+	protected $jsRequired		= array();	//which page is the js file required: all/admin/plugin_page/blog_pages
 	
 	public function __construct($name) {
 		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
@@ -25,9 +26,11 @@ abstract class Blog_Plugin {
 		foreach($dir as $d)
 			if($d->isFile()) {
 				if(substr((string)$d, -3) == '.js')
-					$this->js_files[] = (string)$d;
+					$this->js_file = (string)$d;
 				else if(substr((string)$d, -4) == '.css')
-					$this->css_files[] = (string)$d;
+					$this->css_file = (string)$d;
+				if($this->css_file && $this->js_file)	//break when there has been found 1 JS and 1 CSS file
+					break;
 			}
 	}
 	
@@ -55,12 +58,16 @@ abstract class Blog_Plugin {
 		return $this->disabled;
 	}
 	
-	public function getCSSfiles() {
-		return $this->css_files;
+	public function getCSSfile() {
+		return $this->css_file;
 	}
 	
-	public function getJSfiles() {
-		return $this->js_files;
+	public function getJSfile() {
+		return $this->js_file;
+	}
+	
+	public function getJSreq() {
+		return $this->jsRequired;
 	}
 	
 	/**
@@ -76,6 +83,6 @@ abstract class Blog_Plugin {
 	abstract public function admin();
 	
 	public function __toString() {
-		return $this->getName();
+		return $this->name;
 	}
 }

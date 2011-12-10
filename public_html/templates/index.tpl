@@ -2,15 +2,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>{$blog_title}</title>
-{foreach $plugin_css_files as $css}
-<link rel="stylesheet" type="text/css" href="plugins/{$plugin_css[$css@index]}/{$css}" />
-{/foreach}
-{foreach $plugin_js_files as $js}
-<script type="text/javascript" src="plugins/{$plugin_js[$js@index]}/{$js}"></script>
+<title>{$simblog_conf.blog_title}</title>
+<link rel="stylesheet" type="text/css" href="plugins.css" />
+<link rel="stylesheet" type="text/css" href="main.css" />
+{foreach $js_files as $file}
+<script type="text/javascript" src="{$file}"></script>
 {/foreach}
 </head>
 <body>
-<p>Work in progress, contact: {$email}.</p>
+<p>Work in progress, contact: {$simblog_conf.email}.</p>
+
 </body>
 </html>

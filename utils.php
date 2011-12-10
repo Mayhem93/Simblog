@@ -47,3 +47,13 @@ function cleanInput() {
 	foreach($_GET as $key => $content)
 		$_GET[$key] = mysql_escape_string($content);
 }
+
+function packCSSfiles() {
+	global $simblog;
+	
+	$css_file = fopen(BLOG_PUBLIC_ROOT."/plugins.css","w+");
+
+	foreach($simblog['plugin_manager'] as $name => $plugin)
+		fwrite($css_file, file_get_contents(PLUGIN_DIR."/".$name."/".$plugin->getCSSfile()));
+	fclose($css_file);
+}
