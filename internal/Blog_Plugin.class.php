@@ -1,5 +1,9 @@
 <?php
 
+DEFINE("PLUGIN_JS_BLOG_PAGES");
+DEFINE("PLUGIN_JS_ADMIN_PAGE");
+DEFINE("PLUGIN_JS_PLUGIN_PAGE");
+
 abstract class Blog_Plugin {
 	
 	private $type			= "";
@@ -11,7 +15,9 @@ abstract class Blog_Plugin {
 	
 	private $js_file		= "";
 	private $css_file		= "";
-	protected $jsRequired		= array();	//which page is the js file required: all/admin/plugin_page/blog_pages
+	
+	//0 - none; 1 - blog pages; 2 - admin page; 4 - plugin page;
+	protected $jsRequired		= 0;
 	
 	public function __construct($name) {
 		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');

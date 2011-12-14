@@ -8,11 +8,16 @@ if(!isset($_GET['action']))
 	$_GET['action'] = 'show';
 
 session_start();
+$js_files = array();
 
 switch($_GET['action']) {
 	case 'show': 
 		
-		$simblog['smarty']->assign("js_files", array_merge($js_file_paths['all'],$js_file_paths['blog_pages']));
+		foreach($simblog['plugin_manager'] as $name => $plugin)
+			if(containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
+				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
+		
+		$simblog['smarty']->assign("js_files", $js_files);
 		$simblog['smarty']->display('index.tpl');
 		break;
 	
@@ -24,7 +29,7 @@ switch($_GET['action']) {
 		//where the posts are added
 		else {
 			cleanInput();
-			Posts::addPost($_POST['title'], $_POST['content']);
+			blog_addPost($_POST['title'], $_POST['content']);
 		}
 		break;
 }

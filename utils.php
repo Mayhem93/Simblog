@@ -57,3 +57,7 @@ function packCSSfiles() {
 		fwrite($css_file, file_get_contents(PLUGIN_DIR."/".$name."/".$plugin->getCSSfile()));
 	fclose($css_file);
 }
+
+function containsBit($value, $mask) {
+	return $mask&$value ? true : false;
+}

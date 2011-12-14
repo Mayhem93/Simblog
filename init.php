@@ -32,16 +32,3 @@ require BLOG_ROOT.'/internal/smarty_functions.php';
 
 if(!file_exists(BLOG_PUBLIC_ROOT."/plugins.css"))
 	packCSSfiles();
-
-$js_file_paths = array();
-$js_file_paths['all'] = array();
-$js_file_paths['admin'] = array();
-$js_file_paths['plugin_page'] = array();
-$js_file_paths['blog_pages'] = array();
-
-foreach($simblog['plugin_manager'] as $name => $plugin) {
-	$js_req = $plugin->getJSreq();
-
-	foreach($js_req as $where)
-	$js_file_paths[$where][] = "plugins/".$name."/".$plugin->getJSfile();
-}

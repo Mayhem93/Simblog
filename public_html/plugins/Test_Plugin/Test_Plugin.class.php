@@ -4,7 +4,7 @@ class Test_Plugin extends Blog_Plugin {
 	
 	public function __construct() {
 		parent::__construct("Test_Plugin");
-		$this->jsRequired[] = "all";
+		$this->jsRequired = PLUGIN_JS_ADMIN_PAGE | PLUGIN_JS_BLOG_PAGES | PLUGIN_JS_PLUGIN_PAGE;
 	}
 	
 	public function render() {
