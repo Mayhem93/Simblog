@@ -1,6 +1,6 @@
 <?php
 
-require '../init.php';
+require '../ajaxInit.php';//TODO
 
 switch($_GET['action']) {
 	case 'login':

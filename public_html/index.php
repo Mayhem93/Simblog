@@ -18,7 +18,12 @@ switch($_GET['action']) {
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 		
 		$simblog['smarty']->assign("js_files", $js_files);
-		$simblog['smarty']->display('index.tpl');
+		try {
+			$simblog['smarty']->display('index.tpl');
+		}
+		catch(SmartyException $e) {
+			echo $e->getMessage();
+		}
 		break;
 	
 	case 'addpost': 
