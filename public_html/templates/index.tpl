@@ -3,6 +3,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 <link rel="stylesheet" type="text/css" href="main.css" />
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <title>{$simblog_conf.blog_title}</title>
 </head>
 <body class="loading">
@@ -99,11 +100,11 @@
 					<div class="clear"></div>
 					<div class="section" id="sidebar">
 						<div class="widget HTML" id="HTML3">
-							<h2 class="title">Blogger templates</h2>
-							<div class="widget-content">
-								<ul id="rssdata" style="display: none;"></ul>
-								<div id="rssloading">Loading...</div>
-							</div>
+							{if smarty_isAdminSession() }
+								{include "bits/admin_box.tpl"}
+							{else}
+								{include "bits/admin_login.tpl"}
+							{/if}
 							<div class="clear"></div>
 							<div class="clear"></div>
 						</div>

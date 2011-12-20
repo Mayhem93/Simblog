@@ -328,7 +328,7 @@ sub {
 	top: .5ex;
 }
 
-input[type="text"],textarea {
+input[type="text"], input[type="password"], textarea {
 	background: #fff;
 	border: 1px solid #DDD;
 	box-shadow: inset 2px 2px 3px #EEE;
