@@ -5,12 +5,12 @@ require '../ajaxInit.php';//TODO
 switch($_GET['action']) {
 	case 'login':
 		session_start();
-		if(($_GET['username'] == $simblog['conf']['admin_username']) && ($_GET['password'] == $simblog['conf']['admin_password'])) {
+		if(($_POST['username'] == $simblog['conf']['admin_username']) && ($_POST['password'] == $simblog['conf']['admin_password'])) {
 			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
 			$simblog['smarty']->fetch('bits/admin_box.tpl');
 		}
 		else
-			echo "0";
+			header("HTTP/1.1 401 Unauthorized");
 	
 		break;
 	case 'logout':

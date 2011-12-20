@@ -4,6 +4,7 @@
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 <link rel="stylesheet" type="text/css" href="main.css" />
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="main.js"></script>
 <title>{$simblog_conf.blog_title}</title>
 </head>
 <body class="loading">

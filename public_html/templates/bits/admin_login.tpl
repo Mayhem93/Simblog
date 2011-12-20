@@ -1,4 +1,4 @@
-<div class="widget-content">
+<div id="admin_box" class="widget-content">
 	<h2 class="title">Admin login</h2>
 	<div class="admin_box">
 		<label style="width: 80px; display:inline-block" for="adminUsername">Username: </label><input name="adminUsername" type="text" size="20" />
