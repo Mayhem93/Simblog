@@ -3,26 +3,16 @@ $(document).ready(function(){
 		bind_login_button();
 	else if(document.getElementById("login"))
 		bind_logout();
+	if(document.admin_login != undefined)
+		document.admin_login.addEventListener("submit",function(){return false;},false);
+	$("body").bind("keypress", function(event){
+		if($('[name="adminPassword"]:focus').length && event.which == 13)
+			sendLogin();
+	});
 });
 
 function bind_login_button() {
-	$("#login_button").bind('click', function(){
-		var username = document.getElementsByName("adminUsername")[0].value;
-		var password = document.getElementsByName("adminPassword")[0].value;
-		var callbacks = {
-				success: function(data, textStatus, jqXHR) {
-					$("#admin_box").html(data);
-					bind_logout();
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					if(errorThrown == "Unauthorized") {
-						$("#login_button").after('<p style="color: red; text-align: center">Login failed!</p>');
-					}
-				},
-				complete: null
-		};
-		ajaxReq("login", "html", "username="+username+"&password="+password, callbacks); //TODO
-	});
+	$("#login_button").bind("click",sendLogin);
 }
 
 function bind_logout() {
@@ -35,9 +25,27 @@ function bind_logout() {
 				error: null,
 				complete: null
 		};
-		
 		ajaxReq("logout", "html", undefined, callbacks);
 	});
+}
+
+function sendLogin() {
+	var username = document.admin_login.adminUsername.value;
+	var password = document.admin_login.adminPassword.value;
+	var callbacks = {
+			success: function(data, textStatus, jqXHR) {
+				$("#admin_box").html(data);
+				bind_logout();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				if(errorThrown == "Unauthorized") {
+					if(!$(".login_fail").length)
+						$("#login_button").after('<p class="login_fail">Login failed!</p>');
+				}
+			},
+			complete: null
+	};
+	ajaxReq("login", "html", "username="+username+"&password="+password, callbacks);
 }
 
 function ajaxReq(action, format, reqparams, callbacks) {

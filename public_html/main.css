@@ -695,6 +695,11 @@ padding-right:10px;*/ /* disabled for submenu width fix */
 	margin: 0 0 36px 0;
 }
 
+p.login_fail {
+	color: red;
+	text-align: center;
+}
+
 .page-title span {
 	color: #333;
 	font-size: 16px;

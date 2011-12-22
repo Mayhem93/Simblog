@@ -1,6 +1,6 @@
 <?php
 	
-function blog_addPost($title, $content, $category, array $tags, $pinned = false) {
+function blog_addPost($title, $content, $category, $pinned = false) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
@@ -20,7 +20,6 @@ function blog_addPost($title, $content, $category, array $tags, $pinned = false)
 		$json['rating'] = 0;
 		$json['content'] = BBCode::parse($content);
 		$json['category'] = $category;
-		$json['tags'] = $tags;
 		$json['date'] = date("d F Y, g:i:s a");
 		file_put_contents($post_file, json_encode($json));
 	}
@@ -38,7 +37,7 @@ function blog_deletePost($id) {
 			unlink(POSTS_DIR."/{$id}.json");
 	}
 }
-function blog_modifyPost($id, $title=null, $content=null, $category=null, $tags=null) {
+function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 	global $simblog;
 	
 	if($title == null && $content == null)
@@ -61,8 +60,6 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null, $tags=
 			$json['content'] = BBCode::parse($content);
 		if($category)
 			$json['category'] = $category;
-		if($tags)
-			$json['tags'] = $tags;
 		$json['last_modified'] = date("d F Y, g:i:s a");
 		file_put_contents($post_string,json_encode($json));
 	}

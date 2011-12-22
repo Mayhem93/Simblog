@@ -1,5 +1,9 @@
 <?php
 
+DEFINE("HTTP_UNAUTHORIZED", 401);
+DEFINE("HTTP_NOT_FOUND", 	404);
+DEFINE("HTTP_FORBIDDEN",	403);
+
 /**
  * 
  * Sends a HTTP Response code.
@@ -9,8 +13,10 @@
  */
 
 function setHTTP($code) {
-	switch($code) {
-		case 404:
+	switch($code) { //TODO
+		case HTTP_UNAUTHORIZED:	header('HTTP/1.1 401 Unauthorized');exit();break;
+		case HTTP_NOT_FOUND:	header('HTTP/1.1 404 Not Found');exit();break;
+		case HTTP_FORBIDDEN:	header('HTTP/1.1 403 Forbidden');exit();break;
 	}
 }
 
@@ -39,13 +45,6 @@ function notifyMessage($text, $type) {
 	global $simblog;
 	
 	$simblog['messages'][$type][] = $text;
-}
-
-function cleanInput() {
-	foreach($_POST as $key => $content) 
-		$_POST[$key] = mysql_escape_string($content);
-	foreach($_GET as $key => $content)
-		$_GET[$key] = mysql_escape_string($content);
 }
 
 function packCSSfiles() {

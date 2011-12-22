@@ -33,7 +33,6 @@ switch($_GET['action']) {
 		}
 		//where the posts are added
 		else {
-			cleanInput();
 			blog_addPost($_POST['title'], $_POST['content']);
 		}
 		break;
