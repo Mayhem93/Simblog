@@ -34,13 +34,12 @@ else {
 			$smarty->assign("mysql_error_msg", mysql_error());
 		}
 		else {
-			//TODO: execute SQL file
 			/*It is very important that the sql file uses ';' as a delimiter
 			between statements. Other workaround would be to use shell exec.
 			*/
-		$sql = explode(';',file_get_contents("database.sql"));
-		foreach ($sql as $query)
-			mysql_query($query,$db);
+			$sql = explode(';',file_get_contents("database.sql"));
+			foreach ($sql as $query)
+				mysql_query($query,$db);
 		}
 	}
 	
@@ -67,7 +66,7 @@ else {
 			$config_file->set("General", "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
 			$config_file->set("General", "disable_plugins", false);
 			$config_file->set("General", "database_support", isset($_POST['db_support']));
-			$config_file->set("General", "admin_username", $_POST['admin_usernmae']);
+			$config_file->set("General", "admin_username", $_POST['admin_username']);
 			$config_file->set("General", "admin_password", $_POST['admin_password']);
 			
 			#Database

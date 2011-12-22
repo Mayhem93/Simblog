@@ -19,7 +19,7 @@ include BLOG_ROOT.'/utils.php';
 include BLOG_ROOT.'/settings.php';
 
 if($simblog['conf']['database_support'])
-	$simblog['db'] = new MySQL();
+	$simblog['db'] = new MySQL(true, MYSQL_DB, MYSQL_HOST, MYSQL_USER, MYSQL_PASS, "utf-8");
 
 $simblog['plugin_manager'] = Plugin_Controller::init();
 $simblog['smarty'] = new Smarty();

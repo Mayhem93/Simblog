@@ -1,10 +1,24 @@
 <?php
 	
+/**
+ * Adds a post.
+ * @param string $title Title
+ * @param string $content Content
+ * @param string $category Category
+ * @param boolean $pinned Pinned posts will show up first
+ */
 function blog_addPost($title, $content, $category, $pinned = false) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$row = array(
+			"title" => MySQL::SQLValue($title),
+			"pinned" => MySQL::SQLValue(0, MySQL::SQLVALUE_BIT),
+			"category" => MySQL::SQLValue($category),
+			"content" => MySQL::SQLValue($content),
+			"date_posted" => MySQL::SQLValue(date("d F Y, g:i:s a"))
+		);
+		$simblog['db']->InsertRow("post", $row);
 	}
 	else {
 		if(!is_writable(POSTS_DIR))
@@ -24,27 +38,52 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 		file_put_contents($post_file, json_encode($json));
 	}
 }
+/**
+ * Delets a post.
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ */
 function blog_deletePost($id) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("id" => $id);
+		$simblog['db']->DeleteRows("post", $filter);
+		
+		$filter = array("post_id" => $id);
+		$simblog['db']->DeleteRows("comment", $filter);
 	}
 	else {
-		if(blog_postIsPinned($id))
+		if(blog_postIsPinned($id)) //TODO: delete all the comments with the post id.
 			unlink(POSTS_DIR."/pinned/{$id}.json");
 		else
 			unlink(POSTS_DIR."/{$id}.json");
 	}
 }
+/**
+ * Modifies a post.
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @param string $title The new title.
+ * @param string $content The new content.
+ * @param string $category The new category.
+ * @uses The last three parameters cannot be null at the same time.
+ */
 function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 	global $simblog;
 	
-	if($title == null && $content == null)
+	if($title == null && $content == null && $category == null)
 		return;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("id" => $id);
+		$update_set = array();
+		if($title)
+			$update_set['title'] = MySQL::SQLValue($title);
+		if($content)
+			$update_set['content'] = MySQL::SQLValue($content);
+		if($category)
+			$update_set['category'] = MySQL::SQLValue($category);
+		
+		$simblog['db']->UpdateRows("post", $update_set, $filter);
 	}
 	else {
 		if(blog_postIsPinned($id))
@@ -65,11 +104,22 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 	}
 	
 }
+/**
+ * Pins a post. Pinned posts show up first on the blog.
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ */
 function blog_togglePinPost($id) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("id" => $id);
+		
+		if(blog_postIsPinned($id))
+			$update_set = array("pinned", MySQL::SQLValue(0,MySQL::SQLVALUE_BIT));
+		else
+		$update_set = array("pinned", MySQL::SQLValue(1,MySQL::SQLVALUE_BIT));
+		
+		$simblog['db']->UpdateRows("post", $update_set, $filter);
 	}
 	else {
 		if(blog_postIsPinned($id))
@@ -78,11 +128,21 @@ function blog_togglePinPost($id) {
 			rename(POSTS_DIR."/{$id}.json", POSTS_DIR."/pinned/{$id}.json");
 	}
 }
+/**
+ * Get the first posts.
+ * @param int $page 
+ * @return array An associative array with the results.
+ */
 function blog_getPosts($page=1) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$query = "SELECT * FROM `post` ORDER BY `id` DESC LIMIT ".(($page-1)*$simblog['conf']['no_posts_per_page']).", {$simblog['conf']['no_posts_per_page']};";
+		
+		if($simblog['db']->ErrorNumber())
+			throwError("MySQL Query error: ".$simblog['db']->Error());
+		
+		return $simblog['db']->QueryArray($query, MYSQL_ASSOC);
 	}
 	else {
 		$dir = new DirectoryIterator(POSTS_DIR);
@@ -94,15 +154,21 @@ function blog_getPosts($page=1) {
 		$postFiles = array_slice($postFiles, -($simblog['conf']['no_posts_per_page']*$page));
 		$posts = array();
 		foreach($postFiles as $file)
-			$posts[] = json_decode(file_get_contents(POSTS_DIR."/{$file}.json"),true);
+			$posts[$file] = json_decode(file_get_contents(POSTS_DIR."/{$file}.json"),true);
 		return $posts;
 	}
 }
+/**
+ * Returns all pinned posts.
+ * @return array Associative array with all the pinned posts.
+ */
 function blog_getPinnedPosts() {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("pinned" => 1);
+		
+		return $simblog['db']->SelectRows("post", $filter);
 	}
 	else {
 		$dir = new DirectoryIterator(POSTS_DIR."/pinned");
@@ -114,25 +180,39 @@ function blog_getPinnedPosts() {
 		$postFiles = array_slice($postFiles, -$simblog['conf']['no_posts_per_page']);
 		$posts = array();
 		foreach($postFiles as $file)
-			$posts[] = json_decode(file_get_contents(POSTS_DIR."/pinned/{$file}.json"),true);
+			$posts[$file] = json_decode(file_get_contents(POSTS_DIR."/pinned/{$file}.json"),true);
 		return $posts;
 	}
 	
 }
+/**
+ * See if a post is pinned.
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @return boolean True if it's pinned, false otherwise.
+ */
 function blog_postIsPinned($id) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$query = "SELECT `pinned` FROM `post` WHERE `id` = '$id';";
+		
+		return (bool)$simblog['db']->QuerySingleValue($query);
 	}
 	else
 		return file_exists(POSTS_DIR."/pinned/{$id}.json");
 }
+/**
+ * Gets all the comments from a post.
+ * @param int $postid The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @return array Associative array with the results. 
+ */
 function blog_getComments($postid) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("post_id" => $postid);
+		
+		return $simblog['db']->SelectRows("comment", $filter);
 	}
 	else {
 		$dir = new DirectoryIterator(COMMENTS_DIR."/{$postid}");
@@ -148,11 +228,25 @@ function blog_getComments($postid) {
 		return $comments;
 	}
 }
+/**
+ * Adds a comment to the post ID.
+ * @param int $postid The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @param string $content Comment content.
+ * @param string $author Comment author.
+ */
 function blog_addComment($postid, $content, $author) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$row = array(
+			"post_id" => $postid,
+			"name"	=>	MySQL::SQLValue($author),
+			"ip"	=> MySQL::SQLValue($_SERVER['REMOTE_ADDR']),
+			"text"	=> MySQL::SQLValue($content),
+			"date"	=> MySQL::SQLValue(date("d F Y, g:i:s a"))
+		);
+		
+		$simblog['db']->InsertRow("comment", $row);
 	}
 	else {
 		$comment_id = time();
@@ -168,21 +262,38 @@ function blog_addComment($postid, $content, $author) {
 	}
 	
 }
+/**
+ * Deletes a comment.
+ * @param int $commentid The ID of the comment to be deleted.
+ * @param int $postid (optional) Only used for no-mysql support.
+ */
 function blog_deleteComment($commentid, $postid=null) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		$filter = array("id" => $commentid);
+		
+		$simblog['db']->DeleteRows("comment", $filter);
 	}
 	else 
 		unlink(COMMENTS_DIR."/{$postid}/{$commentid}.json");
 }
 
+/**
+ * Rates a post.
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @param bool $positive True if it's a positive rate, false if it's a negative rating.
+ */
 function blog_ratePost($id, $positive=true) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		if($positive)
+			$sql = "UPDATE `post` SET rating=rating+1 WHERE `id` = '$id';";
+		else
+			$sql = "UPDATE `post` SET rating=rating-1 WHERE `id` = '$id';";
+		
+		$simblog['db']->Query($sql);
 	}
 	else {
 		if(blog_postIsPinned($id))
@@ -197,11 +308,22 @@ function blog_ratePost($id, $positive=true) {
 		
 }
 
-function blog_rateComment($id, $post_id, $positive=true) {
+/**
+ * Rates a comment
+ * @param int $id The ID of the comment.
+ * @param int $post_id (optional) Only used by no-mysql support.
+ * @param bool $positive 
+ */
+function blog_rateComment($id, $post_id=null, $positive=true) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		//TODO
+		if($positive)
+			$sql = "UPDATE `comment` SET rating=rating+1 WHERE `id` = '$id';";
+		else
+			$sql = "UPDATE `comment` SET rating=rating-1 WHERE `id` = '$id';";
+		
+		$simblog['db']->Query($sql);
 	}
 	else {
 		$json = json_decode(file_get_contents(COMMENTS_DIR."/{$post_id}/{$id}.json"),true);

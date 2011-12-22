@@ -1,8 +1,11 @@
 <?php
-
+if(!file_exists("../global.conf")) {
+	echo "Configuration file does not exist. Installation has not been carried out. <a href=\"install\">Install here.</a>";
+	exit();
+}
 DEFINE('IN_SITE', true);
 
-require realpath('../init.php');
+require '../init.php';
 
 if(!isset($_GET['action']))
 	$_GET['action'] = 'show';

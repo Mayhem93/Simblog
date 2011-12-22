@@ -18,9 +18,9 @@ try {
 		define('MYSQL_HOST',		$config_file->get("Database","host"));
 		define('MYSQL_USER',		$config_file->get("Database","user"));
 		define('MYSQL_PASS',		$config_file->get("Database","password"));
-		define('MYSQL_NAME',		$config_file->get("Database","database"));
+		define('MYSQL_DB',		$config_file->get("Database","database"));
 	}
 }
 catch (Config_Lite_Exception_UnexpectedValue $e) {
-	throwError("Error: ".$e->getMessage().".\nFile \"global.conf\" may not be configured correctly or does not exit.");
+	throwError("Error: ".$e->getMessage().".\nFile \"global.conf\" is not be configured correctly.");
 }
