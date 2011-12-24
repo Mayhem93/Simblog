@@ -19,7 +19,7 @@ include BLOG_ROOT.'/utils.php';
 include BLOG_ROOT.'/settings.php';
 
 if($simblog['conf']['database_support'])
-	$simblog['db'] = new MySQL(true, MYSQL_DB, MYSQL_HOST, MYSQL_USER, MYSQL_PASS, "utf-8");
+	$simblog['db'] = new MySQL(true, MYSQL_DB, MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
 
 $simblog['plugin_manager'] = Plugin_Controller::init();
 $simblog['smarty'] = new Smarty();
@@ -29,6 +29,7 @@ $simblog['smarty']->setTemplateDir('templates');
 $simblog['smarty']->assign('simblog_conf',$simblog['conf']);
 
 require BLOG_ROOT.'/internal/smarty_functions.php';
+include BLOG_ROOT.'/internal/Posts.php';
 
 if(!file_exists(BLOG_PUBLIC_ROOT."/plugins.css"))
 	packCSSfiles();

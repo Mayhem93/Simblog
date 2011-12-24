@@ -20,13 +20,9 @@ switch($_GET['action']) {
 			if(containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 		
+		$simblog['smarty']->assign("page_template", "main.tpl");
 		$simblog['smarty']->assign("js_files", $js_files);
-		try {
-			$simblog['smarty']->display('index.tpl');
-		}
-		catch(SmartyException $e) {
-			echo $e->getMessage();
-		}
+		
 		break;
 	
 	case 'addpost': 
@@ -39,4 +35,11 @@ switch($_GET['action']) {
 			blog_addPost($_POST['title'], $_POST['content']);
 		}
 		break;
+}
+
+try {
+	$simblog['smarty']->display('index.tpl');
+}
+catch(SmartyException $e) {
+	echo $e->getMessage();
 }

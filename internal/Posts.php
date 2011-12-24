@@ -12,8 +12,9 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 	
 	if($simblog['conf']['database_support']) {
 		$row = array(
+			"rating" => 0,
 			"title" => MySQL::SQLValue($title),
-			"pinned" => MySQL::SQLValue(0, MySQL::SQLVALUE_BIT),
+			"pinned" => $pinned ? 1 : 0,
 			"category" => MySQL::SQLValue($category),
 			"content" => MySQL::SQLValue($content),
 			"date_posted" => MySQL::SQLValue(date("d F Y, g:i:s a"))
@@ -112,14 +113,13 @@ function blog_togglePinPost($id) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		$filter = array("id" => $id);
 		
 		if(blog_postIsPinned($id))
-			$update_set = array("pinned", MySQL::SQLValue(0,MySQL::SQLVALUE_BIT));
+			$query = "UPDATE `post` SET `pinned` = '0' WHERE `id`='$id'";
 		else
-		$update_set = array("pinned", MySQL::SQLValue(1,MySQL::SQLVALUE_BIT));
+			$query = "UPDATE `post` SET `pinned` = '1' WHERE `id`='$id'";
 		
-		$simblog['db']->UpdateRows("post", $update_set, $filter);
+		return $simblog['db']->Query($query);
 	}
 	else {
 		if(blog_postIsPinned($id))
@@ -196,7 +196,11 @@ function blog_postIsPinned($id) {
 	if($simblog['conf']['database_support']) {
 		$query = "SELECT `pinned` FROM `post` WHERE `id` = '$id';";
 		
-		return (bool)$simblog['db']->QuerySingleValue($query);
+		$result = $simblog['db']->QuerySingleValue($query);
+		if($result == "1")
+			return true;
+		else if($result == "0")
+			return false;
 	}
 	else
 		return file_exists(POSTS_DIR."/pinned/{$id}.json");
@@ -210,9 +214,9 @@ function blog_getComments($postid) {
 	global $simblog;
 	
 	if($simblog['conf']['database_support']) {
-		$filter = array("post_id" => $postid);
+		$query = "SELECT * FROM `comment` WHERE `post_id`='$postid' ORDER BY `id` DESC;";
 		
-		return $simblog['db']->SelectRows("comment", $filter);
+		return $simblog['db']->QueryArray($query, MYSQL_ASSOC);
 	}
 	else {
 		$dir = new DirectoryIterator(COMMENTS_DIR."/{$postid}");
@@ -240,6 +244,7 @@ function blog_addComment($postid, $content, $author) {
 	if($simblog['conf']['database_support']) {
 		$row = array(
 			"post_id" => $postid,
+			"rating" => 0,
 			"name"	=>	MySQL::SQLValue($author),
 			"ip"	=> MySQL::SQLValue($_SERVER['REMOTE_ADDR']),
 			"text"	=> MySQL::SQLValue($content),
