@@ -19,6 +19,8 @@ switch($_GET['action']) {
 		foreach($simblog['plugin_manager'] as $name => $plugin)
 			if(containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
+				
+		$simblog['smarty']->assign("blog_posts", blog_getPosts());
 		
 		$simblog['smarty']->assign("page_template", "main.tpl");
 		$simblog['smarty']->assign("js_files", $js_files);

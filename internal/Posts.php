@@ -285,6 +285,26 @@ function blog_deleteComment($commentid, $postid=null) {
 }
 
 /**
+ * Gets number of comments for a post.
+ * @param int $postid The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @return int Number of comments.
+ */
+function blog_getCommentsNumber($postid) {
+	global $simblog;
+	
+	if($simblog['conf']['database_support'])
+		return $simblog['db']->QuerySingleValue("SELECT COUNT(*) FROM `comment` WHERE `post_id` = '$postid';");
+	else {
+		$dir = new DirectoryIterator(COMMENTS_DIR."/{$postid}");
+		$count = 0;
+		foreach($dir as $d)
+			if($d->isFile())
+				$count++;
+		return $count;
+	}
+}
+
+/**
  * Rates a post.
  * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
  * @param bool $positive True if it's a positive rate, false if it's a negative rating.
