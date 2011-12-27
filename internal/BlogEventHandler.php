@@ -1,7 +1,7 @@
 <?php
 
-class BlogEventHandler {
-	
+class BlogEventHandler 
+{
 	//private $event;
 	private $callback;
 	

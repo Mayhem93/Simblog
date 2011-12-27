@@ -1,7 +1,30 @@
 <?php
-
-class Plugin_Controller implements Iterator, ArrayAccess, Countable {
-	
+/**
+* The plugin controller class which controls plugins.
+*
+* @author		Răzvan Botea<utherr.ghujax@gmail.com>
+* @license 		http://www.gnu.org/licenses/gpl.txt
+* @copyright	2011-2012 Răzvan Botea
+*
+* 	PHP 5
+*
+*	This file is part of Simblog.
+*
+*   Simblog is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   Simblog is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
+*/
+class Plugin_Controller implements Iterator, ArrayAccess, Countable 
+{
 	private static $instance = null;
 	private $plugin_list = array();
 	private $plugin_keys = array();
@@ -9,7 +32,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	
 	private function __construct() {
 		$this->position = 0;
-		$this->populatePluginList();
+		$this->_populatePluginList();
 	}
 	
 	public function __clone() {}
@@ -53,11 +76,11 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	 * Populates the plugin list. Called in the constructor.
 	 * @return void
 	 */
-	private function populatePluginList() {
+	private function _populatePluginList() {
 		$dir = new DirectoryIterator(PLUGIN_DIR);
 		foreach ($dir as $d)
 			if(!$d->isDot() && $d->isDir())
-				if($this->isValidPlugin((string)$d)) {
+				if($this->_isValidPlugin((string)$d)) {
 					$class = ucfirst((string)$d);
 					$this->plugin_list[(string)$d] = new $class;
 					$this->plugin_keys[] = (string)$d;
@@ -71,7 +94,7 @@ class Plugin_Controller implements Iterator, ArrayAccess, Countable {
 	 * @return boolean - True if it's valid, false otherwise.
 	 */
 	
-	private function isValidPlugin($name) {
+	private function _isValidPlugin($name) {
 		$file_name = PLUGIN_DIR.'/'.$name.'/plugin.conf';
 		$class_file = realpath(PLUGIN_DIR.'/'.$name.'/'.$name.'.class.php');
 		$valid = true;

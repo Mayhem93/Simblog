@@ -1,7 +1,7 @@
 <?php
 
-class BlogEvent {
-	
+class BlogEvent 
+{
 	private $name;
 	private $callback;
 	private $params;
