@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Where it all starts.
  *
@@ -25,6 +24,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 ob_start('ob_gzhandler');
 if(!file_exists("../global.conf")) {
 	echo "Configuration file does not exist. Installation has not been carried out. <a href=\"install\">Install here.</a>";
