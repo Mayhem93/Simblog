@@ -63,7 +63,7 @@ class SBFactory
 				break;
 		
 			case "Settings":
-				if (!self::$settings_instance instanceof Config_Lite)
+				if (!self::$settings_instance instanceof SBSettings)
 					self::$settings_instance = new SBSettings();
 		
 				return self::$settings_instance;
