@@ -23,6 +23,7 @@
 *   You should have received a copy of the GNU General Public License
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 DEFINE("HTTP_UNAUTHORIZED", 401);
 DEFINE("HTTP_NOT_FOUND", 	404);
 DEFINE("HTTP_FORBIDDEN",	403);
@@ -65,18 +66,15 @@ function throwError($text) {
  */
 
 function notifyMessage($text, $type) {
-	global $simblog;
-	
-	$simblog['messages'][$type][] = $text;
+	//TODO
 }
 
 function packCSSfiles() {
-	global $simblog;
-	
 	$css_file = fopen(BLOG_PUBLIC_ROOT."/plugins.css","w+");
 
-	foreach($simblog['plugin_manager'] as $name => $plugin)
+	foreach(SBFactory::Plugin_Controller() as $name => $plugin)
 		fwrite($css_file, file_get_contents(PLUGIN_DIR."/".$name."/".$plugin->getCSSfile()));
+	
 	fclose($css_file);
 }
 

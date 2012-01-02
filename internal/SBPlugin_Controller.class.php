@@ -23,30 +23,16 @@
 *   You should have received a copy of the GNU General Public License
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
-class Plugin_Controller implements Iterator, ArrayAccess, Countable 
+
+class SBPlugin_Controller implements Iterator, ArrayAccess, Countable 
 {
-	private static $instance = null;
 	private $plugin_list = array();
 	private $plugin_keys = array();
 	private $position;
 	
-	private function __construct() {
+	public function __construct() {
 		$this->position = 0;
 		$this->_populatePluginList();
-	}
-	
-	public function __clone() {}
-	
-	/**
-	 * 
-	 * Uses singleton design pattern.
-	 * @return Plugin_Controller
-	 */
-
-	public static function init() {
-		if(!(self::$instance instanceof self))
-			self::$instance = new self();
-		return self::$instance;
 	}
 	
 	/**

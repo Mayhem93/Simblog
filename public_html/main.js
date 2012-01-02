@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	if(document.getElementById("login_button") != undefined)
 		bind_login_button();
-	else if(document.getElementById("login"))
+	else if(document.getElementById("admin_logout"))
 		bind_logout();
 	if(document.admin_login != undefined)
 		document.admin_login.addEventListener("submit",function(){return false;},false);

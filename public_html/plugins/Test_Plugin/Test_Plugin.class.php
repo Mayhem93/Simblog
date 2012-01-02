@@ -1,6 +1,6 @@
 <?php
 
-class Test_Plugin extends Blog_Plugin {
+class Test_Plugin extends SBPlugin {
 	
 	public function __construct() {
 		parent::__construct("Test_Plugin");

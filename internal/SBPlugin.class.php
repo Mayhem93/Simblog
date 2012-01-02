@@ -23,11 +23,12 @@
 *   You should have received a copy of the GNU General Public License
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 DEFINE("PLUGIN_JS_BLOG_PAGES", 1);
 DEFINE("PLUGIN_JS_ADMIN_PAGE", 2);
 DEFINE("PLUGIN_JS_PLUGIN_PAGE", 4);
 
-abstract class Blog_Plugin 
+abstract class SBPlugin 
 {
 	private $type			= "";
 	private $name 			= "";

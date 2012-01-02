@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Where it all starts.
  *
@@ -30,7 +31,6 @@ if(!file_exists("../global.conf")) {
 	echo "Configuration file does not exist. Installation has not been carried out. <a href=\"install\">Install here.</a>";
 	exit();
 }
-DEFINE('IN_SITE', true);
 
 require '../init.php';
 
@@ -39,17 +39,19 @@ if (!isset($_GET['action']))
 
 session_start();
 $js_files = array();
+$plugin_manager =& SBFactory::Plugin_Controller();
 
 switch ($_GET['action']) {
 	case 'show':
 
-		foreach($simblog['plugin_manager'] as $name => $plugin)
+		foreach($plugin_manager as $name => $plugin)
 			if (containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 
-		$simblog['smarty']->assign("blog_posts", blog_getPosts());
-		$simblog['smarty']->assign("page_template", "main.tpl");
-		$simblog['smarty']->assign("js_files", $js_files);
+		SBFactory::Smarty()->assign("blog_posts", blog_getPosts());
+		SBFactory::Smarty()->assign("page_template", "main.tpl");
+		SBFactory::Smarty()->assign("js_files", $js_files);
+		SBFactory::Smarty()->assign("simblog_conf", SBFactory::Settings()->getAll());
 
 		break;
 
@@ -66,11 +68,10 @@ switch ($_GET['action']) {
 }
 
 try {
-	$simblog['smarty']->display('index.tpl');
+	SBFactory::Smarty()->display('index.tpl');
 }
 catch (SmartyException $e) {
 	echo $e->getMessage();
 }
 
 ob_end_flush();
-?>

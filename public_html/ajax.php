@@ -35,9 +35,12 @@ switch($_GET['action']) {
 		session_start();
 		prepare_ajaxLogin();
 		
-		if(($_POST['username'] == $simblog['conf']['admin_username']) && ($_POST['password'] == $simblog['conf']['admin_password'])) {
+		$admin_username = SBFactory::Settings()->getSetting("admin_username");
+		$admin_password = SBFactory::Settings()->getSetting("admin_password");
+		
+		if(($_POST['username'] == $admin_username) && ($_POST['password'] == $admin_password)) {
 			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
-			echo $simblog['smarty']->fetch('bits/admin_box.tpl');
+			echo SBFactory::Smarty()->fetch('bits/admin_box.tpl');
 		}
 		else {
 			header('HTTP/1.1 401 Unauthorized');
@@ -50,7 +53,7 @@ switch($_GET['action']) {
 		
 		if(smarty_isAdminSession()) {
 			unset($_SESSION[$_SERVER['REMOTE_ADDR']]['admin']);
-			echo $simblog['smarty']->fetch('bits/admin_login.tpl');
+			echo SBFactory::Smarty()->fetch('bits/admin_login.tpl');
 		}
 		break;
 }

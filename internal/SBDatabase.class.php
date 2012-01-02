@@ -24,9 +24,9 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-include_once BLOG_ROOT."libs/idiorm.php";
+include_once BLOG_ROOT."/libs/idiorm.php";
 
-class SimblogDB extends ORM {
+class SBDatabase extends ORM {
 	
 	public function __construct($host, $database, $username, $password, $port=3306) {
 		parent::configure("mysql:host={$host}:{$port};dbname={$database}");
@@ -65,11 +65,11 @@ class SimblogDB extends ORM {
 		$table = $this->_escapeSQL($table);
 		$where = $this->_escapeSQL($where);
 		$group_by = $this->_escapeSQL($group_by);
+		$result = parent::for_table($table);
 		
 		if (func_num_args() == 1)
-			return parent::for_table($table)->count();
+			return $this->_toArray($result->count());
 		else {
-			$result = parent::for_table($table);
 			
 			foreach($where as $column => $value)
 				$result = $result->where($column, $value);
@@ -85,7 +85,6 @@ class SimblogDB extends ORM {
 			
 			return $result->count();
 		}
-		
 	}
 	
 	/**
@@ -155,6 +154,17 @@ class SimblogDB extends ORM {
 	}
 	
 	/**
+	 * Gets the first value from the first column of a query.
+	 * @param string $query The query.
+	 * @return string
+	 */
+	public function querySingleValue($query) {
+		$result = $this->querySingleRow($query);
+		
+		return $result[0];
+	}
+	
+	/**
 	 * Returns data from DB.
 	 * @param string $table Name of the table.
 	 * @param string $columns Name of the columns to be included. Defaults to '*'
@@ -176,7 +186,7 @@ class SimblogDB extends ORM {
 		$sort_column = $this->_escapeSQL($sort_column);
 		
 		if ($sort)
-			if(!($sort == "ASC" || $sort == "DESC"))
+			if (!($sort == "ASC" || $sort == "DESC"))
 				$sort = null;
 		if (is_int($offset) && is_int($limit)) {
 			$offset = null;
@@ -231,12 +241,12 @@ class SimblogDB extends ORM {
 	 * @return mixed The escaped variables. Array or string.
 	 */
 	private function _escapeSQL($data) {
-		if(is_string($data))
+		if (is_string($data))
 			return mysql_escape_string($data);
-		else if(is_array($data)) {
-			$restult = array();
+		else if (is_array($data)) {
+			$result = array();
 			foreach($data as $key => $value)
-				$restult[mysql_escape_string($key)] = mysql_escape_string($value);
+				$result[mysql_escape_string($key)] = mysql_escape_string($value);
 			
 			return $result;
 		}
