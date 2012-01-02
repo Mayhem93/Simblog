@@ -59,22 +59,22 @@ else {
 	if(is_writable(realpath(getcwd()."/../.."))) {
 		if(!count($inputErrors)) {
 			$config_file = new Config_Lite(getcwd()."/../../global.conf");
-			#General
-			$config_file->set("General", "author_name", $_POST['author']);
-			$config_file->set("General", "blog_title", $_POST['title']);
-			$config_file->set("General", "email", $_POST['email']);
-			$config_file->set("General", "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
-			$config_file->set("General", "disable_plugins", false);
-			$config_file->set("General", "database_support", isset($_POST['db_support']));
-			$config_file->set("General", "admin_username", $_POST['admin_username']);
-			$config_file->set("General", "admin_password", $_POST['admin_password']);
+
+			$config_file->set(null, "author_name", $_POST['author']);
+			$config_file->set(null, "blog_title", $_POST['title']);
+			$config_file->set(null, "email", $_POST['email']);
+			$config_file->set(null, "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
+			$config_file->set(null, "disable_plugins", false);
+			$config_file->set(null, "database_support", isset($_POST['db_support']));
+			$config_file->set(null, "admin_username", $_POST['admin_username']);
+			$config_file->set(null, "admin_password", $_POST['admin_password']);
+			$config_file->set(null, "no_posts_per_page", 10);
 			
-			#Database
-			$config_file->set("Database", "host", isset($_POST['hostname']) ? $_POST['hostname'] : "");
-			$config_file->set("Database", "port", isset($port) ? $port : "");
-			$config_file->set("Database", "user", isset($_POST['username']) ? $_POST['username'] : "");
-			$config_file->set("Database", "password", isset($_POST['password']) ? $_POST['password'] : "");
-			$config_file->set("Database", "database", isset($_POST['database']) ? $_POST['database'] : "");
+			$config_file->set(null, "host", isset($_POST['hostname']) ? $_POST['hostname'] : "");
+			$config_file->set(null, "port", isset($port) ? $port : "");
+			$config_file->set(null, "user", isset($_POST['username']) ? $_POST['username'] : "");
+			$config_file->set(null, "password", isset($_POST['password']) ? $_POST['password'] : "");
+			$config_file->set(null, "database", isset($_POST['database']) ? $_POST['database'] : "");
 			$config_file->save();
 		}
 		else
