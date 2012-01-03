@@ -32,7 +32,7 @@
  * @param boolean $pinned Pinned posts will show up first
  */
 function blog_addPost($title, $content, $category, $pinned = false) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
@@ -68,7 +68,7 @@ function blog_addPost($title, $content, $category, $pinned = false) {
  * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
  */
 function blog_deletePost($id) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
@@ -89,7 +89,7 @@ function blog_deletePost($id) {
  * @uses The last three parameters cannot be null at the same time.
  */
 function blog_modifyPost($id, $title=null, $content=null, $category=null) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if($title == null && $content == null && $category == null)
 		return;
@@ -130,7 +130,7 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null) {
  * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
  */
 function blog_togglePinPost($id) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		
@@ -154,7 +154,7 @@ function blog_togglePinPost($id) {
  * @return array An associative array with the results.
  */
 function blog_getPosts($page=1) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
@@ -182,7 +182,7 @@ function blog_getPosts($page=1) {
  * @return array Associative array with all the pinned posts.
  */
 function blog_getPinnedPosts() {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("pinned" => 1);
@@ -210,7 +210,7 @@ function blog_getPinnedPosts() {
  * @return boolean True if it's pinned, false otherwise.
  */
 function blog_postIsPinned($id) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$query = "SELECT `pinned` FROM `post` WHERE `id` = '$id';";
@@ -230,7 +230,7 @@ function blog_postIsPinned($id) {
  * @return array Associative array with the results. 
  */
 function blog_getComments($postid) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$where = array("post_id" => $postid);
@@ -259,7 +259,7 @@ function blog_getComments($postid) {
  * @param string $author Comment author.
  */
 function blog_addComment($postid, $content, $author) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
@@ -293,7 +293,7 @@ function blog_addComment($postid, $content, $author) {
  * @param int $postid (optional) Only used for no-mysql support.
  */
 function blog_deleteComment($commentid, $postid=null) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $commentid);
@@ -310,7 +310,7 @@ function blog_deleteComment($commentid, $postid=null) {
  * @return int Number of comments.
  */
 function blog_getCommentsNumber($postid) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("post_id" => $postid);
@@ -333,7 +333,7 @@ function blog_getCommentsNumber($postid) {
  * @param bool $positive True if it's a positive rate, false if it's a negative rating.
  */
 function blog_ratePost($id, $positive=true) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		if($positive)
@@ -363,7 +363,7 @@ function blog_ratePost($id, $positive=true) {
  * @param bool $positive 
  */
 function blog_rateComment($id, $post_id=null, $positive=true) {
-	$database =& SBFactory::Database();
+	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		if($positive)

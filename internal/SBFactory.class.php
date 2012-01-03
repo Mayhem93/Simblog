@@ -37,47 +37,57 @@ class SBFactory
 	private static $settings_instance;
 	private static $plugin_controller_instance;
 	
-	public static function &__callstatic($method_name, $params) {
-		switch($method_name) {
-			case "Database":
-				if (!self::$db_instance instanceof SBDatabase) {
-					$host 		= self::Settings()->getSetting("host");
-					$database 	= self::Settings()->getSetting("database");
-					$username	= self::Settings()->getSetting("user");
-					$password	= self::Settings()->getSetting("password");
-						
-					self::$db_instance = new SBDatabase($host, $database, $username, $password);
-				}
-				return self::$db_instance;
-				break;
+	/**
+	 * Simblog Database.
+	 * @return SBDatabase Returns the database object.
+	 */
+	public static function Database() {
+		if (!self::$db_instance instanceof SBDatabase) {
+			$host 		= self::Settings()->getSetting("host");
+			$database 	= self::Settings()->getSetting("database");
+			$username	= self::Settings()->getSetting("user");
+			$password	= self::Settings()->getSetting("password");
 		
-			case "Smarty":
-				if (!self::$smarty_instance instanceof Smarty) {
-					self::$smarty_instance = new Smarty();
-					self::$smarty_instance->setCacheDir('templates_c');
-					self::$smarty_instance->setCompileDir('templates_c');
-					self::$smarty_instance->setTemplateDir('templates');
-				}
-		
-				return self::$smarty_instance;
-				break;
-		
-			case "Settings":
-				if (!self::$settings_instance instanceof SBSettings)
-					self::$settings_instance = new SBSettings();
-		
-				return self::$settings_instance;
-				break;
-		
-			case "Plugin_Controller":
-				if (!self::$plugin_controller_instance instanceof SBPlugin_Controller)
-					self::$plugin_controller_instance = new SBPlugin_Controller();
-					
-				return self::$plugin_controller_instance;
-				break;
-			
-			default:
-				throw new Exception("Method {$method_name} not implemented.");
+			self::$db_instance = new SBDatabase($host, $database, $username, $password);
 		}
+		
+		return self::$db_instance;
+	}
+	
+	/**
+	 * Simblog templating system, based on smarty.
+	 * @return Smarty Returns a smarty object.
+	 */
+	public static function Template() {
+		if (!self::$smarty_instance instanceof Smarty) {
+			self::$smarty_instance = new Smarty();
+			self::$smarty_instance->setCacheDir('templates_c');
+			self::$smarty_instance->setCompileDir('templates_c');
+			self::$smarty_instance->setTemplateDir('templates');
+		}
+		
+		return self::$smarty_instance;
+	}
+	
+	/**
+	 * Simblog settings
+	 * @return SBSettings Returns an object used for managing settings.
+	 */
+	public static function Settings() {
+		if (!self::$settings_instance instanceof SBSettings)
+			self::$settings_instance = new SBSettings();
+		
+		return self::$settings_instance;		
+	}
+	
+	/**
+	 * Simblog plugin manager
+	 * @return SBPlugin_Controller Returns an object used for managing plugins.
+	 */
+	public static function PluginManager() {
+		if (!self::$plugin_controller_instance instanceof SBPlugin_Controller)
+			self::$plugin_controller_instance = new SBPlugin_Controller();
+			
+		return self::$plugin_controller_instance;
 	}
 }

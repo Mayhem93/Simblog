@@ -41,8 +41,8 @@ if (!isset($_GET['action']))
 
 session_start();
 $js_files = array();
-$plugin_manager =& SBFactory::Plugin_Controller();
-SBFactory::Smarty()->assign("simblog_conf", SBFactory::Settings()->getAll());
+$plugin_manager = SBFactory::PluginManager();
+SBFactory::Template()->assign("simblog_conf", SBFactory::Settings()->getAll());
 
 switch ($_GET['action']) {
 	case 'show':
@@ -51,19 +51,19 @@ switch ($_GET['action']) {
 			if (containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 
-		SBFactory::Smarty()->assign("blog_posts", blog_getPosts());
-		SBFactory::Smarty()->assign("page_template", "main.tpl");
-		SBFactory::Smarty()->assign("js_files", $js_files);
+		SBFactory::Template()->assign("blog_posts", blog_getPosts());
+		SBFactory::Template()->assign("page_template", "main.tpl");
+		SBFactory::Template()->assign("js_files", $js_files);
 
 		break;
 
 	case 'addpost':
-		if (!smarty_isAdminSession())
+		if (!Template_isAdminSession())
 			setHTTP(404);
 		
 		//the user interface to add posts
 		if (!count($_POST))
-			SBFactory::Smarty()->assign("page_template", "addPost.tpl");
+			SBFactory::Template()->assign("page_template", "addPost.tpl");
 		
 		//where the posts are added
 		else {
@@ -75,7 +75,7 @@ switch ($_GET['action']) {
 }
 
 try {
-	SBFactory::Smarty()->display('index.tpl');
+	SBFactory::Template()->display('index.tpl');
 }
 catch (SmartyException $e) {
 	echo $e->getMessage();
