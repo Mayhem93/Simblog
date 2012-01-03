@@ -32,6 +32,8 @@ if(!file_exists("../global.conf")) {
 	exit();
 }
 
+header("Content-type: text/html; charset=utf-8");
+
 require '../init.php';
 
 if (!isset($_GET['action']))
@@ -40,6 +42,7 @@ if (!isset($_GET['action']))
 session_start();
 $js_files = array();
 $plugin_manager =& SBFactory::Plugin_Controller();
+SBFactory::Smarty()->assign("simblog_conf", SBFactory::Settings()->getAll());
 
 switch ($_GET['action']) {
 	case 'show':
@@ -51,18 +54,22 @@ switch ($_GET['action']) {
 		SBFactory::Smarty()->assign("blog_posts", blog_getPosts());
 		SBFactory::Smarty()->assign("page_template", "main.tpl");
 		SBFactory::Smarty()->assign("js_files", $js_files);
-		SBFactory::Smarty()->assign("simblog_conf", SBFactory::Settings()->getAll());
 
 		break;
 
 	case 'addpost':
+		if (!smarty_isAdminSession())
+			setHTTP(404);
+		
 		//the user interface to add posts
-		if (!count($_POST)) {
-			//TODO add posts user interface
-		}
+		if (!count($_POST))
+			SBFactory::Smarty()->assign("page_template", "addPost.tpl");
+		
 		//where the posts are added
 		else {
-			blog_addPost($_POST['title'], $_POST['content']);
+			$pinned = isset($_POST['pinned']);
+			blog_addPost($_POST['post_title'], $_POST['post_content'], $_POST['category'], $pinned);
+			header("Location: /");
 		}
 		break;
 }
