@@ -1339,6 +1339,13 @@ h3#comments-title {
 	color: #0D85CC;
 }
 
+.post-delete {
+	float: right;
+	position: relative;
+	bottom: 30px;
+	cursor: pointer;
+}
+
 .commentlist .children {
 	background-image: none;
 	list-style: none;

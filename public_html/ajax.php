@@ -47,6 +47,7 @@ switch($_GET['action']) {
 			exit();
 		}
 		break;
+		
 	case 'logout':
 		session_start();
 		prepare_ajaxLogout();
@@ -56,4 +57,12 @@ switch($_GET['action']) {
 			echo SBFactory::Template()->fetch('bits/admin_login.tpl');
 		}
 		break;
+		
+	case 'deletePost':
+		prepare_ajaxDeletePost();
+		
+		echo blog_deletePost($_POST['id']) ? "1" : "0";
+		
+		break;
+		
 }

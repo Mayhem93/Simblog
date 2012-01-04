@@ -58,8 +58,8 @@ switch ($_GET['action']) {
 		break;
 
 	case 'addpost':
-		if (!Template_isAdminSession())
-			setHTTP(404);
+		if (!smarty_isAdminSession())
+			setHTTP(HTTP_UNAUTHORIZED);
 		
 		//the user interface to add posts
 		if (!count($_POST))

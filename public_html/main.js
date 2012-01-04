@@ -9,6 +9,12 @@ $(document).ready(function(){
 		if($('[name="adminPassword"]:focus').length && event.which == 13)
 			sendLogin();
 	});
+	$('[id^="post"]').each(function(i,item){
+		var id = item.attributes.getNamedItem("id").value.slice(5);
+		$(this).find("span.post-delete").bind("click", function(){
+			deletePost(id);
+		});
+	});
 });
 
 function bind_login_button() {
@@ -27,6 +33,25 @@ function bind_logout() {
 		};
 		ajaxReq("logout", "html", undefined, callbacks);
 	});
+}
+
+function deletePost(id) {
+	var callbacks = {
+			success: function(data) {
+				if(data == "1")
+					$("div#post_"+id).fadeOut(1000, function(){
+						this.remove();
+					});
+				else
+					this.error(null, "Error", null);
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(textStatus);
+			},
+			complete: null
+	};
+	
+	ajaxReq("deletePost", undefined, "id="+id, callbacks);
 }
 
 function sendLogin() {

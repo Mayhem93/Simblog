@@ -23,7 +23,7 @@
 								<span> <a href="http://mantra-btemplates.blogspot.com/">{$simblog_conf.blog_title}</a>
 								</span>
 							</h1>
-							<div id="site-description">Improving myself every second.</div>
+							<div id="site-description">&lt;Blog description here&gt;</div>
 						</div>
 					</div>
 				</div>

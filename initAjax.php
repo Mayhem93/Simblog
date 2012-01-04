@@ -46,3 +46,9 @@ function prepare_ajaxLogout() {
 	include 'smarty/Smarty.class.php';
 	require BLOG_ROOT.'/internal/smarty_functions.php';
 }
+
+function prepare_ajaxDeletePost() {
+	
+	require_once BLOG_ROOT."/internal/SPL_autoload.php";
+	require_once BLOG_ROOT."/internal/Posts.php";
+}

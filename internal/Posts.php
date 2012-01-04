@@ -72,7 +72,8 @@ function blog_deletePost($id) {
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
-		$database->deleteRows("post", $filter);
+
+		return $database->deleteRows("post", $filter);
 	} else {
 		if (blog_postIsPinned($id)) //TODO: delete all the comments with the post id.
 			unlink(POSTS_DIR."/pinned/{$id}.json");

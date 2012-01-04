@@ -33,6 +33,7 @@ class SBDatabase extends ORM {
 		parent::configure("username", $username);
 		parent::configure("password", $password);
 		parent::configure("dirver_options", array(PDO::MYSQL_ATTR_INIT_COMMAND => "set names utf-8"));
+		parent::configure("logging", true);
 	}
 	
 	/**
@@ -91,17 +92,22 @@ class SBDatabase extends ORM {
 	 * Deletes a row.
 	 * @param string $table Name of the table.
 	 * @param array $where column=>key values for the where statement.
+	 * @return boolean true if sucessful false otherwise.
 	 */
 	public function deleteRows($table, array $where) {
 		$table = $this->_escapeSQL($table);
 		$where = $this->_escapeSQL($where);
 		
-		$query = parent::for_table($table)->where(key($where), $where[key($where)]);
-		next($where);
-		
+		$query = parent::for_table($table);
 		foreach($where as $col_name => $value)
 			$query = $query->where($col_name, $value);
-		return $query->delete();
+
+		$array = $query->find_many();
+		
+		foreach($array as $q)
+			$q->delete();
+		
+		return count($array) ? true : false;
 	}
 	
 	/**

@@ -72,7 +72,7 @@ function notifyMessage($text, $type) {
 function packCSSfiles() {
 	$css_file = fopen(BLOG_PUBLIC_ROOT."/plugins.css","w+");
 
-	foreach(SBFactory::Plugin_Controller() as $name => $plugin)
+	foreach(SBFactory::PluginManager() as $name => $plugin)
 		fwrite($css_file, file_get_contents(PLUGIN_DIR."/".$name."/".$plugin->getCSSfile()));
 	
 	fclose($css_file);
