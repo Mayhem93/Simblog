@@ -178,6 +178,24 @@ function blog_getPosts($page=1) {
 		return $posts;
 	}
 }
+
+/**
+ * Gets a single post
+ * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
+ * @return array associative
+ */
+function blog_getPost($id) {
+	$database = SBFactory::Database();
+	
+	if (SBFactory::Settings()->getSetting("database_support")) {
+		$filter = array("id" => $id);
+		$result = $database->selectRows("post", "*", $filter);
+		
+		return $result[0];
+	} else
+		return json_decode(file_get_contents(POSTS_DIR."/{$id}.json"), true);
+}
+
 /**
  * Returns all pinned posts.
  * @return array Associative array with all the pinned posts.

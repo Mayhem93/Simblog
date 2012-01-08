@@ -1202,6 +1202,15 @@ a,.entry-utility a {
 	clear: both;
 }
 
+#comments #commentForm input[type="text"] {
+	width: 403px;
+}
+
+#comments #commentForm input[type="submit"] {
+	margin-top: 20px;
+	margin-left: 200px;
+}
+
 #comments .navigation {
 	padding: 0 0 18px 0;
 }
@@ -1304,8 +1313,19 @@ h3#comments-title {
 	font-style: italic;
 }
 
+#comments .commentDate {
+	float: right;
+	font-size: 12px;
+	color: grey;
+}
+
 .comment-meta {
 	font-size: 12px;
+	margin: 0 0 15px 10px;
+}
+
+#comments .comment-meta p {
+	font-size: 10px;
 	margin: 0 0 15px 10px;
 }
 
@@ -1344,6 +1364,10 @@ h3#comments-title {
 	position: relative;
 	bottom: 30px;
 	cursor: pointer;
+}
+
+.post-outer {
+	margin-bottom: 30px;
 }
 
 .commentlist .children {
@@ -1391,12 +1415,13 @@ h3#comments-title {
 	font-style: italic;
 }
 /* Comments form */
+
 input[type=submit] {
 	color: #333;
+	
 }
 
 #respond {
-	border-top: 1px solid #e7e7e7;
 	margin: 24px 0;
 	overflow: hidden;
 	position: relative;
@@ -1421,7 +1446,7 @@ input[type=submit] {
 }
 
 h3#reply-title {
-	margin: 18px 0;
+	margin: 30px 0;
 }
 
 #comments-list #respond {
@@ -1446,12 +1471,26 @@ h3#reply-title {
 	padding-top: 3px;
 }
 
-#commentform {
+#commentForm {
 	width: 90%;
 	max-width: 500px;
 	display: block;
 	float: left;
 	margin: 0 auto;
+}
+
+#commentForm label {
+	display: block;
+	float: left; 
+	width: 150px; 
+	padding: 0; 
+	margin: 0 0 0; 
+	text-align: right; 
+}
+
+#commentBodyField {
+  margin: 5px 0;
+  width: 98%;
 }
 
 #respond label {
@@ -1464,7 +1503,7 @@ h3#reply-title {
 	width: 10%;
 }
 
-#respond input {
+#respond input[type="text"] {
 	margin: 0 0 9px;
 	width: 80%;
 	border-color: #EEE;

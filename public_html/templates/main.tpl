@@ -4,19 +4,7 @@
 			<div class="date-outer">
 				<div class="date-posts">
 					{foreach $blog_posts as $post}
-					<div id="post_{$post.id}" class="post-outer">
-						<div class="post-hentry">
-							<h2 class="entry-title">{$post.title}</h2>
-							{if smarty_isAdminSession() }<span class="post-delete">[X]</span> {/if}
-							<div class="entry-meta">
-								<span class="author vcard">Category: {$post.category} | </span>
-								<span class="onDate">{$post.date_posted} | </span> <span
-									class="onDate">{blog_getCommentsNumber({$post.id})}
-									Comment(s)</span>
-							</div>
-							<div class="entry-content">{$post.content}</div>
-						</div>
-					</div>
+						{include file="bits/post.tpl"}
 					{/foreach}
 				</div>
 			</div>

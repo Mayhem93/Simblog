@@ -37,7 +37,7 @@ function prepare_ajaxLogin() {
 	include 'smarty/Smarty.class.php';
 	include BLOG_ROOT.'/utils.php';
 	
-	SBFactory::Smarty()->assign('simblog_conf', SBFactory::Settings()->getAll());
+	SBFactory::Template()->assign('simblog_conf', SBFactory::Settings()->getAll());
 }
 
 function prepare_ajaxLogout() {

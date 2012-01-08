@@ -57,6 +57,16 @@ switch ($_GET['action']) {
 
 		break;
 
+	case 'post':
+		$post = blog_getPost($_GET['id']);
+		$comments = blog_getComments($_GET['id']);
+		
+		SBFactory::Template()->assign("post", $post);
+		SBFactory::Template()->assign("comments", $comments);
+		SBFactory::Template()->assign("page_template", "post_page.tpl");
+		
+		break;
+		
 	case 'addpost':
 		if (!smarty_isAdminSession())
 			setHTTP(HTTP_UNAUTHORIZED);

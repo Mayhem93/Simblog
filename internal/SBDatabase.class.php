@@ -174,7 +174,7 @@ class SBDatabase extends ORM {
 	 * Returns data from DB.
 	 * @param string $table Name of the table.
 	 * @param string $columns Name of the columns to be included. Defaults to '*'
-	 * @param string $where column=>key pairs for the where statement.
+	 * @param array $where column=>key pairs for the where statement.
 	 * @param string $group_by Name of the column to group by.
 	 * @param string $sort Valid strings: "ASC" or "DESC"
 	 * @param string $sort_column The column to sort by.
@@ -183,7 +183,7 @@ class SBDatabase extends ORM {
 	 * @return Associative array with the results.
 	 */
 	public function selectRows($table, $columns = "*", $where = null, 
-								$group_by = null, $sort = null, $sort_column, 
+								$group_by = null, $sort = null, $sort_column = null, 
 								$offset = null, $limit = null) {
 		
 		$table = $this->_escapeSQL($table);

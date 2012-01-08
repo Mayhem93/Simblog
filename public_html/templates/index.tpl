@@ -20,7 +20,7 @@
 					<div class="section" id="header1">
 						<div class="widget Header" id="Header1">
 							<h1 id="site-title">
-								<span> <a href="http://mantra-btemplates.blogspot.com/">{$simblog_conf.blog_title}</a>
+								<span> <a href="/">{$simblog_conf.blog_title}</a>
 								</span>
 							</h1>
 							<div id="site-description">&lt;Blog description here&gt;</div>
