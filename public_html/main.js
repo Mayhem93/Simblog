@@ -12,7 +12,7 @@ $(document).ready(function(){
 	});
 	
 	$("#submitComment").on("click", function(){
-		var id = window.location.search.match(/id=[+0-9]/)[0].slice(3);
+		var id = window.location.search.match(/id=\d+/)[0].slice(3);
 		
 		addComment(id);
 	});
