@@ -1359,15 +1359,22 @@ h3#comments-title {
 	color: #0D85CC;
 }
 
-.post-delete {
+#content .post-outer .post-delete {
+	width: 21px;
+	height: 21px;
 	float: right;
 	position: relative;
 	bottom: 30px;
 	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	-webkit-border-radius: none;
 }
 
 .post-outer {
 	margin-bottom: 30px;
+	overflow: hidden;
 }
 
 .commentlist .children {

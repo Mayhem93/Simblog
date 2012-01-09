@@ -51,4 +51,11 @@ function prepare_ajaxDeletePost() {
 	
 	require_once BLOG_ROOT."/internal/SPL_autoload.php";
 	require_once BLOG_ROOT."/internal/Posts.php";
+	require BLOG_ROOT.'/internal/smarty_functions.php';
+}
+
+function prepare_ajaxAddComment() {
+	
+	require_once BLOG_ROOT."/internal/SPL_autoload.php";
+	require_once BLOG_ROOT."/internal/Posts.php";
 }

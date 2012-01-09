@@ -3,7 +3,7 @@
 		<h2 class="entry-title">
 			<a href="?action=post&id={$post.id}">{$post.title}</a>
 		</h2>
-		{if smarty_isAdminSession() }<span class="post-delete">[X]</span>
+		{if smarty_isAdminSession() }<img class="post-delete" src="img/close-button.png" alt="Delete" />
 		{/if}
 		<div class="entry-meta">
 			<span class="author vcard">Category: {$post.category} | </span> <span

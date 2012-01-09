@@ -59,9 +59,25 @@ switch($_GET['action']) {
 		break;
 		
 	case 'deletePost':
+		session_start();
 		prepare_ajaxDeletePost();
 		
+		if(!smarty_isAdminSession()) {
+			header('HTTP/1.1 403 Forbidden');
+			exit();
+		}
+		
 		echo blog_deletePost($_POST['id']) ? "1" : "0";
+		
+		break;
+		
+	case 'addComment': 
+		prepare_ajaxAddComment();
+		
+		$name = $_POST['commentName'];
+		$content = $_POST['commentBody'];
+		
+		blog_addComment($_POST['post_id'], $content, $name);
 		
 		break;
 		

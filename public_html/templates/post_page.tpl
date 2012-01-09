@@ -32,7 +32,6 @@
 		<h3 id="reply-title">Leave a Reply</h3>
 		<form name="commentForm" id="commentForm" action="" method="post">
 			 <label for="commentName">Name: </label><input name="commentName" type="text" />
-			 <label for="commentEmail">E-mail: </label><input name="commentEmail" type="text" />
 			 <textarea name="commentBody" rows="8" cols="60" id="commentBodyField"></textarea>
 			 <input id="submitComment" type="submit" value="Comment" />
 		</form>
