@@ -368,11 +368,15 @@ input[name="pinned"] {
 	margin-left: 28px;
 }
 
-ul[name="forms"] li {
+ul.forms li {
 	margin-bottom: 10px;
 }
 
 #content div.addPost li {
+	background-image: none;
+}
+
+#content div.modifyPost li {
 	background-image: none;
 }
 
@@ -1360,12 +1364,29 @@ h3#comments-title {
 }
 
 #content .post-outer .post-delete {
+	display: inline;
 	width: 21px;
 	height: 21px;
 	float: right;
 	position: relative;
 	bottom: 30px;
 	cursor: pointer;
+	border: none;
+	display: inline;
+	background-color: transparent;
+	-webkit-box-shadow: none;
+	-webkit-border-radius: none;
+	margin-left: 10px;
+}
+
+#content .post-outer .post-modify {
+	width: 21px;
+	height: 21px;	
+	float: right;
+	position: relative;
+	bottom: 30px;
+	cursor: pointer;
+	display: inline;
 	border: none;
 	background-color: transparent;
 	-webkit-box-shadow: none;

@@ -92,34 +92,35 @@ function blog_deletePost($id) {
 function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 	$database = SBFactory::Database();
 	
-	if($title == null && $content == null && $category == null)
+	if ($title == null && $content == null && $category == null)
 		return;
 	
-	if(SBFactory::Settings()->getSetting("database_support")) {
+	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
 		$update_set = array();
-		if($title)
+		
+		if ($title)
 			$update_set['title'] = $title;
-		if($content)
+		if ($content)
 			$update_set['content'] = $content;
-		if($category)
+		if ($category)
 			$update_set['category'] = $category;
 		
-		$database->updateRows("post", $filter, $update_set);
+		return $database->updateRows("post", $filter, $update_set);
 	}
 	else {
-		if(blog_postIsPinned($id))
+		if (blog_postIsPinned($id))
 			$post_string = POSTS_DIR."/pinned/{$id}.json";
 		else 
 			$post_string = POSTS_DIR."/{$id}.json";
 		
 		$json = file_get_contents($post_string);
 		$json = json_decode($json,true);
-		if($title)
+		if ($title)
 			$json['title'] = $title;
-		if($content)
+		if ($content)
 			$json['content'] = BBCode::parse($content);
-		if($category)
+		if ($category)
 			$json['category'] = $category;
 		$json['last_modified'] = date("d F Y, g:i:s a");
 		file_put_contents($post_string,json_encode($json));

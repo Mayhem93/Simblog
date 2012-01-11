@@ -82,6 +82,27 @@ switch ($_GET['action']) {
 			header("Location: /");
 		}
 		break;
+		
+	case 'modifyPost':
+		if (!smarty_isAdminSession())
+			setHTTP(HTTP_UNAUTHORIZED);
+		
+		if (!count($_POST)) {
+			$post = blog_getPost($_GET['id']);
+			
+			SBFactory::Template()->assign("post", $post);
+			SBFactory::Template()->assign("page_template", "modifyPost.tpl");
+		} else {
+			$post_id = $_POST['post_id'];
+			$content = $_POST['post_content'];
+			$title = $_POST['post_title'];
+			$category = $_POST['category'];
+			
+			var_dump(blog_modifyPost($post_id, $title, $content, $category));
+			//header("Location: /");
+		}
+			
+		break;
 }
 
 try {

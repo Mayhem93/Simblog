@@ -122,15 +122,18 @@ class SBDatabase extends ORM {
 		$where = $this->_escapeSQL($where);
 		$update_set = $this->_escapeSQL($update_set);
 		
-		$query = parent::for_table($table)->where(key($where), $where[key($where)]);
-		next($where);
+		$query = parent::for_table($table);
 		
 		foreach($where as $col_name => $value)
 			$query = $query->where($col_name, $value);
+		
+		$query = $query->find_one();
+		
 		foreach($update_set as $col_name => $value)
 			$query->set($col_name, $value);
 		
-		return $query->save();
+		$query->save();
+		return parent::get_last_query();
 	}
 	
 	/**

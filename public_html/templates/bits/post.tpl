@@ -4,6 +4,7 @@
 			<a href="?action=post&id={$post.id}">{$post.title}</a>
 		</h2>
 		{if smarty_isAdminSession() }<img class="post-delete" src="img/close-button.png" alt="Delete" />
+		<a href="?action=modifyPost&id={$post.id}" title="Modify Post"><img class="post-modify" src="img/edit.png" alt="Modify post" /></a>
 		{/if}
 		<div class="entry-meta">
 			<span class="author vcard">Category: {$post.category} | </span> <span
