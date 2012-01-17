@@ -81,3 +81,12 @@ function packCSSfiles() {
 function containsBit($value, $mask) {
 	return $mask&$value ? true : false;
 }
+
+/**
+ * Set's a header Location and end's the script.
+ */
+function redirectMainPage() {
+	header('Location: /');
+	ob_end_flush();
+	exit();
+}

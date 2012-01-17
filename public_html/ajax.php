@@ -53,9 +53,12 @@ switch($_GET['action']) {
 		prepare_ajaxLogout();
 		
 		if(smarty_isAdminSession()) {
-			unset($_SESSION[$_SERVER['REMOTE_ADDR']]['admin']);
+			unset($_SESSION[$_SERVER['REMOTE_ADDR']]);
 			echo SBFactory::Template()->fetch('bits/admin_login.tpl');
 		}
+		
+		session_regenerate_id(true);
+		
 		break;
 		
 	case 'deletePost':

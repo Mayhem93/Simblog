@@ -25,7 +25,7 @@ function adminLogout() {
 				//$("#admin_box")
 				$("#admin_box").html(data);
 				$("#login_button").on("click", adminLogin);
-				$("img.post-delete").remove();
+				$(".admin_buttons").remove();
 			},
 			error: null,
 			complete: null
@@ -63,7 +63,7 @@ function adminLogin() {
 			success: function(data, textStatus, jqXHR) {
 				$("#admin_box").html(data);
 				$("#admin_logout").on("click", adminLogout);
-				addDeleteEvents();
+				addAdminButtons();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				if(errorThrown == "Unauthorized") {
@@ -90,17 +90,33 @@ function addComment(post_id) {
 	ajaxReq("addComment", "text", "post_id="+post_id+"&"+$("#commentForm").serialize(), callbacks);
 }
 
-function addDeleteEvents() {
+function addAdminButtons() {
 	$('[id^="post"]').each(function(i,item){
-		var deleteImg = document.createElement("img");
+		var id = item.attributes.getNamedItem("id").value.slice(5);
+		
+		var modify_anchor = document.createElement("a");			//link to modifyPost
+		modify_anchor.setAttribute("href", "?action=modifyPost&id="+id);
+		
+		var modifyImg = document.createElement("img");				//the link is an image
+		modifyImg.setAttribute("class", "post-modify");
+		modifyImg.setAttribute("src", "img/edit.png");
+		modifyImg.setAttribute("alt", "Modify");
+		
+		var deleteImg = document.createElement("img");				//delete post image
 		deleteImg.setAttribute("class", "post-delete");
 		deleteImg.setAttribute("src", "img/close-button.png");
 		deleteImg.setAttribute("alt", "Delete");
 		
-		var id = item.attributes.getNamedItem("id").value.slice(5);
+		var post_element = $("#post_"+id+" h2.entry-title");		//the position where to insert
+		var admin_btns_div = document.createElement("div");			//buttons will be inside a div
+		admin_btns_div.setAttribute("class", "admin_buttons");
 		
-		$("#post_"+id+" h2.entry-title").after(deleteImg);
-		$(deleteImg).on("click", function(){
+		modify_anchor.appendChild(modifyImg);
+		admin_btns_div.appendChild(deleteImg);						//then the delete img
+		admin_btns_div.appendChild(modify_anchor);					//first appears the modify link
+		post_element.after(admin_btns_div);							//insert the div in the document
+		
+		$(deleteImg).on("click", function(){						//attaching events to make it work
 			deletePost(id);
 		});
 	});

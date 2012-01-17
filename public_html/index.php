@@ -98,8 +98,9 @@ switch ($_GET['action']) {
 			$title = $_POST['post_title'];
 			$category = $_POST['category'];
 			
-			var_dump(blog_modifyPost($post_id, $title, $content, $category));
-			//header("Location: /");
+			blog_modifyPost($post_id, $title, $content, $category);
+			
+			redirectMainPage();
 		}
 			
 		break;
