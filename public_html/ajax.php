@@ -75,7 +75,7 @@ switch($_GET['action']) {
 		break;
 		
 	case 'addComment': 
-		prepare_ajaxAddComment();
+		prepare_ajaxComments();
 		
 		$name = $_POST['commentName'];
 		$content = $_POST['commentBody'];
@@ -84,4 +84,11 @@ switch($_GET['action']) {
 		
 		break;
 		
+	case 'deleteComment':
+		prepare_ajaxComments();
+		
+		$id = $_POST['cid'];
+		blog_deleteComment($id);
+		
+		break;
 }

@@ -54,7 +54,7 @@ function prepare_ajaxDeletePost() {
 	require BLOG_ROOT.'/internal/smarty_functions.php';
 }
 
-function prepare_ajaxAddComment() {
+function prepare_ajaxComments() {
 	
 	require_once BLOG_ROOT."/internal/SPL_autoload.php";
 	require_once BLOG_ROOT."/internal/Posts.php";

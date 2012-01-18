@@ -1342,6 +1342,17 @@ h3#comments-title {
 	color: #0D85CC;
 }
 
+#container #comments .comment-delete {
+	float: right;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	-webkit-box-shadow: none;
+	width: 21px;
+	height: 21px;
+	margin-left: 15px;
+} 
+
 .commentlist .even {
 	
 }

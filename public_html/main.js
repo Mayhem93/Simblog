@@ -17,6 +17,12 @@ $(document).ready(function(){
 		addComment(id);
 	});
 	
+	$('[id^=comment_]').each(function(i, item){
+		$(item).find(".comment-delete").on("click", function(){
+			deleteComment(item.id.slice(8));
+		});
+	});
+	
 });
 
 function adminLogout() {
@@ -26,6 +32,7 @@ function adminLogout() {
 				$("#admin_box").html(data);
 				$("#login_button").on("click", adminLogin);
 				$(".admin_buttons").remove();
+				$("img.comment-delete").remove();
 			},
 			error: null,
 			complete: null
@@ -90,8 +97,28 @@ function addComment(post_id) {
 	ajaxReq("addComment", "text", "post_id="+post_id+"&"+$("#commentForm").serialize(), callbacks);
 }
 
+function deleteComment(comment_id) {
+	var callbacks = {
+			success: function(data, textStatus, jqXHR) {
+				$("#comment_"+comment_id).animate({
+					height: 0,
+					opacity: 0
+				}, {
+					duration: 1000,
+					complete: function(){$(this).remove();}
+				});
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert(textStatus);
+			},
+			complete: null
+	};
+	
+	ajaxReq("deleteComment", undefined, "cid="+comment_id, callbacks);
+}
+
 function addAdminButtons() {
-	$('[id^="post"]').each(function(i,item){
+	$('[id^="post_"]').each(function(i,item){
 		var id = item.attributes.getNamedItem("id").value.slice(5);
 		
 		var modify_anchor = document.createElement("a");			//link to modifyPost
@@ -120,6 +147,21 @@ function addAdminButtons() {
 			deletePost(id);
 		});
 	});
+	
+	$('[id^=comment_]').each(function(i, item){
+		var deleteImg = document.createElement("img");
+		deleteImg.setAttribute("class", "comment-delete");
+		deleteImg.setAttribute("id", "delete_comment_"+item.id.slice(8));
+		deleteImg.setAttribute("src", "img/delete-button.png");
+		deleteImg.setAttribute("alt", "Delete Comment");
+		
+		$(item).find(".commentDate").before(deleteImg);
+		$(deleteImg).on("click", function(){
+			deleteComment(item.id.slice(8));
+		});
+		
+	});
+	
 }
 
 function ajaxReq(action, format, reqparams, callbacks) {
