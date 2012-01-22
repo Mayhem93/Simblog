@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="main.css" />
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="main.js"></script>
-<title>{$simblog_conf.blog_title}</title>
+<title>{$page_title}</title>
 </head>
 <body class="loading">
 	<div class="navbar section" id="navbar">
@@ -20,7 +20,7 @@
 					<div class="section" id="header1">
 						<div class="widget Header" id="Header1">
 							<h1 id="site-title">
-								<span> <a href="/">{$simblog_conf.blog_title}</a>
+								<span> <a href="/">{smarty_getSetting('blog_title')}</a>
 								</span>
 							</h1>
 							<div id="site-description">&lt;Blog description here&gt;</div>

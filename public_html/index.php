@@ -42,7 +42,6 @@ if (!isset($_GET['action']))
 session_start();
 $js_files = array();
 $plugin_manager = SBFactory::PluginManager();
-SBFactory::Template()->assign("simblog_conf", SBFactory::Settings()->getAll());
 
 switch ($_GET['action']) {
 	case 'show':
@@ -52,6 +51,7 @@ switch ($_GET['action']) {
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 
 		SBFactory::Template()->assign("blog_posts", blog_getPosts());
+		SBFactory::Template()->assign("page_title", SBFactory::Settings()->getSetting("blog_title"));
 		SBFactory::Template()->assign("page_template", "main.tpl");
 		SBFactory::Template()->assign("js_files", $js_files);
 
@@ -63,6 +63,7 @@ switch ($_GET['action']) {
 		
 		SBFactory::Template()->assign("post", $post);
 		SBFactory::Template()->assign("comments", $comments);
+		SBFactory::Template()->assign("page_title", $post['title']." - ".SBFactory::Settings()->getSetting("blog_title"));
 		SBFactory::Template()->assign("page_template", "post_page.tpl");
 		
 		break;
@@ -72,14 +73,17 @@ switch ($_GET['action']) {
 			setHTTP(HTTP_UNAUTHORIZED);
 		
 		//the user interface to add posts
-		if (!count($_POST))
+		if (!count($_POST)) {
+			SBFactory::Template()->assign("page_title", "New post - ".SBFactory::Settings()->getSetting("blog_title"));
 			SBFactory::Template()->assign("page_template", "addPost.tpl");
+		}
 		
 		//where the posts are added
 		else {
 			$pinned = isset($_POST['pinned']);
 			blog_addPost($_POST['post_title'], $_POST['post_content'], $_POST['category'], $pinned);
-			header("Location: /");
+			
+			redirectMainPage();
 		}
 		break;
 		
@@ -91,6 +95,7 @@ switch ($_GET['action']) {
 			$post = blog_getPost($_GET['id']);
 			
 			SBFactory::Template()->assign("post", $post);
+			SBFactory::Template()->assign("page_title", "Modify Post - ".SBFactory::Settings()->getSetting("blog_title"));
 			SBFactory::Template()->assign("page_template", "modifyPost.tpl");
 		} else {
 			$post_id = $_POST['post_id'];

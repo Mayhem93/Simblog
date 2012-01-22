@@ -812,7 +812,7 @@ p.login_fail {
 
 .entry-content,.entry-summary {
 	clear: both;
-	padding: 12px 0 0 0;
+	padding: 12px 0 0 12px;
 }
 
 #content .entry-summary p:last-child {
@@ -1204,6 +1204,7 @@ a,.entry-utility a {
 -------------------------------------------------------------- */
 #comments {
 	clear: both;
+	padding-top: 0px;
 }
 
 #comments #commentForm input[type="text"] {
