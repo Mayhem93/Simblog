@@ -1,4 +1,6 @@
 <?php
+/** THIS WILL BE REPLACED IN THE FUTURE WITH SOMETHING LESS AWKWARD **/
+
 /**
 * Initializes resources for use with AJAX requests through lazy loading.
 *
