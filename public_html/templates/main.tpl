@@ -8,10 +8,14 @@
 					{/foreach}
 				</div>
 			</div>
-			<!-- google_ad_section_end -->
 		</div>
-		<div class="clear"></div>
-		<div class="navigation" id="nav-below"></div>
-		<div class="clear"></div>
+		<div class="navigation" id="nav-below">
+		{if $page!=1}
+		<a class="nav_previous" href="?page={$page-1}">&lt; Previous Page</a>
+		{/if}
+		{if !smarty_isLastPage($page)}
+		<a class="nav_next" href="?page={$page+1}">Next Page &gt;</a>
+		{/if}
+		</div>
 	</div>
 </div>

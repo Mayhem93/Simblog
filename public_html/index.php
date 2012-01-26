@@ -45,12 +45,14 @@ $plugin_manager = SBFactory::PluginManager();
 
 switch ($_GET['action']) {
 	case 'show':
-
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		
 		foreach($plugin_manager as $name => $plugin)
 			if (containsBit($plugin->getJSreq(), PLUGIN_JS_BLOG_PAGES))
 				$js_files[] = "plugins/{$name}/".$plugin->getJSfile();
 
-		SBFactory::Template()->assign("blog_posts", blog_getPosts());
+		SBFactory::Template()->assign("blog_posts", blog_getPosts($page));
+		SBFactory::Template()->assign("page", $page);
 		SBFactory::Template()->assign("page_title", SBFactory::Settings()->getSetting("blog_title"));
 		SBFactory::Template()->assign("page_template", "main.tpl");
 		SBFactory::Template()->assign("js_files", $js_files);

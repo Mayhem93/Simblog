@@ -13,7 +13,9 @@
 					</div>
 					<cite class="fn"> {$comment.name}
 					</cite> <span class="says">says:</span>
+					{if smarty_isAdminSession()}
 					<img id="delete_comment_{$comment.id}" class="comment-delete" src="img/delete-button.png" alt="Delete Comment"/>
+					{/if}
 					<span class="commentDate">{$comment.date}</span>
 				</div>
 				<div class="comment-meta commentmetadata">

@@ -626,6 +626,18 @@ padding-right:10px;*/ /* disabled for submenu width fix */
 	padding: 0px;
 }
 
+#main1 .nav_previous {
+	font-size: 1.1em;
+	font-weight: bold;	
+	float: left;
+}
+
+#main1 .nav_next {
+	font-size: 1.1em;
+	font-weight: bold;
+	float: right;
+}
+
 #content {
 	margin-bottom: 36px;
 }
@@ -1142,9 +1154,7 @@ a,.entry-utility a {
 /* =Navigation
 -------------------------------------------------------------- */
 .navigation {
-	color: #666;
-	font-size: 12px;
-	line-height: 18px;
+	/*color: #666;*/
 	overflow: hidden;
 }
 
@@ -1198,7 +1208,7 @@ a,.entry-utility a {
 }
 
 #nav-below {
-	margin: -18px 0 10px 0;
+	margin: 0 0 10px 0;
 }
 /* =Comments
 -------------------------------------------------------------- */

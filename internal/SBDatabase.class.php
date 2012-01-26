@@ -69,7 +69,8 @@ class SBDatabase extends ORM {
 		$result = parent::for_table($table);
 		
 		if (func_num_args() == 1)
-			return $this->_toArray($result->count());
+			return $result->count();
+
 		else {
 			
 			foreach($where as $column => $value)
