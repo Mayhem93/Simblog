@@ -14,6 +14,6 @@
 				class="onDate">{$post.date_posted} | </span> <span class="onDate">{blog_getCommentsNumber({$post.id})}
 				Comment(s)</span>
 		</div>
-		<div class="entry-content">{$post.content}</div>
+		<div class="entry-content">{stripslashes($post.content)}</div>
 	</div>
 </div>
