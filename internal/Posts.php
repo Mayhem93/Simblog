@@ -44,6 +44,14 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"date_posted" => date("d F Y, g:i:s a")
 		);
 		$database->insertRow("post", $row);
+		$post_id = $database->getLastInsertID();
+		
+		$category_row = array(
+			"post_id" => $post_id,
+			"category_id" => blog_getCategoryId($category)
+		);
+		
+		$database->insertRow("category_map", $category_row);
 	}
 	else {
 		if(!is_writable(POSTS_DIR))
@@ -181,6 +189,24 @@ function blog_getPosts($page=1) {
 }
 
 /**
+ * Get's the first posts specified by category
+ * @param string $category Category name.
+ * @param int $page A segment of posts.
+ */
+function blog_getPostsByCategory($category, $page=1) {
+	$database = SBFactory::Database();
+	$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
+	
+	if (SBFactory::Settings()->getSetting("database_support")) {
+		$query = "SELECT * FROM `post` WHERE `category` LIKE '".$category."%' ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", ".$nr_posts;
+	
+		return $database->query($query);
+	} else {
+		//TODO
+	}
+}
+
+/**
  * Gets a single post
  * @param int $id The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
  * @return array associative
@@ -244,6 +270,39 @@ function blog_postIsPinned($id) {
 	else
 		return file_exists(POSTS_DIR."/pinned/{$id}.json");
 }
+
+/**
+ * Returns category ID.
+ * @param string $category_name Category name.
+ * @return mixed The resulted id, or false if it doesn't exist.
+ */
+function blog_getCategoryId($category_name) {
+	$database = SBFactory::Database();
+	
+	if(SBFactory::Settings()->getSetting("database_support")) {
+		$filter = array("name" => $category_name);
+		
+		$result = $database->selectRows("category", "*", $filter);
+		return count($result) ? $result[0]['id'] : false;
+	}
+	else {
+		//TODO
+	}
+}
+
+function blog_getCategories() {
+	$database = SBFactory::Database();
+	
+	if(SBFactory::Settings()->getSetting("database_support")) {
+		$result = $database->selectRows("category", "*", $filter);
+		
+		return count($result) ? $result : false;
+	}
+	else {
+		//TODO
+	}
+}
+
 /**
  * Gets all the comments from a post.
  * @param int $postid The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).

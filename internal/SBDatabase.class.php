@@ -143,7 +143,7 @@ class SBDatabase extends ORM {
 	 * @return Associative array with the results.
 	 */
 	public function query($query) {
-		$query = $this->_escapeSQL($query);
+		//$query = $this->_escapeSQL($query);
 		
 		$results = parent::for_table("")->raw_query($query, array())->find_many();
 		

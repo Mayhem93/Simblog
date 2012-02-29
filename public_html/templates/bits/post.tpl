@@ -10,7 +10,7 @@
 		</div>
 		{/if}
 		<div class="entry-meta">
-			<span class="author vcard">Category: {$post.category} | </span> <span
+			<span class="author vcard">Category: <a href="?action=category&name={urlencode($post.category)}">{$post.category}</a> | </span> <span
 				class="onDate">{$post.date_posted} | </span> <span class="onDate">{blog_getCommentsNumber({$post.id})}
 				Comment(s)</span>
 		</div>

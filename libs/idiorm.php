@@ -140,6 +140,7 @@
         // Name of the column to use as the primary key for
         // this instance only. Overrides the config settings.
         protected $_instance_id_column = null;
+        protected static $_last_insert_id = null;
 
         // ---------------------- //
         // --- STATIC METHODS --- //
@@ -290,6 +291,10 @@
          */
         public static function get_query_log() {
             return self::$_query_log;
+        }
+        
+        public static function getLastInsertID() {
+        	return self::$_last_insert_id;
         }
 
         // ------------------------ //
@@ -1066,7 +1071,7 @@
             if ($this->_is_new) {
                 $this->_is_new = false;
                 if (is_null($this->id())) {
-                    $this->_data[$this->_get_id_column_name()] = self::$_db->lastInsertId();
+                    self::$_last_insert_id = $this->_data[$this->_get_id_column_name()] = self::$_db->lastInsertId();
                 }
             }
 

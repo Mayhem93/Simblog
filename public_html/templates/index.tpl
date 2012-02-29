@@ -40,12 +40,9 @@
 								<div class="widget PageList" id="PageList1">
 									<div>
 										<ul>
-											<li class="page_item"><a
-												href="/">Home</a></li>
-											<li class="page_item"><a
-												href="">About</a></li>
-											<li class="page_item"><a
-												href="">Contact</a></li>
+											<li class="page_item"><a href="/">Home</a></li>
+											<li class="page_item"><a href="">About</a></li>
+											<li class="page_item"><a href="">Contact</a></li>
 										</ul>
 										<div class="clear"></div>
 
@@ -69,16 +66,13 @@
 				<div id="socials"></div>
 				<div style="clear: both;"></div>
 				<div id="container">
-					<div id="content">
-					{include file=$page_template}
-					</div>
+					<div id="content">{include file=$page_template}</div>
 					<!-- #content -->
 				</div>
 				<!-- #container -->
 				<div class="widget-area" id="primary">
 					<div class="widget-container widget_search" id="search">
-						<form action=""
-							id="searchform" method="get">
+						<form action="" id="searchform" method="get">
 							<input id="s" name="q" type="text" value="Search" /> <input
 								id="searchsubmit" type="submit" value="OK" />
 						</form>
@@ -97,9 +91,7 @@
 								<ul>
 									<li>
 										<div class="item-content">
-											<div class="item-thumbnail">
-												empty-thumbnail
-											</div>
+											<div class="item-thumbnail">empty-thumbnail</div>
 											<div class="item-title">
 												<a href="">Post title</a>
 											</div>
@@ -116,10 +108,13 @@
 							<h2>Categories</h2>
 							<div class="widget-content list-label-widget-content">
 								<ul>
-									<li><a dir="ltr" href=""
-										title="View all posts filed under Lorem 1">Category</a>
-										<span dir="ltr">(no#)</span>
-									</li>
+									{if $categories} 
+										{foreach $categories as $cat}
+									<li><a href="?action=category&name={urlencode($cat.name)}">{$cat.name}</a></li>
+										{/foreach}
+									{else}
+									<li>No categories.</li>
+									{/if}
 								</ul>
 								<div class="clear"></div>
 								<div class="clear"></div>

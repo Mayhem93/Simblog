@@ -42,6 +42,7 @@ if (!isset($_GET['action']))
 session_start();
 $js_files = array();
 $plugin_manager = SBFactory::PluginManager();
+SBFactory::Template()->assign("categories", blog_getCategories());
 
 switch ($_GET['action']) {
 	case 'show':
@@ -65,8 +66,23 @@ switch ($_GET['action']) {
 		
 		SBFactory::Template()->assign("post", $post);
 		SBFactory::Template()->assign("comments", $comments);
-		SBFactory::Template()->assign("page_title", $post['title']." - ".SBFactory::Settings()->getSetting("blog_title"));
+		SBFactory::Template()->assign("page_title", $post['title']." - ".
+										SBFactory::Settings()->getSetting("blog_title"));
 		SBFactory::Template()->assign("page_template", "post_page.tpl");
+		
+		break;
+		
+	case 'category': 
+		$category = urldecode($_GET['name']);
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		$post = blog_getPostsByCategory($category, $page);
+		//var_dump($post); exit();
+		
+		SBFactory::Template()->assign("blog_posts", $post);
+		SBFactory::Template()->assign("page", $page);
+		SBFactory::Template()->assign("page_title", $category. " Category - ".
+										SBFactory::Settings()->getSetting("blog_title"));
+		SBFactory::Template()->assign("page_template", "main.tpl");
 		
 		break;
 		
@@ -84,6 +100,7 @@ switch ($_GET['action']) {
 		else {
 			$pinned = isset($_POST['pinned']);
 			blog_addPost($_POST['post_title'], $_POST['post_content'], $_POST['category'], $pinned);
+			
 			
 			redirectMainPage();
 		}
