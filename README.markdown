@@ -1,5 +1,7 @@
 Welcome to SimBlog! A very simple and easy to configure blogging platform.
 
+*Web Site:* http://www.simblog.org
+
 As of now (5 February 2012) this application is in Alpha developement stage.
 The core features work (with minor bugs or incompleteness) which are:
 * Admin log-in
