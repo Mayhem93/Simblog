@@ -61,14 +61,24 @@ switch ($_GET['action']) {
 		break;
 
 	case 'post':
-		$post = blog_getPost($_GET['id']);
-		$comments = blog_getComments($_GET['id']);
-		
-		SBFactory::Template()->assign("post", $post);
-		SBFactory::Template()->assign("comments", $comments);
-		SBFactory::Template()->assign("page_title", $post['title']." - ".
-										SBFactory::Settings()->getSetting("blog_title"));
-		SBFactory::Template()->assign("page_template", "post_page.tpl");
+		if(!count($_POST)) {
+			$post = blog_getPost($_GET['id']);
+			$comments = blog_getComments($_GET['id']);
+			
+			SBFactory::Template()->assign("post", $post);
+			SBFactory::Template()->assign("comments", $comments);
+			SBFactory::Template()->assign("page_title", $post['title']." - ".
+			SBFactory::Settings()->getSetting("blog_title"));
+			SBFactory::Template()->assign("page_template", "post_page.tpl");
+		}
+			//comments are added here
+		else {
+			$name = $_POST['commentName'];
+			$content = $_POST['commentBody'];
+			
+			blog_addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName']);
+			header("Location: /?action=post&id=".$_GET['post_id']);
+		}
 		
 		break;
 		
@@ -76,7 +86,6 @@ switch ($_GET['action']) {
 		$category = urldecode($_GET['name']);
 		$page = isset($_GET['page']) ? $_GET['page'] : 1;
 		$post = blog_getPostsByCategory($category, $page);
-		//var_dump($post); exit();
 		
 		SBFactory::Template()->assign("blog_posts", $post);
 		SBFactory::Template()->assign("page", $page);
@@ -92,7 +101,8 @@ switch ($_GET['action']) {
 		
 		//the user interface to add posts
 		if (!count($_POST)) {
-			SBFactory::Template()->assign("page_title", "New post - ".SBFactory::Settings()->getSetting("blog_title"));
+			SBFactory::Template()->assign("page_title", "New post - ".
+											SBFactory::Settings()->getSetting("blog_title"));
 			SBFactory::Template()->assign("page_template", "addPost.tpl");
 		}
 		
@@ -100,7 +110,6 @@ switch ($_GET['action']) {
 		else {
 			$pinned = isset($_POST['pinned']);
 			blog_addPost($_POST['post_title'], $_POST['post_content'], $_POST['category'], $pinned);
-			
 			
 			redirectMainPage();
 		}

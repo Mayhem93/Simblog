@@ -1,6 +1,6 @@
 <?php
 /**
-* The file where all AJAX requests are made.
+* The main AJAX requests of the blog.
 *
 * @author		Răzvan Botea<utherr.ghujax@gmail.com>
 * @license 		http://www.gnu.org/licenses/gpl.txt
@@ -23,72 +23,15 @@
 *   You should have received a copy of the GNU General Public License
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
-if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-	header('HTTP/1.1 403 Forbidden');
-	exit();
-}
 
-require '../initAjax.php';
+require "../internal/AjaxRequest.class.php";
 
-switch($_GET['action']) {
-	case 'login':
-		session_start();
-		prepare_ajaxLogin();
-		
-		$admin_username = SBFactory::Settings()->getSetting("admin_username");
-		$admin_password = SBFactory::Settings()->getSetting("admin_password");
-		
-		if(($_POST['username'] == $admin_username) && ($_POST['password'] == $admin_password)) {
-			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
-			echo SBFactory::Template()->fetch('bits/admin_box.tpl');
-		}
-		else {
-			header('HTTP/1.1 401 Unauthorized');
-			exit();
-		}
-		break;
-		
-	case 'logout':
-		session_start();
-		prepare_ajaxLogout();
-		
-		if(smarty_isAdminSession()) {
-			unset($_SESSION[$_SERVER['REMOTE_ADDR']]);
-			echo SBFactory::Template()->fetch('bits/admin_login.tpl');
-		}
-		
-		session_regenerate_id(true);
-		
-		break;
-		
-	case 'deletePost':
-		session_start();
-		prepare_ajaxDeletePost();
-		
-		if(!smarty_isAdminSession()) {
-			header('HTTP/1.1 403 Forbidden');
-			exit();
-		}
-		
-		echo blog_deletePost($_POST['id']) ? "1" : "0";
-		
-		break;
-		
-	case 'addComment': 
-		prepare_ajaxComments();
-		
-		$name = $_POST['commentName'];
-		$content = $_POST['commentBody'];
-		
-		blog_addComment($_POST['post_id'], $content, $name);
-		
-		break;
-		
-	case 'deleteComment':
-		prepare_ajaxComments();
-		
-		$id = $_POST['cid'];
-		blog_deleteComment($id);
-		
-		break;
-}
+$allowed_actions = array(
+	"login",
+	"logout",
+	"deletePost",
+	"addComment",
+	"deleteComment"
+);
+
+$ajax = new AjaxRequest($allowed_actions);

@@ -331,6 +331,15 @@ function blog_getComments($postid) {
 		return $comments;
 	}
 }
+
+function blog_getCommentById($id) {
+	$database = SBFactory::Database();
+	$where = array("id" => $id);
+	$result = $database->selectRows("comment", "*", $where);
+	
+	return $result[0];
+}
+
 /**
  * Adds a comment to the post ID.
  * @param int $postid The post ID. For no-mysql support this is the filename of the post (which is a unix timestamp).
@@ -350,7 +359,7 @@ function blog_addComment($postid, $content, $author) {
 			"date"	=> date("d F Y, g:i:s a")
 		);
 		
-		$database->insertRow("comment", $row);
+		return $database->insertRow("comment", $row);
 	}
 	else {
 		$comment_id = time();
@@ -377,7 +386,7 @@ function blog_deleteComment($commentid, $postid=null) {
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $commentid);
 		
-		$database->deleteRows("comment", $filter);
+		return $database->deleteRows("comment", $filter);
 	}
 	else 
 		unlink(COMMENTS_DIR."/{$postid}/{$commentid}.json");

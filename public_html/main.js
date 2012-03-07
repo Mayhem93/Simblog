@@ -28,7 +28,6 @@ $(document).ready(function(){
 function adminLogout() {
 	var callbacks = {
 			success: function(data, textStatus, jqHXR) {
-				//$("#admin_box")
 				$("#admin_box").html(data);
 				$("#login_button").on("click", adminLogin);
 				$(".admin_buttons").remove();
@@ -86,7 +85,7 @@ function adminLogin() {
 function addComment(post_id) {
 	var callbacks = {
 			success: function(data, textStatus, jqXHR) {
-				window.location.reload(true);
+				$(".commentlist").prepend(data);
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				alert(textStatus);
@@ -94,7 +93,7 @@ function addComment(post_id) {
 			complete: null
 	};
 	
-	ajaxReq("addComment", "text", "post_id="+post_id+"&"+$("#commentForm").serialize(), callbacks);
+	ajaxReq("addComment", undefined, "post_id="+post_id+"&"+$("#commentForm").serialize(), callbacks);
 }
 
 function deleteComment(comment_id) {
