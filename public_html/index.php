@@ -113,7 +113,7 @@ switch ($_GET['action']) {
 			//Hardcoded -- needs to go !
 			$category = ($_POST['category'] == "no categories available") ? "" : $_POST['category'];
 			
-			blog_addPost($_POST['post_title'], $_POST['post_content'], $_POST['category'], $pinned);
+			blog_addPost($_POST['post_title'], $_POST['post_content'], $category, $pinned);
 			
 			redirectMainPage();
 		}
