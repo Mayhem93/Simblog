@@ -44,14 +44,16 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"date_posted" => date("d F Y, g:i:s a")
 		);
 		$database->insertRow("post", $row);
-		$post_id = $database->getLastInsertID();
 		
-		$category_row = array(
-			"post_id" => $post_id,
-			"category_id" => blog_getCategoryId($category)
-		);
-		
-		$database->insertRow("category_map", $category_row);
+		if($category) {
+			$post_id = $database->getLastInsertID();
+			$category_row = array(
+					"post_id" => $post_id,
+					"category_id" => blog_getCategoryId($category)
+			);
+			
+			$database->insertRow("category_map", $category_row);
+		}
 	}
 	else {
 		if(!is_writable(POSTS_DIR))
