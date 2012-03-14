@@ -20,7 +20,7 @@ else {
 	$stage = 'success';	//we presume that the data provided is correct
 	
 	if(isset($_POST['db_support'])) {
-		$port = ($_POST['port'] == "") ? '3306' : $_POST['port'];
+		$port = $_POST['port'];
 		$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
 		
 		if(!$db) {
@@ -74,7 +74,7 @@ else {
 			$config_file->set(null, "no_posts_per_page", 10);
 			
 			$config_file->set(null, "host", isset($_POST['hostname']) ? $_POST['hostname'] : "");
-			$config_file->set(null, "port", isset($port) ? $port : "");
+			$config_file->set(null, "port", $port);
 			$config_file->set(null, "user", isset($_POST['username']) ? $_POST['username'] : "");
 			$config_file->set(null, "password", isset($_POST['password']) ? $_POST['password'] : "");
 			$config_file->set(null, "database", isset($_POST['database']) ? $_POST['database'] : "");

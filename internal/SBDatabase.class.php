@@ -28,8 +28,12 @@ include_once BLOG_ROOT."/libs/idiorm.php";
 
 class SBDatabase extends ORM {
 	
-	public function __construct($host, $database, $username, $password, $port=3306) {
-		parent::configure("mysql:host=".$host.":".$port.";dbname=".$database);
+	public function __construct($host, $database, $username, $password, $port) {
+		$dsn = "mysql:host=".$host;
+		if($port != "")
+			$dsn .= ":".$port;
+		$dsn .= ";dbname=".$database;
+		parent::configure($dsn);
 		parent::configure("username", $username);
 		parent::configure("password", $password);
 		parent::configure("dirver_options", array(PDO::MYSQL_ATTR_INIT_COMMAND => "set names utf-8"));

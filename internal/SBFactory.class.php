@@ -47,8 +47,9 @@ class SBFactory
 			$database 	= self::Settings()->getSetting("database");
 			$username	= self::Settings()->getSetting("user");
 			$password	= self::Settings()->getSetting("password");
+			$port 		= self::Settings()->getSetting("port");
 		
-			self::$db_instance = new SBDatabase($host, $database, $username, $password);
+			self::$db_instance = new SBDatabase($host, $database, $username, $password, $port);
 		}
 		
 		return self::$db_instance;
