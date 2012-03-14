@@ -110,7 +110,7 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 		if ($title)
 			$update_set['title'] = $title;
 		if ($content)
-			$update_set['content'] = str_replace("\r\n", "<br>", $content);
+			$update_set['content'] = $content;
 		if ($category)
 			$update_set['category'] = $category;
 		

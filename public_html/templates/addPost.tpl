@@ -1,5 +1,5 @@
 <div class="section addPost" id="main1">
-	<p>HTML control buttons goes here !</p>
+	{include file="bits/htmlButtons.tpl"}
 	<form name="addPost" action="?action=addpost" method="post">
 		<ul class="forms">
 			<li><label for="post_title">Post title: </label><input name="post_title" type="text" /></li>

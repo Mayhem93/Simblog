@@ -10,7 +10,7 @@
 			<li>
 				<label for="author">Author: </label>
 				<input id="author" name="author" type="text" size="20" />
-				{if isset($inputErrors.title)}
+				{if isset($inputErrors.author)}
 				<p class="error">Author cannot be empty.</p>
 				{/if}
 			</li>
@@ -19,6 +19,13 @@
 				<input id="title" name="title" type="text" size="20" />
 				{if isset($inputErrors.title)}
 				<p class="error">Title cannot be empty.</p>
+				{/if}
+			</li>
+			<li>
+				<label for="description">Short description: </label>
+				<input id="description" name="description" type="text" size="20" />
+				{if isset($inputErrors.description)}
+				<p class="error">Description cannot be empty.</p>
 				{/if}
 			</li>
 			<li>

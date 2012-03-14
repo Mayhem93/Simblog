@@ -3,11 +3,18 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
 <link rel="stylesheet" type="text/css" href="main.css" />
+<link rel="stylesheet" type="text/css" href="jquery-ui-1.8.18.css" />
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.18.min.js"></script>
 <script type="text/javascript" src="main.js"></script>
+{include file="bits/js.tpl"}
 <title>{$page_title}</title>
 </head>
 <body class="loading">
+	<div id="dialogMessage">
+	</div>
+	<div id="notificationMessages">
+	</div>
 	<div class="navbar section" id="navbar">
 		<div class="widget Navbar" id="Navbar1">
 			<div></div>
@@ -23,7 +30,7 @@
 								<span> <a href="/">{smarty_getSetting('blog_title')}</a>
 								</span>
 							</h1>
-							<div id="site-description">&lt;Blog description here&gt;</div>
+							<div id="site-description">{smarty_getSetting('blog_description')}</div>
 						</div>
 					</div>
 				</div>

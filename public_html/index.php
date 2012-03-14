@@ -43,6 +43,7 @@ session_start();
 $js_files = array();
 $plugin_manager = SBFactory::PluginManager();
 SBFactory::Template()->assign("categories", blog_getCategories());
+SBFactory::Template()->assign("action", $_GET['action']);
 
 switch ($_GET['action']) {
 	case 'show':

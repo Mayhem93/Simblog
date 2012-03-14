@@ -43,9 +43,6 @@ class SBDatabase extends ORM {
 	 * @return boolean True if successful.
 	 */
 	public function insertRow($table, array $values) {
-		$table = $this->_escapeSQL($table);
-		$values = $this->_escapeSQL($values);
-		
 		$query = parent::for_table($table)->create($values);
 		
 		return $query->save();
@@ -62,10 +59,7 @@ class SBDatabase extends ORM {
 	 */
 	public function countRows($table, $where = null, $group_by = null,
 								$offset = null, $limit = null) {
-		
-		$table = $this->_escapeSQL($table);
-		$where = $this->_escapeSQL($where);
-		$group_by = $this->_escapeSQL($group_by);
+
 		$result = parent::for_table($table);
 		
 		if (func_num_args() == 1)
@@ -96,8 +90,6 @@ class SBDatabase extends ORM {
 	 * @return boolean true if sucessful false otherwise.
 	 */
 	public function deleteRows($table, array $where) {
-		$table = $this->_escapeSQL($table);
-		$where = $this->_escapeSQL($where);
 		
 		$query = parent::for_table($table);
 		foreach($where as $col_name => $value)
@@ -119,9 +111,6 @@ class SBDatabase extends ORM {
 	 * @return boolean True if successful.
 	 */
 	public function updateRows($table, array $where, array $update_set) {
-		$table = $this->_escapeSQL($table);
-		$where = $this->_escapeSQL($where);
-		$update_set = $this->_escapeSQL($update_set);
 		
 		$query = parent::for_table($table);
 		
@@ -143,8 +132,6 @@ class SBDatabase extends ORM {
 	 * @return Associative array with the results.
 	 */
 	public function query($query) {
-		//$query = $this->_escapeSQL($query);
-		
 		$results = parent::for_table("")->raw_query($query, array())->find_many();
 		
 		return $this->_toArray($results);
@@ -156,8 +143,6 @@ class SBDatabase extends ORM {
 	 * @return Associative array with the results.
 	 */
 	public function querySingleRow($query) {
-		$query = $this->_escapeSQL($query);
-		
 		$results = parent::for_table("")->raw_query($query, array())->find_one();
 		
 		return $this->_toArray($results);
@@ -189,12 +174,6 @@ class SBDatabase extends ORM {
 	public function selectRows($table, $columns = "*", $where = null, 
 								$group_by = null, $sort = null, $sort_column = null, 
 								$offset = null, $limit = null) {
-		
-		$table = $this->_escapeSQL($table);
-		$where = $this->_escapeSQL($where);
-		$group_by = $this->_escapeSQL($group_by);
-		$sort_column = $this->_escapeSQL($sort_column);
-		
 		if ($sort)
 			if (!($sort == "ASC" || $sort == "DESC"))
 				$sort = null;
@@ -243,25 +222,6 @@ class SBDatabase extends ORM {
 			return $this->_toArray($result);
 		}
 		
-	}
-	
-	/**
-	 * Prepares the query for use.
-	 * @param mixed $data The query, column name or an array of column names.
-	 * @return mixed The escaped variables. Array or string.
-	 */
-	private function _escapeSQL($data) {
-		if (is_string($data))
-			return mysql_escape_string($data);
-		else if (is_array($data)) {
-			$result = array();
-			foreach($data as $key => $value)
-				$result[mysql_escape_string($key)] = mysql_escape_string($value);
-			
-			return $result;
-		}
-		
-		return $data;
 	}
 	
 	/**

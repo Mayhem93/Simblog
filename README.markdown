@@ -1,14 +1,18 @@
+#Simblog
+
 Welcome to SimBlog! A very simple and easy to configure blogging platform.
 
-*Web Site:* http://www.simblog.org
+**Web Site**: http://www.simblog.org
 
 As of now (5 February 2012) this application is in Alpha developement stage.
 The core features work (with minor bugs or incompleteness) which are:
+
 * Admin log-in
 * Posts manipulation: create, modify, delete
 * Comments: add, delete by admin
 
 Some technologies or libraries we're using:
+
 * Smarty templateing engine for PHP
 * idiorm PDO class for databases
 * Extensive use of AJAX

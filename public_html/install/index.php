@@ -49,6 +49,8 @@ else {
 		$inputErrors['author'] = true;
 	if($_POST['title'] == "")
 		$inputErrors['title'] = true;
+	if($_POST['description'] == "") 
+		$inputErrors['description'] = true;
 	if($_POST['email'] == "")
 		$inputErrors['email'] = true;
 	if($_POST['admin_username'] == "")
@@ -62,6 +64,7 @@ else {
 
 			$config_file->set(null, "author_name", $_POST['author']);
 			$config_file->set(null, "blog_title", $_POST['title']);
+			$config_file->set(null, "blog_description", $_POST['description']);
 			$config_file->set(null, "email", $_POST['email']);
 			$config_file->set(null, "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
 			$config_file->set(null, "disable_plugins", false);

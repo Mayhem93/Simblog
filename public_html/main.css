@@ -2144,4 +2144,69 @@ code {
 #socials a#srss {
 	background-position: right -40px;
 }
-/* FIN! */
+
+#main1 .htmlButtons {
+	margin-left: 40px;
+	margin-bottom: 20px;
+}
+
+#main1 .htmlButtons button {
+	background-color: white;
+	display: inline;
+	text-align: center;
+	font-weight: bold;
+	border-radius: 6px;
+	border-color: #A2A2A2;
+	border-width: 2px;
+	border-style: outset;
+	margin-bottom: 6px;
+}
+
+#main1 .htmlButtons .smallButton {
+	width: 30px;
+}
+
+#main1 .htmlButtons .mediumButton {
+	width: 55px;
+}
+
+#main1 .htmlButtons .largeButton {
+	width: 100px;
+}
+
+#main1 .htmlButtons button:hover {
+	border-color: #F00;
+}
+
+#main1 .htmlButtons button:active {
+	border-color: #F00;
+	border-style: inset;
+}
+
+#container #content span.underLined {
+	text-decoration: underline;
+}
+
+#container #content span.strikeOut {
+	text-decoration: line-through;
+}
+
+#container #content p.textCenter {
+	text-align: center;
+	margin-bottom: 0;
+}
+
+#container #content p.textRight {
+	text-align: right;
+	margin-bottom: 0;
+}
+
+#container #content p.textJustify {
+	text-align: justify;
+	margin-bottom: 0;
+}
+
+body #dialogMessage input {
+	margin-top: 15px;
+	width: 420px;
+}
