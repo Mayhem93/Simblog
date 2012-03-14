@@ -14,7 +14,7 @@
 			{if $post.category == ""}no category
 			{else}<a href="?action=category&name={urlencode($post.category)}">{$post.category}</a>
 			{/if}
-			</span> <span
+			| </span> <span
 				class="onDate">{$post.date_posted} | </span> <span class="onDate">{blog_getCommentsNumber({$post.id})}
 				Comment(s)</span>
 		</div>

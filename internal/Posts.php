@@ -40,7 +40,7 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"title" => $title,
 			"pinned" => $pinned ? 1 : 0,
 			"category" => $category,
-			"content" => str_replace("\r\n", "<br>", $content),
+			"content" => $content,
 			"date_posted" => date("d F Y, g:i:s a")
 		);
 		$database->insertRow("post", $row);
