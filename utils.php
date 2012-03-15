@@ -90,3 +90,28 @@ function redirectMainPage() {
 	ob_end_flush();
 	exit();
 }
+
+function removeBreaksFromLists($doc_string) {
+	$doc = new DOMDocument();
+	$doc->loadHTML("<body>".$doc_string."</body>");
+	
+	$ordered_lists = $doc->getElementsByTagName("ol");
+	
+	foreach($ordered_lists as $list) {
+		$childs = $list->getElementsByTagName("br");
+		
+		while ($childs->length > 0)
+			$list->removeChild($childs->item(0));
+	}
+
+	$ordered_lists = $doc->getElementsByTagName("ul");
+	foreach($ordered_lists as $list) {
+		$childs = $list->getElementsByTagName("br");
+		
+		while ($childs->length > 0)
+			$list->removeChild($childs->item(0));
+	}
+	$string_with_body = $doc->saveHTML($doc->getElementsByTagName("body")->item(0));
+	
+	return substr($string_with_body, 6, strlen($string_with_body)-13);
+}

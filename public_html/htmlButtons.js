@@ -1,5 +1,9 @@
+var dialogMessage = null;
+
 $(document).ready(function(){
-	$('#dialogMessage').dialog({
+	dialogMessage = $('#dialogMessage');
+	
+	dialogMessage.dialog({
 		modal: false,
 		autoOpen: false,
 		resizable: false,
@@ -12,8 +16,11 @@ $(document).ready(function(){
 	});
 	
 	var genericForm = '<input id="inputText" type="text">';
-	var abbrForm = '<label for="abbr">Abbreviation</label><input id="abbr" type="text">\
-		<label for="abbrText">Abbreviation Meaning</label><input id="abbrText" type="text">';
+	var abbrForm = '<label for="abbr">Abbreviation: </label><input id="abbr" type="text">\
+		<label for="abbrText">Abbreviation Meaning: </label><input id="abbrText" type="text">';
+	var listForm = '<label for="item1">1. </label><input id="item1" type="text">';
+	var anchorForm = '<label for="name">Link name: </label><input id="name" type="text">\
+		<label for="link">Link: </label><input id="link" type="text">';
 	
 	$('#boldButton').on("click", function(){
 		assessInsertMethod("strong", "Insert bolded text", genericForm);
@@ -46,6 +53,22 @@ $(document).ready(function(){
 	 $('#justifyText').on("click", function(){
 		 assessInsertMethod("p", "Insert justified text", genericForm, ' class="textJustify"');
 	});
+	 
+	 $('#orderedList').on("click", function(){
+		 insertDialogMessage("ol", "Insert ordered list", listForm);
+	});
+	 
+	 $('#unorderedList').on("click", function(){
+		 insertDialogMessage("ul", "Insert unordered list", listForm);
+	});
+	 
+	 $('#linkButton').on("click", function(){
+		 insertDialogMessage("a", "Insert link", anchorForm);
+	});
+	
+	$('#quoteButton').on("click", function(){
+		assessInsertMethod("blockquote", "Insert block quote", genericForm);
+	});
 });
 
 function assessInsertMethod(tag, title, htmlContent, extraAttr) {
@@ -58,13 +81,35 @@ function assessInsertMethod(tag, title, htmlContent, extraAttr) {
 }
 
 function insertDialogMessage(tag, title, htmlContent, extraAttr) {
-	var dialogMessage = $("#dialogMessage");
-	
 	var options = {
 			title: title,
 			tag: tag,
 			attr: (extraAttr == undefined) ? "" : extraAttr
 	};
+	
+	switch(tag) {
+		default: break;
+		case "ol":
+		case "ul": {
+			dialogMessage.dialog("option", "buttons", [
+			{
+				text: "Ok",
+				click: okFunction
+			},
+			{
+				text: "Cancel",
+				click: cancelFunction
+			},
+			{
+				text: "Insert item",
+				click: function(){
+					var id = dialogMessage.children("input").length+1;
+					dialogMessage.append('<label for="item1">'+id+'. </label><input id="item'+id+'" type="text">');
+				}
+			}]);
+			break;
+		}
+	}
 
 	dialogMessage.dialog("option", options);
 	dialogMessage.html(htmlContent);
@@ -78,17 +123,16 @@ function insertDirectly(tag, extraAttr) {
 		textarea.value += getTagWithText(tag, getTextAreaSelection(textarea), extraAttr);
 	else {
 		textarea.value = textarea.value.substr(0, textarea.selectionStart) + 
-		getTagWithText(tag, getTextAreaSelection(textarea), extraAttr);
+		getTagWithText(tag, getTextAreaSelection(textarea), extraAttr) + 
+		textarea.value.substr(textarea.selectionEnd);
 	}
 }
 
 function okFunction() {
 	var textarea = document.addPost.post_content;
 	
-	var attr = $("#dialogMessage").dialog("option", "attr");
-	var tag = $("#dialogMessage").dialog("option", "tag");
-	
-	console.log(attr);
+	var attr = dialogMessage.dialog("option", "attr");
+	var tag = dialogMessage.dialog("option", "tag");
 	
 	switch(tag) {
 		case "strong":
@@ -102,7 +146,7 @@ function okFunction() {
 			else {
 				textarea.value = textarea.value.substr(0, textarea.selectionStart) + 
 				getTagWithText(tag, valueText, attr) +
-				textarea.value.substr(textarea.selectionStart);
+				textarea.value.substr(textarea.selectionEnd);
 			}
 			break;
 		}
@@ -118,6 +162,35 @@ function okFunction() {
 				textarea.value.substr(textarea.selectionStart);
 			}
 			break;
+		}
+		case "ol":
+		case "ul": {
+			
+			var listString = "<"+tag+">\n";
+			dialogMessage.children("input").each(function(index, element){
+				listString += "\t<li>"+element.value+"</li>\n";
+			});
+			listString += "</"+tag+">\n";
+			
+			if(isLastCharacter(textarea)) //just append the text
+				textarea.value += listString;
+			else {
+				textarea.value = textarea.value.substr(0, textarea.selectionStart) + 
+				listString + textarea.value.substr(textarea.selectionStart);
+			}
+			break;
+		}
+		case "a": {
+			var linkName = $("#name").attr("value");
+			var linkHref = $("#link").attr("value");
+			
+			if(isLastCharacter(textarea)) //just append the text
+				textarea.value += getTagWithText(tag, linkName, ' href="'+linkHref+'"');
+			else {
+				textarea.value = textarea.value.substr(0, textarea.selectionStart) + 
+				getTagWithText(tag, linkName, ' href="'+linkHref+'"') +
+				textarea.value.substr(textarea.selectionStart);
+			}
 		}
 	}
 		
