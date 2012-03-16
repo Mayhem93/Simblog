@@ -2206,6 +2206,34 @@ code {
 	margin-bottom: 0;
 }
 
+#container #content img.defaultCenter {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	display: block;
+	max-width: 760px;
+}
+
+#container #content img.floatLeft {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-right: 10px;
+	display: inline;
+	float: left;
+	max-width: 760px;
+}
+
+
+#container #content img.floatRight {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-left: 10px;
+	display: inline;
+	float: right;
+	max-width: 760px;
+}
+
 body #dialogMessage input {
 	margin-top: 15px;
 	width: 420px;

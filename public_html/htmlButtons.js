@@ -21,6 +21,13 @@ $(document).ready(function(){
 	var listForm = '<label for="item1">1. </label><input id="item1" type="text">';
 	var anchorForm = '<label for="name">Link name: </label><input id="name" type="text">\
 		<label for="link">Link: </label><input id="link" type="text">';
+	var imgForm = '<label for="positionImg">Image position: </label><select id="positionImg">\
+		<option name="defaultCenter">Default (center)</option>\
+		<option name="floatLeft">Left float</option>\
+		<option name="floatRight">Right float</option>\
+		</select><br>\
+		<label for="imgTitle">Title/name: </label><input id="imgTitle" type="text">\
+		<label for="imgSrc">Image link: </label><input id="imgSrc" type="text">';
 	
 	$('#boldButton').on("click", function(){
 		assessInsertMethod("strong", "Insert bolded text", genericForm);
@@ -68,6 +75,10 @@ $(document).ready(function(){
 	
 	$('#quoteButton').on("click", function(){
 		assessInsertMethod("blockquote", "Insert block quote", genericForm);
+	});
+	
+	$('#imageButton').on("click", function(){
+		insertDialogMessage("img", "Insert image", imgForm);
 	});
 });
 
@@ -191,6 +202,21 @@ function okFunction() {
 				getTagWithText(tag, linkName, ' href="'+linkHref+'"') +
 				textarea.value.substr(textarea.selectionStart);
 			}
+			break;
+		}
+		case "img": {
+			var position = $("#positionImg option:selected").attr("name");
+			var imgTitle = $("#imgTitle").attr("value");
+			var imgSrc = $("#imgSrc").attr("value");
+			
+			if(isLastCharacter(textarea)) //just append the text
+				textarea.value += getTagWithText(tag, "", ' class="'+position+'" src="'+imgSrc+'" title="'+imgTitle+'"');
+			else {
+				textarea.value = textarea.value.substr(0, textarea.selectionStart) + 
+				getTagWithText(tag, "", ' class="'+position+'" src="'+imgSrc+'" title="'+imgTitle+'"') +
+				textarea.value.substr(textarea.selectionStart);
+			}
+			break;
 		}
 	}
 		
@@ -206,6 +232,8 @@ function cancelFunction() {
 function getTagWithText(tag, text, extraAttr) {
 	if(!extraAttr)
 		extraAttr = "";
+	if(tag == "img")
+		return "<"+tag+extraAttr+">";
 	return "<"+tag+extraAttr+">"+text+"</"+tag+">";
 }
 
