@@ -99,7 +99,6 @@ function insertDialogMessage(tag, title, htmlContent, extraAttr) {
 	};
 	
 	switch(tag) {
-		default: break;
 		case "ol":
 		case "ul": {
 			dialogMessage.dialog("option", "buttons", [
@@ -116,6 +115,7 @@ function insertDialogMessage(tag, title, htmlContent, extraAttr) {
 				click: function(){
 					var id = dialogMessage.children("input").length+1;
 					dialogMessage.append('<label for="item1">'+id+'. </label><input id="item'+id+'" type="text">');
+					$("#item"+id)[0].focus();
 				}
 			}]);
 			break;
