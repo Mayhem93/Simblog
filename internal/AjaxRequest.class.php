@@ -41,7 +41,6 @@ class AjaxRequest extends AJAX {
 			case "login":
 				include 'smarty/Smarty.class.php';
 				require_once BLOG_ROOT."/internal/smarty_functions.php";
-				include BLOG_ROOT.'/utils.php';
 
 				$this->actionLogin();
 				break;
