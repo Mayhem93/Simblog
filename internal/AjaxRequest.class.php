@@ -25,6 +25,7 @@
 */
 
 include "../internal/AJAX.class.php";
+include "../utils.php";
 
 class AjaxRequest extends AJAX {
 
@@ -38,8 +39,8 @@ class AjaxRequest extends AJAX {
 	protected function doAction() {
 		switch($_GET['action']) {
 			case "login":
-				require_once BLOG_ROOT."/internal/smarty_functions.php";
 				include 'smarty/Smarty.class.php';
+				require_once BLOG_ROOT."/internal/smarty_functions.php";
 				include BLOG_ROOT.'/utils.php';
 
 				$this->actionLogin();
@@ -52,6 +53,7 @@ class AjaxRequest extends AJAX {
 				$this->actionLogout();
 				break;
 			case "deletePost":
+				include 'smarty/Smarty.class.php';
 				require_once BLOG_ROOT."/internal/Posts.php";
 				require BLOG_ROOT.'/internal/smarty_functions.php';
 
@@ -59,9 +61,9 @@ class AjaxRequest extends AJAX {
 				break;
 
 			case "addComment":
+				include 'smarty/Smarty.class.php';
 				require_once BLOG_ROOT."/internal/Posts.php";
 				require BLOG_ROOT.'/internal/smarty_functions.php';
-				include 'smarty/Smarty.class.php';
 
 				$this->actionAddComment();
 				break;
@@ -86,10 +88,8 @@ class AjaxRequest extends AJAX {
 			$this->response = SBFactory::Template()->fetch('bits/admin_box.tpl');
 			$this->setMimeType("text/html");
 		}
-		else {
-			header('HTTP/1.1 401 Unauthorized');
-			exit();
-		}
+		else
+			setHTTP(HTTP_FORBIDDEN);
 	}
 	
 	private function actionLogout() {
@@ -106,10 +106,8 @@ class AjaxRequest extends AJAX {
 	private function actionDeletePost() {
 		session_start();
 		
-		if(!smarty_isAdminSession()) {
-			header('HTTP/1.1 403 Forbidden');
-			exit();
-		}
+		if(!smarty_isAdminSession())
+			setHTTP(HTTP_UNAUTHORIZED);
 		
 		$this->response = blog_deletePost($_POST['id']) ? "1" : "0";
 	}

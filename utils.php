@@ -27,21 +27,27 @@
 DEFINE("HTTP_UNAUTHORIZED", 401);
 DEFINE("HTTP_NOT_FOUND", 	404);
 DEFINE("HTTP_FORBIDDEN",	403);
+DEFINE("HTTP_UNAVAILABLE",	503);
 
 /**
  * 
  * Sends a HTTP Response code.
  * @param int $code - the HTTP response code.
- * @uses One of the following codes: 503, 504, 403.
+ * @uses One of the following codes: 401, 403, 404, 503.
  * @return void
  */
 
 function setHTTP($code) {
-	switch($code) { //TODO
-		case HTTP_UNAUTHORIZED:	header('HTTP/1.1 401 Unauthorized');exit();break;
-		case HTTP_NOT_FOUND:	header('HTTP/1.1 404 Not Found');exit();break;
-		case HTTP_FORBIDDEN:	header('HTTP/1.1 403 Forbidden');exit();break;
+	
+	switch($code) {
+		case HTTP_UNAUTHORIZED:	header('HTTP/1.1 401 Unauthorized');break;
+		case HTTP_NOT_FOUND:	header('HTTP/1.1 404 Not Found');break;
+		case HTTP_FORBIDDEN:	header('HTTP/1.1 403 Forbidden');break;
+		case HTTP_UNAVAILABLE:	header('HTTP/1.1 503 Service Unavailable');break;
+		default: return;
 	}
+	if(constant($code) >= 400)
+		exit(0);
 }
 
 /**
@@ -83,10 +89,62 @@ function containsBit($value, $mask) {
 }
 
 /**
- * Set's a header Location and end's the script.
+ * Set's a header Location and ends the script.
  */
 function redirectMainPage() {
 	header('Location: /');
 	ob_end_flush();
 	exit();
+}
+
+/**
+ * It's faster than nl2br
+ * @param string $string transforms new lines to HTML breaks.
+ * @return string The transformed string.
+ */
+function newline2br($string) {
+	/*I could have used PHP_EOL but no one knows if the user could post
+	* from different machines alternatively.
+	*/
+	$possibleNewlines = array("\r\n", "\n");
+	return str_replace($possibleNewlines, "<br>", $string);
+}
+
+/**
+ * Removes break elements from li,ol elements
+ * @param string $doc_string The html portion string.
+ * @return string The html string without the appropiate br elements.
+ */
+function removeBreaksFromLists($doc_string) {
+	$doc = new DOMDocument();
+	$doc->loadHTML("<body>".$doc_string."</body>");
+
+	$ordered_lists = $doc->getElementsByTagName("ol");
+	foreach($ordered_lists as $list) {
+		$childs = $list->getElementsByTagName("br");
+
+		while ($childs->length > 0)
+			$list->removeChild($childs->item(0));
+	}
+
+	$ordered_lists = $doc->getElementsByTagName("ul");
+	foreach($ordered_lists as $list) {
+		$childs = $list->getElementsByTagName("br");
+
+		while ($childs->length > 0)
+			$list->removeChild($childs->item(0));
+	}
+	
+	//only PHP vers 5.3.6+ has saveHTML() with 1 argument
+	if(PHP_VERSION_ID >= 50306) {
+		$string_with_body = $doc->saveHTML($doc->getElementsByTagName("body")->item(0));
+		return substr($string_with_body, 6, strlen($string_with_body)-13);
+	}
+	else {
+		/*unfortunately saveXML puts &#13; (\r character) at end of everyline even after
+		* you remove all \r characters.	
+		*/
+		$string_with_body = $doc->saveXML($doc->getElementsByTagName("body")->item(0));
+		return str_replace("&#13;", "", substr($string_with_body, 6, strlen($string_with_body)-13));
+	}
 }

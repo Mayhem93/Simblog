@@ -28,7 +28,7 @@
 
 ob_start('ob_gzhandler');
 if(!file_exists("../global.conf")) {
-	echo "Configuration file does not exist. Installation has not been carried out. <a href=\"install\">Install here.</a>";
+	header("Location: /install");
 	exit();
 }
 
