@@ -133,7 +133,7 @@ switch ($_GET['action']) {
 			$post_id = $_POST['post_id'];
 			$content = $_POST['post_content'];
 			$title = $_POST['post_title'];
-			$category = $_POST['category'];
+			$category = ($_POST['category'] == "no categories available") ? "" : $_POST['category'];
 			
 			blog_modifyPost($post_id, $title, $content, $category);
 			
