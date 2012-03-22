@@ -37,9 +37,18 @@ else {
 			/*It is very important that the sql file uses ';' as a delimiter
 			between statements. Other workaround would be to use shell exec.
 			*/
+			$prefix = isset($_POST['tbl_prefix']) ? $_POST['tbl_prefix'] : "";
+
 			$sql = explode(';',file_get_contents("database.sql"));
-			foreach ($sql as $query)
+			for($i=0; $i < count($sql); $i++) {
+				$sql[$i] = str_replace("{prefix}", $prefix, $sql[$i]);
+				mysql_query($sql[$i], $db);
+			}
+			
+			/*foreach ($sql as $key => $query) {
+				$sql[$key] = str_replace("{prefix}", $prefix, $sql[$key]);
 				mysql_query($query,$db);
+			}*/
 		}
 	}
 	
@@ -78,6 +87,7 @@ else {
 			$config_file->set(null, "user", isset($_POST['username']) ? $_POST['username'] : "");
 			$config_file->set(null, "password", isset($_POST['password']) ? $_POST['password'] : "");
 			$config_file->set(null, "database", isset($_POST['database']) ? $_POST['database'] : "");
+			$config_file->set(null, "tbl_prefix", isset($_POST['tbl_prefix']) ? $_POST['tbl_prefix'] : "");
 			$config_file->save();
 		}
 		else

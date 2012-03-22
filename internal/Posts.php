@@ -24,6 +24,8 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */	
 
+DEFINE("TABLE_PREFIX", SBFactory::Settings()->getSetting("tbl_prefix"));
+
 /**
  * Adds a post.
  * @param string $title Title
@@ -33,6 +35,7 @@
  */
 function blog_addPost($title, $content, $category, $pinned = false) {
 	$database = SBFactory::Database();
+	$tbl_prefix = SBFactory::Settings()->getSetting("tbl_prefix");
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
@@ -43,7 +46,7 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"content" => $content,
 			"date_posted" => date("d F Y, g:i:s a")
 		);
-		$database->insertRow("post", $row);
+		$database->insertRow(TABLE_PREFIX."post", $row);
 		
 		if($category) {
 			$post_id = $database->getLastInsertID();
@@ -52,7 +55,7 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 					"category_id" => blog_getCategoryId($category)
 			);
 			
-			$database->insertRow("category_map", $category_row);
+			$database->insertRow(TABLE_PREFIX."category_map", $category_row);
 		}
 	}
 	else {
@@ -83,7 +86,7 @@ function blog_deletePost($id) {
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
 
-		return $database->deleteRows("post", $filter);
+		return $database->deleteRows(TABLE_PREFIX."post", $filter);
 	} else {
 		if (blog_postIsPinned($id)) //TODO: delete all the comments with the post id.
 			unlink(POSTS_DIR."/pinned/{$id}.json");
@@ -116,7 +119,7 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 		if ($category)
 			$update_set['category'] = $category;
 		
-		return $database->updateRows("post", $filter, $update_set);
+		return $database->updateRows(TABLE_PREFIX."post", $filter, $update_set);
 	}
 	else {
 		if (blog_postIsPinned($id))
@@ -147,9 +150,9 @@ function blog_togglePinPost($id) {
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		
 		if (blog_postIsPinned($id))
-			$query = "UPDATE `post` SET `pinned` = '0' WHERE `id`='$id'";
+			$query = "UPDATE `".TABLE_PREFIX."post` SET `pinned` = '0' WHERE `id`='$id'";
 		else
-			$query = "UPDATE `post` SET `pinned` = '1' WHERE `id`='$id'";
+			$query = "UPDATE `".TABLE_PREFIX."post` SET `pinned` = '1' WHERE `id`='$id'";
 		
 		return $database->query($query);
 	}
@@ -171,7 +174,7 @@ function blog_getPosts($page=1) {
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
 		
-		$query = "SELECT * FROM `post` ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", {$nr_posts};";
+		$query = "SELECT * FROM `".TABLE_PREFIX."post` ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", {$nr_posts};";
 		
 		return $database->query($query);
 	}
@@ -200,7 +203,7 @@ function blog_getPostsByCategory($category, $page=1) {
 	$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
-		$query = "SELECT * FROM `post` WHERE `category` LIKE '".$category."%' ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", ".$nr_posts;
+		$query = "SELECT * FROM `".TABLE_PREFIX."post` WHERE `category` LIKE '".$category."%' ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", ".$nr_posts;
 	
 		return $database->query($query);
 	} else {
@@ -218,7 +221,7 @@ function blog_getPost($id) {
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
-		$result = $database->selectRows("post", "*", $filter);
+		$result = $database->selectRows(TABLE_PREFIX."post", "*", $filter);
 		
 		return $result[0];
 	} else
@@ -235,7 +238,7 @@ function blog_getPinnedPosts() {
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("pinned" => 1);
 		
-		return $database->selectRows("post", "*", $filter);
+		return $database->selectRows(TABLE_PREFIX."post", "*", $filter);
 	}
 	else {
 		$dir = new DirectoryIterator(POSTS_DIR."/pinned");
@@ -261,7 +264,7 @@ function blog_postIsPinned($id) {
 	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
-		$query = "SELECT `pinned` FROM `post` WHERE `id` = '$id';";
+		$query = "SELECT `pinned` FROM `".TABLE_PREFIX."post` WHERE `id` = '$id';";
 		
 		$result = $database->querySingleValue($query);
 		if($result == "1")
@@ -284,7 +287,7 @@ function blog_getCategoryId($category_name) {
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("name" => $category_name);
 		
-		$result = $database->selectRows("category", "*", $filter);
+		$result = $database->selectRows(TABLE_PREFIX."category", "*", $filter);
 		return count($result) ? $result[0]['id'] : false;
 	}
 	else {
@@ -296,7 +299,7 @@ function blog_getCategories() {
 	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
-		$result = $database->selectRows("category", "*", $filter);
+		$result = $database->selectRows(TABLE_PREFIX."category", "*", $filter);
 		
 		return count($result) ? $result : false;
 	}
@@ -315,7 +318,7 @@ function blog_getComments($postid) {
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$where = array("post_id" => $postid);
-		$query = "SELECT * FROM `comment` WHERE `post_id`='$postid' ORDER BY `id` DESC;";
+		$query = "SELECT * FROM `".TABLE_PREFIX."comment` WHERE `post_id`='$postid' ORDER BY `id` DESC;";
 		
 		return $database->selectRows("comment", "*", $where, null, "DESC", "id");
 	}
@@ -337,7 +340,7 @@ function blog_getComments($postid) {
 function blog_getCommentById($id) {
 	$database = SBFactory::Database();
 	$where = array("id" => $id);
-	$result = $database->selectRows("comment", "*", $where);
+	$result = $database->selectRows(TABLE_PREFIX."comment", "*", $where);
 	
 	return $result[0];
 }
@@ -361,7 +364,7 @@ function blog_addComment($postid, $content, $author) {
 			"date"	=> date("d F Y, g:i:s a")
 		);
 		
-		return $database->insertRow("comment", $row);
+		return $database->insertRow(TABLE_PREFIX."comment", $row);
 	}
 	else {
 		$comment_id = time();
@@ -388,7 +391,7 @@ function blog_deleteComment($commentid, $postid=null) {
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $commentid);
 		
-		return $database->deleteRows("comment", $filter);
+		return $database->deleteRows(TABLE_PREFIX."comment", $filter);
 	}
 	else 
 		unlink(COMMENTS_DIR."/{$postid}/{$commentid}.json");
@@ -405,7 +408,7 @@ function blog_getCommentsNumber($postid) {
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("post_id" => $postid);
 		
-		return $database->countRows("comment", $filter);
+		return $database->countRows(TABLE_PREFIX."comment", $filter);
 	}
 	else {
 		$dir = new DirectoryIterator(COMMENTS_DIR."/{$postid}");
@@ -427,9 +430,9 @@ function blog_ratePost($id, $positive=true) {
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		if($positive)
-			$sql = "UPDATE `post` SET rating=rating+1 WHERE `id` = '$id';";
+			$sql = "UPDATE `".TABLE_PREFIX."post` SET rating=rating+1 WHERE `id` = '$id';";
 		else
-			$sql = "UPDATE `post` SET rating=rating-1 WHERE `id` = '$id';";
+			$sql = "UPDATE `".TABLE_PREFIX."post` SET rating=rating-1 WHERE `id` = '$id';";
 		
 		$database->query($sql);
 	}
@@ -457,9 +460,9 @@ function blog_rateComment($id, $post_id=null, $positive=true) {
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		if($positive)
-			$sql = "UPDATE `comment` SET rating=rating+1 WHERE `id` = '$id';";
+			$sql = "UPDATE `".TABLE_PREFIX."comment` SET rating=rating+1 WHERE `id` = '$id';";
 		else
-			$sql = "UPDATE `comment` SET rating=rating-1 WHERE `id` = '$id';";
+			$sql = "UPDATE `".TABLE_PREFIX."comment` SET rating=rating-1 WHERE `id` = '$id';";
 		
 		$database->query($sql);
 	}
