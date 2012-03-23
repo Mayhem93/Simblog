@@ -44,6 +44,7 @@ $js_files = array();
 $plugin_manager = SBFactory::PluginManager();
 SBFactory::Template()->assign("categories", blog_getCategories());
 SBFactory::Template()->assign("action", $_GET['action']);
+SBFactory::Template()->assign("archives", blog_getPostArchives());
 
 switch ($_GET['action']) {
 	case 'show':

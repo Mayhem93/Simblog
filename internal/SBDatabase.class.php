@@ -166,7 +166,7 @@ class SBDatabase extends ORM {
 	/**
 	 * Returns data from DB.
 	 * @param string $table Name of the table.
-	 * @param string $columns Name of the columns to be included. Defaults to '*'
+	 * @param mixed $columns Name of the columns to be included in an array. Defaults to '*'
 	 * @param array $where column=>key pairs for the where statement.
 	 * @param string $group_by Name of the column to group by.
 	 * @param string $sort Valid strings: "ASC" or "DESC"

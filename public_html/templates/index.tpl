@@ -127,20 +127,7 @@
 								<div class="clear"></div>
 							</div>
 						</div>
-						<div class="widget BlogArchive" id="BlogArchive1">
-							<h2>Archives</h2>
-							<div class="widget-content">
-								<div id="ArchiveList">
-									<div id="BlogArchive1_ArchiveList">
-										<ul class="hierarchy">
-											<li>to-do</li>
-										</ul>
-									</div>
-								</div>
-								<div class="clear"></div>
-								<div class="clear"></div>
-							</div>
-						</div>
+						{include file="bits/archives.tpl"}
 					</div>
 				</div>
 				<!-- #primary .widget-area -->

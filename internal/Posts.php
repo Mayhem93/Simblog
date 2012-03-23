@@ -361,7 +361,8 @@ function blog_addComment($postid, $content, $author) {
 			"name"	=>	$author,
 			"ip"	=> $_SERVER['REMOTE_ADDR'],
 			"text"	=> $content,
-			"date"	=> date("d F Y, g:i:s a")
+			"date"	=> date("d F Y, g:i:s a"),
+			"unix_time" => time()
 		);
 		
 		return $database->insertRow(TABLE_PREFIX."comment", $row);
@@ -471,4 +472,23 @@ function blog_rateComment($id, $post_id=null, $positive=true) {
 		$positive ? $json['rating']++ : $json['rating']--;
 		file_put_contents(COMMENTS_DIR."/{$post_id}/{$id}.json", json_encode($json));
 	}
+}
+
+/**
+ * Gets all the posts to arrange them in the archive section.
+ * @return array An associative array in the form: $result[year][month][post]
+ */
+function blog_getPostArchives() {
+	$database = SBFactory::Database();
+	
+	$columns = array("id","title", "unix_time");
+	$archives = $database->selectRows(TABLE_PREFIX."post", $columns, 
+			null, null, "DESC", "unix_time");
+	
+	$result = array();
+
+	foreach($archives as $post)
+		$result[date("Y", $post['unix_time'])][date("F", $post['unix_time'])][] = $post;
+	
+	return $result;
 }

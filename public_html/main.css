@@ -2238,3 +2238,7 @@ body #dialogMessage input {
 	margin-top: 15px;
 	width: 420px;
 }
+
+#ArchiveList .archiveMonths {
+	cursor: default;
+}
