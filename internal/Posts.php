@@ -44,7 +44,8 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"pinned" => $pinned ? 1 : 0,
 			"category" => $category,
 			"content" => $content,
-			"date_posted" => date("d F Y, g:i:s a")
+			"date_posted" => date("d F Y, g:i:s a"),
+			"unix_time" => time()
 		);
 		$database->insertRow(TABLE_PREFIX."post", $row);
 		
@@ -362,7 +363,6 @@ function blog_addComment($postid, $content, $author) {
 			"ip"	=> $_SERVER['REMOTE_ADDR'],
 			"text"	=> $content,
 			"date"	=> date("d F Y, g:i:s a"),
-			"unix_time" => time()
 		);
 		
 		return $database->insertRow(TABLE_PREFIX."comment", $row);
