@@ -235,7 +235,7 @@ ul li,ol li {
 
 #content ul li {
 	background:
-		url(http://4.bp.blogspot.com/-fj56cdkn8pg/Tlwn5ymCrpI/AAAAAAAABgo/AGcwoCA6RgA/s000/mantra_bullet.png)
+		url("img/mantra_bullet.png")
 		0px 10px no-repeat;
 	text-indent: 20px;
 }
@@ -462,7 +462,7 @@ a:active,a:hover {
 	position: relative;
 	padding: 0px;
 	background:
-		url(http://4.bp.blogspot.com/-cFJCbl8a3KA/Tlwn6Prk6XI/AAAAAAAABgs/hR46puA8B3g/s000/mantra_menu.png)
+		url("img/mantra_menu.png")
 		top left no-repeat;
 	height: 27px;
 	margin-left: 10px;
@@ -470,13 +470,13 @@ a:active,a:hover {
 
 #access   li.current_page_item {
 	background:
-		url(http://3.bp.blogspot.com/-K2FQGNQzpdA/Tlwn6bJWfQI/AAAAAAAABgw/y2OAhd0X3rI/s000/mantra_menu_current.png)
+		url("img/mantra_menu_current.png")
 		top left no-repeat !important;
 }
 
 #access  li.current-menu-item {
 	background:
-		url(http://3.bp.blogspot.com/-K2FQGNQzpdA/Tlwn6bJWfQI/AAAAAAAABgw/y2OAhd0X3rI/s000/mantra_menu_current.png)
+		url("img/mantra_menu_current.png")
 		top left no-repeat !important;
 }
 
@@ -491,7 +491,7 @@ a:active,a:hover {
 	text-decoration: none;
 	font-weight: normal !important;
 	background:
-		url(http://4.bp.blogspot.com/-cFJCbl8a3KA/Tlwn6Prk6XI/AAAAAAAABgs/hR46puA8B3g/s000/mantra_menu.png)
+		url("img/mantra_menu.png")
 		top right no-repeat;
 	position: relative;
 	right: -10px;
@@ -509,9 +509,6 @@ a:active,a:hover {
 	left: 0px important;
 	float: left;
 	z-index: 99999;
-	background:
-		url(http://1.bp.blogspot.com/-pB08Rd7X8B4/Tlwn6roKOOI/AAAAAAAABg0/KawHe__8qsI/s000/mantra_menu_down.png)
-		0px 0px no-repeat;
 	padding: 12px 0px 0px;
 	/*border-bottom:1px solid #CCC;*/
 }
@@ -578,9 +575,6 @@ padding-right:10px;*/ /* disabled for submenu width fix */
 #access ul ul ul {
 	left: 100%;
 	top: 0;
-	background:
-		url(http://3.bp.blogspot.com/-ep79y-0bJZs/Tlwn7FNsHeI/AAAAAAAABg4/Cf-zkeqBUwk/s000/mantra_menu_right.png)
-		0px 0px no-repeat;
 	padding: 0px 0px 0px 12px;
 	/*border:1px solid #CCC;*/
 }
@@ -599,9 +593,6 @@ padding-right:10px;*/ /* disabled for submenu width fix */
 
 #access ul li.current_page_item>a,#access ul li.current-menu-item>a {
 	color: #000 !important;
-	background:
-		url(http://3.bp.blogspot.com/-K2FQGNQzpdA/Tlwn6bJWfQI/AAAAAAAABgw/y2OAhd0X3rI/s000/mantra_menu_current.png)
-		top right no-repeat;
 }
 
 #access ul ul li.current_page_item,#access ul ul li.current-menu-ancestor,#access ul ul li.current-menu-item,#access ul ul li.current-menu-parent
@@ -614,7 +605,7 @@ padding-right:10px;*/ /* disabled for submenu width fix */
 	{
 	color: #5F5B5B;
 	background:
-		url(http://3.bp.blogspot.com/-K2FQGNQzpdA/Tlwn6bJWfQI/AAAAAAAABgw/y2OAhd0X3rI/s000/mantra_menu_current.png)
+		url("img/mantra_menu_current.png")
 		top right no-repeat;
 }
 /* =Content
@@ -807,6 +798,7 @@ p.login_fail {
 	margin-top: -3px;
 	padding: 3px 10px;
 	border-radius: 10px;
+	height: 20px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	box-shadow: inset 1px 1px 2px #CCC;
@@ -1073,7 +1065,6 @@ a,.entry-utility a {
 }
 
 #content .wp-caption {
-	background: url(images/pins/Pin2.png) no-repeat center 1px #F9F9F9;
 	border: 1px solid #DDD;
 	box-shadow: 2px 2px 3px #888;
 	-moz-box-shadow: 2px 2px 3px #888;
@@ -1171,7 +1162,7 @@ a,.entry-utility a {
 	float: left;
 	max-width: 50%;
 	background:
-		url(http://2.bp.blogspot.com/-M3tcuq_aVik/Tlwn7fYwwJI/AAAAAAAABg8/sJCZOnVK2fA/s000/mantra_left_arrow.png)
+		url(img/mantra_left_arrow.png)
 		#F5F5F5 left no-repeat;
 	padding: 0 10px;
 	padding-left: 20px;
@@ -1183,7 +1174,7 @@ a,.entry-utility a {
 	text-align: right;
 	max-width: 50%;
 	background:
-		url(http://4.bp.blogspot.com/-Njpbc1eCNAc/Tlwn7jvJw4I/AAAAAAAABhA/dJ-oIIdkHho/s000/mantra_right_arrow.png)
+		url(img/mantra_right_arrow.png)
 		#F5F5F5 right no-repeat;
 	padding: 0 10px;
 	padding-right: 20px;
@@ -1305,9 +1296,6 @@ h3#comments-title {
 }
 
 .avatar-image-container img {
-	background:
-		url(http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=40)
-		no-repeat;
 	height: 40px;
 	width: 40px;
 	padding: 0 !important;
@@ -1644,7 +1632,7 @@ padding-bottom:5px;*/
 
 .widget-area ul li {
 	background:
-		url(http://1.bp.blogspot.com/-e8LL-OLhPuQ/Tlwn70_tGrI/AAAAAAAABhE/rvXFs_cTNNY/s000/arrow_white.png)
+		url(img/arrow_white.png)
 		left 8px no-repeat !important;
 	margin: 4px 3px !important;
 	display: block;
@@ -2113,37 +2101,7 @@ code {
 
 .access ul.sub-menu {
 	visibility: hidden;
-}
-
-#socials {
-	float: right;
-	position: relative;
-	margin-right: 10px;
-	height: 30px;
-}
-
-#socials a {
-	background:
-		url(http://3.bp.blogspot.com/-M5TOx4g4yYA/Tlwn8KpYrtI/AAAAAAAABhI/wwn-cm1af4Q/s000/mantra_socials.png)
-		left -40px no-repeat;
-	display: block;
-	float: right;
-	width: 63px;
-	margin-right: 5px;
-	height: 45px;
-}
-
-#socials a span {
-	display: none;
-}
-
-#socials a#stweet {
-	background-position: center -40px;
-}
-
-#socials a#srss {
-	background-position: right -40px;
-}
+}	
 
 #main1 .htmlButtons {
 	margin-left: 40px;
@@ -2241,4 +2199,8 @@ body #dialogMessage input {
 
 #ArchiveList .archiveMonths {
 	cursor: default;
+}
+
+#container #main1 {
+	margin-top: 25px;
 }

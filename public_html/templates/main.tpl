@@ -11,10 +11,10 @@
 		</div>
 		<div class="navigation" id="nav-below">
 		{if $page!=1}
-		<a class="nav_previous" href="?page={$page-1}">&lt; Previous Page</a>
+		<a class="nav-previous" href="?page={$page-1}"> Previous Page</a>
 		{/if}
 		{if !smarty_isLastPage($page)}
-		<a class="nav_next" href="?page={$page+1}">Next Page &gt;</a>
+		<a class="nav-next" href="?page={$page+1}">Next Page </a>
 		{/if}
 		</div>
 	</div>
