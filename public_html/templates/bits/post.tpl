@@ -15,7 +15,7 @@
 			{else}<a href="?action=category&name={urlencode($post.category)}">{$post.category}</a>
 			{/if}
 			| </span> <span
-				class="onDate">{$post.date_posted}</span> <span class="comments-link">{blog_getCommentsNumber({$post.id})} Comment(s)</span>
+				class="onDate">{$post.date_posted}</span> <span class="comments-link"><a href="?action=post&id={$post.id}#comments-title">{blog_getCommentsNumber({$post.id})} Comment(s)</a></span>
 		</div>
 		<div class="entry-content">{$post.content|prepare }</div>
 	</div>

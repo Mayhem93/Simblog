@@ -36,6 +36,7 @@ DEFINE("TABLE_PREFIX", SBFactory::Settings()->getSetting("tbl_prefix"));
 function blog_addPost($title, $content, $category, $pinned = false) {
 	$database = SBFactory::Database();
 	$tbl_prefix = SBFactory::Settings()->getSetting("tbl_prefix");
+	SBEventObserver::fire(new SBEvent(array("title" => &$title), SBEvent::ON_POST_ADD));
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
@@ -296,11 +297,15 @@ function blog_getCategoryId($category_name) {
 	}
 }
 
+/**
+ * Gets all the categories.
+ * @return mixed The array with the categories or false if no category found.
+ */
 function blog_getCategories() {
 	$database = SBFactory::Database();
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
-		$result = $database->selectRows(TABLE_PREFIX."category", "*", $filter);
+		$result = $database->selectRows(TABLE_PREFIX."category", "*");
 		
 		return count($result) ? $result : false;
 	}
@@ -338,6 +343,11 @@ function blog_getComments($postid) {
 	}
 }
 
+/**
+ * Gets a comment specified by ID.
+ * @param int $id Id of the comment.
+ * @return array Associative array with the comment.
+ */
 function blog_getCommentById($id) {
 	$database = SBFactory::Database();
 	$where = array("id" => $id);
@@ -361,7 +371,7 @@ function blog_addComment($postid, $content, $author) {
 			"rating" => 0,
 			"name"	=>	$author,
 			"ip"	=> $_SERVER['REMOTE_ADDR'],
-			"text"	=> $content,
+			"text"	=> htmlentities($content),
 			"date"	=> date("d F Y, g:i:s a"),
 		);
 		

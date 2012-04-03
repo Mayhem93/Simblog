@@ -44,6 +44,7 @@ abstract class AJAX {
 		DEFINE('PLUGIN_DIR',realpath(BLOG_PUBLIC_ROOT.'/plugins'));
 		DEFINE('POSTS_DIR',realpath(BLOG_PUBLIC_ROOT."/posts"));
 		DEFINE('COMMENTS_DIR',realpath(BLOG_PUBLIC_ROOT."/comments"));
+		include BLOG_ROOT."/internal/ITrigger.php";
 		require_once BLOG_ROOT."/internal/SPL_autoload.php";
 		
 		ob_start("ob_gzhandler");

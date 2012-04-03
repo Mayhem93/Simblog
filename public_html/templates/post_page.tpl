@@ -1,3 +1,4 @@
+<br>
 {include file="bits/post.tpl" post=$post}
 <div id="comments">
 	<h3 id="comments-title">

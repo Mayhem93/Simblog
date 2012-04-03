@@ -200,7 +200,7 @@ class SBDatabase extends ORM {
 				$query = $query->select_expr($columns);
 				
 			if (func_num_args() == 2)
-				return $query->find_many()->as_array();
+				return $this->_toArray($query->find_many());
 			
 			if ($where)
 				foreach($where as $key => $value)

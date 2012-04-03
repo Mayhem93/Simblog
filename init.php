@@ -24,7 +24,7 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(-1);
 
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
@@ -40,6 +40,7 @@ include 'smarty/Smarty.class.php';
 include BLOG_ROOT.'/utils.php';
 require BLOG_ROOT.'/internal/smarty_functions.php';
 include BLOG_ROOT.'/internal/Posts.php';
+include BLOG_ROOT.'/internal/ITrigger.php';
 
 if(!file_exists(BLOG_PUBLIC_ROOT."/plugins.css"))
 	packCSSfiles();

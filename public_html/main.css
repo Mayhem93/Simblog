@@ -790,15 +790,18 @@ p.login_fail {
 	box-shadow: 1px 1px 3px #CCC;
 	-moz-box-shadow: 1px 1px 3px #CCC;
 	-webkit-box-shadow: 1px 1px 3px #CCC;
+	width: 95%;
+	margin-left: 10px;
 }
 
 .comments-link {
 	float: right;
 	background: #FFF;
-	margin-top: -3px;
+	margin-top: -1px;
 	padding: 3px 10px;
 	border-radius: 10px;
 	height: 20px;
+	margin-right: -50px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	box-shadow: inset 1px 1px 2px #CCC;
@@ -2203,4 +2206,11 @@ body #dialogMessage input {
 
 #container #main1 {
 	margin-top: 25px;
+}
+
+#commentForm #submitComment {
+	display: block;
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
 }

@@ -27,7 +27,7 @@
 include "../internal/AJAX.class.php";
 include "../utils.php";
 
-class AjaxRequest extends AJAX {
+final class AjaxRequest extends AJAX {
 
 	public function __construct($allowed_actions) {
 		parent::__construct($allowed_actions);
