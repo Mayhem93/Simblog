@@ -801,7 +801,7 @@ p.login_fail {
 	padding: 3px 10px;
 	border-radius: 10px;
 	height: 20px;
-	margin-right: -50px;
+	margin-right: 0px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	box-shadow: inset 1px 1px 2px #CCC;
