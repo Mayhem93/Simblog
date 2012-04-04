@@ -45,6 +45,9 @@ $plugin_manager = SBFactory::PluginManager();
 SBFactory::Template()->assign("categories", blog_getCategories());
 SBFactory::Template()->assign("action", $_GET['action']);
 SBFactory::Template()->assign("archives", blog_getPostArchives());
+$eventData = array(
+		"action" => &$_GET['action']);
+SBEventObserver::fire(new SBEvent($data, $type));
 
 switch ($_GET['action']) {
 	case 'show':

@@ -46,6 +46,7 @@ abstract class AJAX {
 		DEFINE('COMMENTS_DIR',realpath(BLOG_PUBLIC_ROOT."/comments"));
 		include BLOG_ROOT."/internal/ITrigger.php";
 		require_once BLOG_ROOT."/internal/SPL_autoload.php";
+		SBFactory::PluginManager();
 		
 		ob_start("ob_gzhandler");
 		$this->beforeAction();

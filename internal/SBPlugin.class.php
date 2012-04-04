@@ -42,7 +42,6 @@ abstract class SBPlugin
 	
 	//0 - none; 1 - blog pages; 2 - admin page; 4 - plugin page;
 	protected $jsRequired	= 0;
-	protected $events;
 	
 	public function __construct($name) {
 		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
@@ -100,18 +99,6 @@ abstract class SBPlugin
 	
 	public function getJSreq() {
 		return $this->jsRequired;
-	}
-	
-	final public function attachEvent(BlogEvent $evt) {
-		$evt_name = $evt->getName();
-		if(!isset($this->events[$evt_name]))
-			$this->events[$evt_name] = $evt;
-	}
-	
-	final public function dettachEvent(BlogEvent $evt) {
-		$evt_name = $evt->getName();
-		if(isset($this->events[$evt_name]))
-			unset($this->events[$evt_name]);
 	}
 	
 	/**

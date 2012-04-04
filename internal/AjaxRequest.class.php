@@ -82,6 +82,11 @@ final class AjaxRequest extends AJAX {
 		$admin_password = SBFactory::Settings()->getSetting("admin_password");
 		
 		if(($_POST['username'] == $admin_username) && ($_POST['password'] == $admin_password)) {
+			$eventData = array(
+					"username" => $admin_username,
+					"password" => $admin_password);
+			
+			SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_ADMIN_LOGIN));
 			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
 			SBFactory::Template()->assign('simblog_conf', SBFactory::Settings()->getAll());
 			$this->response = SBFactory::Template()->fetch('bits/admin_box.tpl');
@@ -95,6 +100,7 @@ final class AjaxRequest extends AJAX {
 		session_start();
 		
 		if(smarty_isAdminSession()) {
+			SBEventObserver::fire(new SBEvent(array(), SBEvent::ON_ADMIN_LOGOUT));
 			unset($_SESSION[$_SERVER['REMOTE_ADDR']]);
 			$this->response = SBFactory::Template()->fetch('bits/admin_login.tpl');
 			session_regenerate_id(true);

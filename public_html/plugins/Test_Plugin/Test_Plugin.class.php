@@ -18,7 +18,7 @@ class Test_Plugin extends SBPlugin implements ITrigger {
 	
 	public function trigger(SBEvent $evt) {
 		if($evt->getType() == SBEvent::ON_POST_ADD)
-			notifyMessage("Hello", MSG_NOTICE);
+			notifyMessage("Hello ".$evt->title, MSG_NOTICE);
 	}
 	
 }

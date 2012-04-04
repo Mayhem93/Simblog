@@ -36,7 +36,14 @@ DEFINE("TABLE_PREFIX", SBFactory::Settings()->getSetting("tbl_prefix"));
 function blog_addPost($title, $content, $category, $pinned = false) {
 	$database = SBFactory::Database();
 	$tbl_prefix = SBFactory::Settings()->getSetting("tbl_prefix");
-	SBEventObserver::fire(new SBEvent(array("title" => &$title), SBEvent::ON_POST_ADD));
+	
+	$eventData = array(
+			"title" => &$title,
+			"content" => &$content,
+			"category" => &$category,
+			"pinned" => &$pinned	
+		);
+	SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_ADD));
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
@@ -49,9 +56,9 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			"unix_time" => time()
 		);
 		$database->insertRow(TABLE_PREFIX."post", $row);
+		$post_id = $database->getLastInsertID();
 		
 		if($category) {
-			$post_id = $database->getLastInsertID();
 			$category_row = array(
 					"post_id" => $post_id,
 					"category_id" => blog_getCategoryId($category)
@@ -59,6 +66,13 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 			
 			$database->insertRow(TABLE_PREFIX."category_map", $category_row);
 		}
+		$eventData = array(
+				"id" => $post_id,
+				"title" => &$title,
+				"content" => &$content,
+				"category" => &$category,
+				"pinned" => &$pinned);
+		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_ADD));
 	}
 	else {
 		if(!is_writable(POSTS_DIR))
@@ -85,6 +99,9 @@ function blog_addPost($title, $content, $category, $pinned = false) {
 function blog_deletePost($id) {
 	$database = SBFactory::Database();
 	
+	$eventData = array("id" => $id);
+	SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_DELETE));
+	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
 
@@ -109,6 +126,14 @@ function blog_modifyPost($id, $title=null, $content=null, $category=null) {
 	
 	if ($title == null && $content == null && $category == null)
 		return;
+	
+	$eventData = array(
+			"id" => $id,
+			"title" => &$title,
+			"content" => &$content,
+			"category" => &$category
+			);
+	SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_MOD));
 	
 	if (SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $id);
@@ -364,7 +389,11 @@ function blog_getCommentById($id) {
  */
 function blog_addComment($postid, $content, $author) {
 	$database = SBFactory::Database();
-	
+	$eventData = array(
+			"post_id" => $postid,
+			"content" => &$content,
+			"author" => &$author);
+	SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_USER_COMMENT));
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$row = array(
 			"post_id" => $postid,
@@ -398,6 +427,8 @@ function blog_addComment($postid, $content, $author) {
  */
 function blog_deleteComment($commentid, $postid=null) {
 	$database = SBFactory::Database();
+	
+	SBEventObserver::fire(new SBEvent(array("id" => $commentid), SBEvent::ON_COMMENT_DELETE));
 	
 	if(SBFactory::Settings()->getSetting("database_support")) {
 		$filter = array("id" => $commentid);
