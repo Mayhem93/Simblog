@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 	$("#login_button").on("click", adminLogin);
 	$("#admin_logout").on("click", adminLogout);

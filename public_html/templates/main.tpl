@@ -1,4 +1,4 @@
-<div class="section" id="main1">
+{*<div class="section" id="main1">
 	<div class="widget Blog" id="Blog1">
 		<div class="blog-posts hfeed">
 			<div class="date-outer">
@@ -18,4 +18,10 @@
 		{/if}
 		</div>
 	</div>
+</div>*}
+
+<div id="leftPanel" class="span8">
+{foreach $blog_posts as $post}
+	{include file="bits/post.tpl"}
+{/foreach}
 </div>

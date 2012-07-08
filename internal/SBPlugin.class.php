@@ -37,11 +37,11 @@ abstract class SBPlugin
 	private $author 		= "";
 	private $disabled;
 	
-	private $js_file		= "";
-	private $css_file		= "";
+	private $js_files		= array();
+	private $css_files		= array();
 	
-	//0 - none; 1 - blog pages; 2 - admin page; 4 - plugin page;
-	protected $jsRequired	= 0;
+	//SBPage::action
+	protected $pluginLocation	= '';
 	
 	public function __construct($name) {
 		$config = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
@@ -57,11 +57,9 @@ abstract class SBPlugin
 		foreach($dir as $d)
 			if($d->isFile()) {
 				if(substr((string)$d, -3) == '.js')
-					$this->js_file = (string)$d;
+					$this->js_files[] = PLUGIN_DIR.'/'.$this->name.'/'.(string)$d;
 				else if(substr((string)$d, -4) == '.css')
-					$this->css_file = (string)$d;
-				if($this->css_file && $this->js_file)	//break when there has been found 1 JS and 1 CSS file
-					break;
+					$this->css_files[] = PLUGIN_DIR.'/'.$this->name.'/'.(string)$d;
 			}
 	}
 	
@@ -89,17 +87,21 @@ abstract class SBPlugin
 		return $this->disabled;
 	}
 	
-	public function getCSSfile() {
-		return $this->css_file;
+	public function getCSSfiles() {
+		return $this->css_files;
 	}
 	
-	public function getJSfile() {
-		return $this->js_file;
+	public function getJSfiles() {
+		return $this->js_files;
 	}
 	
 	public function getJSreq() {
 		return $this->jsRequired;
 	}
+
+    public function getPluginLocation() {
+        return $this->pluginLocation;
+    }
 	
 	/**
 	 * 

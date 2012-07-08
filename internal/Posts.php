@@ -203,7 +203,10 @@ function blog_getPosts($page=1) {
 		
 		$query = "SELECT * FROM `".TABLE_PREFIX."post` ORDER BY `id` DESC LIMIT ".(($page-1)*$nr_posts).", {$nr_posts};";
 		
-		return $database->query($query);
+		$results = $database->query($query);
+        $results['tags'] = explode(',', $results['tags']);
+
+        return $results;
 	}
 	else {
 		$dir = new DirectoryIterator(POSTS_DIR);

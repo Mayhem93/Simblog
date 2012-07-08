@@ -1,6 +1,5 @@
-<br>
 {include file="bits/post.tpl" post=$post}
-<div id="comments">
+{*<div id="comments">
 	<h3 id="comments-title">
 		{blog_getCommentsNumber($post.id)} Response(s) to <em>{$post.title}</em>
 	</h3>
@@ -21,4 +20,8 @@
 	<div id="backlinks-container">
 		<div id="Blog1_backlinks-container"></div>
 	</div>
-</div>
+</div>*}
+<h3 class="commentListHeading">{$commentCount} comments on <em>'$post.title'</em>:</h3>
+{foreach $comments as $comment}
+	{include file="bits/comment.tpl"}
+{/foreach}

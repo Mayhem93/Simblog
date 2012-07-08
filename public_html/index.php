@@ -47,7 +47,7 @@ SBFactory::Template()->assign("action", $_GET['action']);
 SBFactory::Template()->assign("archives", blog_getPostArchives());
 $eventData = array(
 		"action" => &$_GET['action']);
-SBEventObserver::fire(new SBEvent($data, $type));
+SBEventObserver::fire(new SBEvent($data, SBEvent::ON_USER_ACCESS));
 
 switch ($_GET['action']) {
 	case 'show':
