@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{*<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
@@ -154,5 +154,70 @@
 		<!-- #footer -->
 	</div>
 	<!-- #wrapper -->
+</body>
+</html>*}
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<title>{$page_title}</title>
+	<meta name="author" content="Me">
+	<meta name="description" content="smarty_getSetting('blog_description')">
+	<link rel="stylesheet" href="css/common.css">
+	<script type="application/javascript" src="js/jquery-1.7.2.min.js"></script>
+</head>
+<body class="simblog">
+<div class="container mainBody">
+	<header class="row">
+		<a class="blog-title" href="post1.html" title="Home"><h1>{smarty_getSetting('blog_title')}</h1></a>
+		<h3 class="blog-descr">smarty_getSetting('blog_description')</h3>
+	</header>
+	<section class="row">
+		<div id="pinnedPosts" class="span4 offset2 carousel">
+{* 			<div class="carousel-inner">
+ 				<div class="active item">
+ 					<h2 title="Heading">Heading1</h2>
+ 					<p>Donec id elit non mi porta gravida at eget metus. Fusce
+ 						dapibus, tellus ac cursus commodo, tortor mauris condimentum
+ 						nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
+ 						malesuada magna mollis euismod. Donec sed odio dui...</p>
+ 				</div>
+ 				<div class="item">
+ 					<h2 title="Heading">Heading2</h2>
+ 					<p>She exposed painted fifteen are noisier mistake led
+ 						waiting. Surprise not wandered speedily husbands although yet
+ 						end. Are court tiled cease young built fat one man taken. We
+ 						highest ye friends is exposed equally in. Ignorant had too
+ 						strictly followed. Astonished as travelling assistance...</p>
+ 				</div>
+
+ 			</div>
+ 			<a class="carousel-control left" href="#pinnedPosts" data-slide="prev">&lsaquo;</a>
+ 			<a class="carousel-control right" href="#pinnedPosts" data-slide="next">&rsaquo;</a> *}
+		</div>
+	</section>
+	<nav class="navbarBlog">
+		<ul class="nav nav-pills">
+			<li class="active"><a href="" title="Home">Home</a></li>
+			{* <li><a href="" title="About me">About me</a></li> *}
+		</ul>
+	</nav>
+	<div id="content" class="row">
+		<div id="leftPanel" class="span8">
+			{include file=$page_template}
+		</div>
+		<div id="rightPanel" class="span3">
+			{include file="bits/archives.tpl"}
+			<div id="categoriesBlock">{* TODO *}
+				<h2>Categories</h2>
+				<ul>
+					<li><a href="#">Sample category 1</a></li>
+					<li><a href="#">Sample category 2</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	{include file="bits/footer.tpl"}
+</div>
 </body>
 </html>

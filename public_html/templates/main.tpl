@@ -19,9 +19,6 @@
 		</div>
 	</div>
 </div>*}
-
-<div id="leftPanel" class="span8">
 {foreach $blog_posts as $post}
 	{include file="bits/post.tpl"}
 {/foreach}
-</div>

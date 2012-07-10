@@ -61,17 +61,6 @@ class SBPage
 	public function run()
 	{
 		try {
-			$requestParamsCSS = '';
-			$requestParamsJS = '';
-			foreach ($this->_loadedResources['css'] as $file) {
-				$requestParamsCSS .= 'css[]=' . $file . '&';
-			}
-			foreach ($this->_loadedResources['js'] as $file) {
-				$requestParamsJS .= 'js[]=' . $file . '&';
-			}
-
-			SBFactory::Template()->assign('cssParams', $requestParamsCSS);
-			SBFactory::Template()->assign('jsParams', $requestParamsJS);
 			SBFactory::Template()->display('index.tpl');
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
@@ -166,6 +155,20 @@ class SBPage
 
 				break;
 		}
+
+		$requestParamsCSS = '';
+		$requestParamsJS = '';
+		foreach ($this->_loadedResources['css'] as $file) {
+			$requestParamsCSS .= 'css[]=' . $file . '&';
+		}
+		foreach ($this->_loadedResources['js'] as $file) {
+			$requestParamsJS .= 'js[]=' . $file . '&';
+		}
+
+		SBFactory::Template()->assign('cssParams', trim($requestParamsCSS, '&'));
+		SBFactory::Template()->assign('jsParams', trim($requestParamsJS, '&'));
+
+		return;
 	}
 
 	private function postAction()
