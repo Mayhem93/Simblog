@@ -142,7 +142,7 @@ class SBPage
 			case 'addPost':
 				SBFactory::Template()->assign("page_title", "New post - " .
 					SBFactory::Settings()->getSetting("blog_title"));
-				SBFactory::Template()->assign("page_template", "addPost.tpl");
+				SBFactory::Template()->assign("page_template", "add_post.tpl");
 
 				break;
 
@@ -151,7 +151,7 @@ class SBPage
 
 				SBFactory::Template()->assign("post", $post);
 				SBFactory::Template()->assign("page_title", "Modify Post - " . SBFactory::Settings()->getSetting("blog_title"));
-				SBFactory::Template()->assign("page_template", "modifyPost.tpl");
+				SBFactory::Template()->assign("page_template", "modify_post.tpl");
 
 				break;
 		}
@@ -184,17 +184,17 @@ class SBPage
 
 				break;
 
-			case 'addPost':
+			case 'addpost':
 				$pinned = isset($_POST['pinned']);
 				//Hardcoded -- needs to go !
-				$category = ($_POST['category'] == "no categories available") ? "" : $_POST['category'];
+				$category = (!isset($_POST['category'])) ? "" : $_POST['category'];
 
-				blog_addPost($_POST['post_title'], $_POST['post_content'], $category, $pinned);
+				blog_addPost($_POST['title'], $_POST['content'], $category, $pinned);
 				redirectMainPage();
 
 				break;
 
-			case 'modifyPost':
+			case 'modifypost':
 				$post_id = $_POST['post_id'];
 				$content = $_POST['post_content'];
 				$title = $_POST['post_title'];
