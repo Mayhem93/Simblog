@@ -28,9 +28,7 @@ error_reporting(-1);
 
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
-DEFINE('PLUGIN_DIR',realpath(BLOG_PUBLIC_ROOT.'/plugins'));
-DEFINE('POSTS_DIR',realpath(BLOG_PUBLIC_ROOT."/posts"));
-DEFINE('COMMENTS_DIR',realpath(BLOG_PUBLIC_ROOT."/comments"));
+DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'/plugins');
 DEFINE('MSG_NOTICE',0);
 DEFINE('MSG_WARNING',1);
 DEFINE('MSG_ERROR', 2);
@@ -42,5 +40,4 @@ require BLOG_ROOT.'/internal/smarty_functions.php';
 include BLOG_ROOT.'/internal/Posts.php';
 include BLOG_ROOT.'/internal/ITrigger.php';
 
-if(!file_exists(BLOG_PUBLIC_ROOT."/plugins.css"))
-	packCSSfiles();
+SBEventObserver::populateEvents();
