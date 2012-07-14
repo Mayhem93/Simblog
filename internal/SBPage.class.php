@@ -43,13 +43,13 @@ class SBPage
 	private $_loadedResources;
 	private $_pageAction;
 
-	public function __construct($action = null)
-	{
+	public function __construct($action = null) {
 		$this->_pageAction = isset($action) ? $action : $_GET['action'];
 
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
 		$this->_pageAction = $action;
+		$this->loadPluginResources();
 
 		if (count($_POST))
 			$this->postAction();
@@ -58,8 +58,7 @@ class SBPage
 
 	}
 
-	public function run()
-	{
+	public function run() {
 		try {
 			SBFactory::Template()->display('index.tpl');
 		} catch (SmartyException $e) {
@@ -69,13 +68,11 @@ class SBPage
 		return;
 	}
 
-	public function getResources()
-	{
+	public function getResources(){
 		return $this->_loadedResources;
 	}
 
-	public function addResource(array $resources)
-	{
+	public function addResource(array $resources) {
 		foreach ($resources as $file) {
 			if (substr($file, -4) == '.css')
 				$this->_loadedResources['css'][] = $file;
@@ -86,8 +83,7 @@ class SBPage
 		return;
 	}
 
-	private function getAction()
-	{
+	private function getAction() {
 		$commonDefaultResources = array(
 			'css/bootstrap-responsive.css',
 			'css/common.css',
@@ -171,14 +167,13 @@ class SBPage
 		return;
 	}
 
-	private function postAction()
-	{
+	private function postAction() {
 		switch ($this->_pageAction) {
 			case 'post':
 				$name = $_POST['commentName'];
 				$content = $_POST['commentBody'];
 
-				blog_addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName']);
+				blog_addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 				header("Location: /?action=post&id=" . $_GET['post_id']);
 				exit();
 
@@ -207,15 +202,13 @@ class SBPage
 		}
 	}
 
-	private function loadPlugins()
-	{
+	private function loadPlugins() {
 		$this->_loadedPlugins = SBFactory::PluginManager();
 
 		return;
 	}
 
-	private function loadPluginResources()
-	{
+	private function loadPluginResources() {
 		foreach ($this->_loadedPlugins as $plugins) {
 			if ($plugins->getPluginLocation() == $this->_pageAction)
 				$this->addResource($plugins->getCSSfiles + $plugins->getJSfiles);

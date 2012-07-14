@@ -41,11 +41,6 @@
 				<span class="explanation">Will install plugins as disabled by default. </span>
 			</li>
 			<li>
-				<label for="db_support">SQL database support: </label>
-				<input id="db_support" name="db_support" type="checkbox" checked="checked" />
-				<span class="explanation">You can install this without a SQL database. </span>
-			</li>
-			<li>
 				<label for="admin_username">Administrator username: </label>
 				<input id="admin_username" name="admin_username" type="text" size="20" />
 				{if isset($inputErrors.admin_username)}

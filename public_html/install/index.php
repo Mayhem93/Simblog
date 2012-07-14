@@ -18,37 +18,30 @@ else {
 	if(!file_exists("../comments"))
 		mkdir("../comments");
 	$stage = 'success';	//we presume that the data provided is correct
-	
-	if(isset($_POST['db_support'])) {
-		$port = $_POST['port'];
-		$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
-		
-		if(!$db) {
-			$stage = 'stage1';
-			$smarty->assign("mysql_error",true);
-			$smarty->assign("mysql_error_msg", "Could not connect to database server.");
-		}
-		else if(!mysql_select_db($_POST['database'])) {
-			$stage = 'stage1';
-			$smarty->assign("mysql_error",true);
-			$smarty->assign("mysql_error_msg", mysql_error());
-		}
-		else {
-			/*It is very important that the sql file uses ';' as a delimiter
-			between statements. Other workaround would be to use shell exec.
-			*/
-			$prefix = isset($_POST['tbl_prefix']) ? $_POST['tbl_prefix'] : "";
 
-			$sql = explode(';',file_get_contents("database.sql"));
-			for($i=0; $i < count($sql); $i++) {
-				$sql[$i] = str_replace("{prefix}", $prefix, $sql[$i]);
-				mysql_query($sql[$i], $db);
-			}
-			
-			/*foreach ($sql as $key => $query) {
-				$sql[$key] = str_replace("{prefix}", $prefix, $sql[$key]);
-				mysql_query($query,$db);
-			}*/
+	$port = $_POST['port'];
+	$db = @mysql_connect($_POST['hostname'].':'.$port,$_POST['username'],$_POST['password']);
+
+	if(!$db) {
+		$stage = 'stage1';
+		$smarty->assign("mysql_error",true);
+		$smarty->assign("mysql_error_msg", "Could not connect to database server.");
+	}
+	else if(!mysql_select_db($_POST['database'])) {
+		$stage = 'stage1';
+		$smarty->assign("mysql_error",true);
+		$smarty->assign("mysql_error_msg", mysql_error());
+	}
+	else {
+		/*It is very important that the sql file uses ';' as a delimiter
+		between statements. Other workaround would be to use shell exec.
+		*/
+		$prefix = isset($_POST['tbl_prefix']) ? $_POST['tbl_prefix'] : "";
+
+		$sql = explode(';',file_get_contents("database.sql"));
+		for($i=0; $i < count($sql); $i++) {
+			$sql[$i] = str_replace("{prefix}", $prefix, $sql[$i]);
+			mysql_query($sql[$i], $db);
 		}
 	}
 	
@@ -77,7 +70,6 @@ else {
 			$config_file->set(null, "email", $_POST['email']);
 			$config_file->set(null, "install_plugin_default", isset($_POST['disabled_plugins']) ? "disabled" : "enabled");
 			$config_file->set(null, "disable_plugins", false);
-			$config_file->set(null, "database_support", isset($_POST['db_support']));
 			$config_file->set(null, "admin_username", $_POST['admin_username']);
 			$config_file->set(null, "admin_password", $_POST['admin_password']);
 			$config_file->set(null, "no_posts_per_page", 10);
