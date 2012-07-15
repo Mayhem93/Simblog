@@ -36,6 +36,9 @@ class SBPage
 		)
 	);
 
+	private $_cssfile = null;
+	private $_jsfile = null;
+
 	/**
 	 * @var SBPlugin_Controller
 	 */
@@ -60,6 +63,16 @@ class SBPage
 
 	public function run() {
 		try {
+			/*$requestParamsCSS = '';
+			$requestParamsJS = '';
+
+			foreach ($this->_loadedResources['css'] as $file)
+				$requestParamsCSS .= 'css[]=' . $file . '&';
+			foreach ($this->_loadedResources['js'] as $file)
+				$requestParamsJS .= 'js[]=' . $file . '&';
+
+			SBFactory::Template()->assign('cssParams', trim($requestParamsCSS, '&'));
+			SBFactory::Template()->assign('jsParams', trim($requestParamsJS, '&'));*/
 			SBFactory::Template()->display('index.tpl');
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
@@ -152,17 +165,8 @@ class SBPage
 				break;
 		}
 
-		$requestParamsCSS = '';
-		$requestParamsJS = '';
-		foreach ($this->_loadedResources['css'] as $file) {
-			$requestParamsCSS .= 'css[]=' . $file . '&';
-		}
-		foreach ($this->_loadedResources['js'] as $file) {
-			$requestParamsJS .= 'js[]=' . $file . '&';
-		}
-
-		SBFactory::Template()->assign('cssParams', trim($requestParamsCSS, '&'));
-		SBFactory::Template()->assign('jsParams', trim($requestParamsJS, '&'));
+		SBFactory::Template()->assign("cssFile", $this->getCSSfile());
+		SBFactory::Template()->assign("jsFile", $this->getJSfile());
 
 		return;
 	}
@@ -170,8 +174,6 @@ class SBPage
 	private function postAction() {
 		switch ($this->_pageAction) {
 			case 'post':
-				$name = $_POST['commentName'];
-				$content = $_POST['commentBody'];
 
 				blog_addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 				header("Location: /?action=post&id=" . $_GET['post_id']);
@@ -202,6 +204,55 @@ class SBPage
 		}
 	}
 
+	public function getCSSfile() {
+		if ($this->_cssfile !== null)
+			return $this->_cssfile;
+
+		sort($this->_loadedResources['css']);
+		$cacheFileName = md5(implode('', $this->_loadedResources['css'])).'.css';
+		if (file_exists('cache/css/'.$cacheFileName)) {
+			return $cacheFileName;
+		}
+
+		$stylesheet = '';
+
+		foreach($this->_loadedResources['css'] as $css) {
+			if ( file_exists($css) )
+				$stylesheet .= file_get_contents($css);
+			else
+				throw new Exception("Resource file \"$css\" does not exist.");
+		}
+
+		file_put_contents('cache/css/'.$cacheFileName, CssMin::minify($stylesheet));
+		$this->_cssfile = $cacheFileName;
+
+		return $cacheFileName;
+	}
+
+	public function getJSfile() {
+		if ($this->_jsfile !== null)
+			return $this->_jsfile;
+
+		$javascript = '';
+		sort($this->_loadedResources['js']);
+		$cacheFileName = md5(implode('', $this->_loadedResources['js'])).'.js';
+
+		if (file_exists('cache/js/'.$cacheFileName))
+			return $cacheFileName;
+
+		foreach($this->_loadedResources['js'] as $js) {
+			if ( file_exists($js) )
+				$javascript .= file_get_contents($js);
+			else
+				throw new Exception("Resource file \"$js\" does not exist.");
+		}
+
+		file_put_contents('cache/js/'.$cacheFileName, \JShrink\Minifier::minify($javascript));
+		$this->_jsfile = $cacheFileName;
+
+		return $cacheFileName;
+	}
+
 	private function loadPlugins() {
 		$this->_loadedPlugins = SBFactory::PluginManager();
 
@@ -215,8 +266,7 @@ class SBPage
 		}
 	}
 
-	private function isValidAction()
-	{
+	private function isValidAction() {
 		return isset(self::$_actions[$this->_pageAction]);
 	}
 }

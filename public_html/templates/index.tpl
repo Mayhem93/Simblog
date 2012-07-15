@@ -163,8 +163,8 @@
 	<title>{$page_title}</title>
 	<meta name="author" content="Me">
 	<meta name="description" content="smarty_getSetting('blog_description')">
-	<link rel="stylesheet" href="css/common.css">
-	<script type="application/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<link rel="stylesheet" href="cache/css/{$cssFile}">
+	<script type="application/javascript" src="cache/js/{$jsFile}"></script>
 </head>
 <body class="simblog">
 <div class="container mainBody">

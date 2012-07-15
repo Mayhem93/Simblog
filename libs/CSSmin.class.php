@@ -5078,5 +5078,3 @@ class CssAtCharsetParserPlugin extends aCssParserPlugin
 		return true;
 		}
 	}
-
-?>
