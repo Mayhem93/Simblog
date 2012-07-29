@@ -1,0 +1,63 @@
+.post-entry {
+    margin-bottom: 25px;
+    border-bottom-color: #BBF;
+    border-bottom-style: solid;
+    border-bottom-width: thin;
+}
+
+.post-entry h2 {
+    display: inline;
+}
+
+.post-entry .tags {
+    display: inline;
+    float: right;
+}
+
+.post-entry footer {
+    margin-bottom: 25px;
+}
+
+.postMetadata {
+    max-height: 30px;
+    padding: 2px 8px 8px 8px;
+    margin-bottom: 20px;
+    background-color: whiteSmoke;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+    display: block;
+}
+
+.postMetadata * {
+    font-size: 11px;
+}
+
+.postMetadata > .categories > span {
+    cursor: pointer;
+}
+
+.postMetadata > .categories > span:hover {
+    background-color: #29769C;
+}
+
+.postMetadata .comments-count {
+    display: block;
+    float: right;
+    margin-top: 10px;
+}
+
+.postMetadata .badge-info {
+    font-size: 1.3em;
+}
+
+.postBody {
+    margin-top: 20px;
+    display: block;
+    margin-bottom: 30px;
+}
+
+.postBody > p {
+    text-indent: 24px;
+}

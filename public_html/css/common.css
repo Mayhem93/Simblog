@@ -1,0 +1,117 @@
+body.simblog {
+	background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+	background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+	background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+	background-size: 16px 16px;
+	color: #333;
+	background-color: #EEE;
+}
+
+body.simblog a:hover {
+	text-decoration: none;	
+}
+
+.container > header {
+	margin-bottom: 10px;
+	height: 120px;
+	background-image: url('images/header.png');
+	border-radius: 25px;
+}
+
+.mainBody {
+	margin-top: 20px;
+}
+
+.blog-title > h1 {
+	margin-left: 100px;
+	text-shadow: 0 0 10px #FFF;
+	cursor: pointer;
+    color: black;
+    position: relative;
+    top: 45px;
+}
+
+.blog-descr {
+	display: block;
+    font-weight: normal;
+	color: black;
+	float: right;
+	position: relative;
+	top: 40px;
+	right: 50px;
+	font-style: italic;
+	text-shadow: 0 0 4px #FFF;
+}
+
+.navbarBlog {
+	display: block;
+}
+
+.navbarBlog li {
+	-webkit-transition: all 250ms linear;
+	border-radius: 0px 10px 0px 10px;
+}
+
+.navbarBlog li:hover {
+	bottom: 10px;
+}
+
+#pinnedPosts {
+	-webkit-transition: all 250ms linear;
+	padding: 15px 15px 0 15px;
+	display: block;
+	margin-bottom: 20px;
+}
+
+#pinnedPosts > .carousel-inner {
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    padding: 4px 4px 4px 4px;
+    min-height: 150px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 6px 6px 12px #666;
+}
+
+#pinnedPosts > .left {
+	left: -50px;
+}
+
+#pinnedPosts > .right {
+	right: -50px;
+}
+
+#leftPanel, #rightPanel > div {
+	border: thin solid #3CF;
+	border-radius: 15px;
+	padding: 15px 15px 0 15px;
+	display: block;
+	background-color: rgba(255,255,255,0.75);
+	box-shadow: 0px 0px 8px #666;
+	margin-bottom: 20px;
+}
+
+#rightPanel > div > h2 {
+	margin-bottom: 10px;
+}
+
+#archiveBlockList a {
+	-webkit-transition: all 250ms linear;
+}
+
+#archiveBlockList a:hover {
+	padding-left: 15px;
+	text-decoration: none;
+}
+
+.footer-text {
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.footer-text > a:first-child {
+    display: block;
+}

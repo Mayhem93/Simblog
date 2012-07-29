@@ -1,0 +1,44 @@
+#comments > div:first-child {
+    border-top: none;
+}
+
+.commentListHeading {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border-top: solid #ddd thin;
+    border-bottom: solid #ddd thin;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+.commentAvatar {
+    display: block;
+    float: left;
+    margin-right: 20px;
+}
+
+div.comment {
+    border-top: solid #ddd thin;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 95%;
+    position: relative;
+    left: 20px;
+}
+
+div.comment header {
+    position: relative;
+    left: 50px;
+}
+
+.commentContent {
+    width: 95%;
+    position: relative;
+    left: 30px;
+    margin-top: 10px;
+}
+
+.commentContent p {
+    text-indent: 20px;
+}
