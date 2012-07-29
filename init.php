@@ -24,6 +24,11 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+if(!file_exists("../global.conf")) {
+	header("Location: /install");
+	exit();
+}
+
 error_reporting(-1);
 
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
