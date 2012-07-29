@@ -1,5 +1,4 @@
 templates_c
 /global.conf
-posts
-plugins.css
-comments
+public_html/cache/css/*.css
+public_html/cache/js/*.js

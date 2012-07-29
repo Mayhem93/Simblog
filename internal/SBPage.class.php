@@ -10,9 +10,12 @@ class SBPage
 {
 	private static $_actions = array(
 		'main' => array(
-
+			'css/posts.css'
 		),
-		'post' => array(),
+		'post' => array(
+			'css/posts.css',
+			'css/comments.css'
+		),
 		'category' => array(),
 		'dashboard' => array(),
 		'addpost' => array(
@@ -51,7 +54,7 @@ class SBPage
 
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
-		$this->_pageAction = $action;
+		$this->loadPlugins();
 		$this->loadPluginResources();
 
 		if (count($_POST))
@@ -63,16 +66,6 @@ class SBPage
 
 	public function run() {
 		try {
-			/*$requestParamsCSS = '';
-			$requestParamsJS = '';
-
-			foreach ($this->_loadedResources['css'] as $file)
-				$requestParamsCSS .= 'css[]=' . $file . '&';
-			foreach ($this->_loadedResources['js'] as $file)
-				$requestParamsJS .= 'js[]=' . $file . '&';
-
-			SBFactory::Template()->assign('cssParams', trim($requestParamsCSS, '&'));
-			SBFactory::Template()->assign('jsParams', trim($requestParamsJS, '&'));*/
 			SBFactory::Template()->display('index.tpl');
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
@@ -98,19 +91,29 @@ class SBPage
 
 	private function getAction() {
 		$commonDefaultResources = array(
-			'css/bootstrap-responsive.css',
 			'css/common.css',
-			'css/kendo/kendo.commmon.css',
+			'css/bootstrap.css',
+			'css/bootstrap-responsive.css',
+			'css/kendo/kendo.common.css',
 			'css/kendo/kendo.blueopal.css',
 			'js/jquery-1.7.2.js',
-			'js/common.js',
+			'js/bootstrap.js',
 			'js/kendo/kendo.core.js',
 			'js/kendo/kendo.fx.js',
-			'js/kendo/kendo.treeview.js'
+			'js/kendo/kendo.treeview.js',
+			'js/kendo/kendo.draganddrop.js',
+			'js/kendo/kendo.resizable.js',
+			'js/kendo/kendo.window.js',
+			'js/common.js'
 		);
 
 		$this->addResource($commonDefaultResources);
 		$this->addResource(self::$_actions[$this->_pageAction]);
+
+		SBFactory::Template()->assign("categories", blog_getCategories());
+		SBFactory::Template()->assign("action", $this->_pageAction);
+		SBFactory::Template()->assign("archives", blog_getPostArchives());
+
 		switch ($this->_pageAction) {
 			case 'main':
 				$page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -210,20 +213,31 @@ class SBPage
 
 		sort($this->_loadedResources['css']);
 		$cacheFileName = md5(implode('', $this->_loadedResources['css'])).'.css';
+
+		$old = false;
+
 		if (file_exists('cache/css/'.$cacheFileName)) {
-			return $cacheFileName;
+			foreach($this->_loadedResources['css'] as $css) {
+				if (filemtime('cache/css/'.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$css)) {
+					$old = true;
+					break;
+				}
+
+			}
+			if (!$old)
+				return $cacheFileName;
 		}
 
 		$stylesheet = '';
 
 		foreach($this->_loadedResources['css'] as $css) {
-			if ( file_exists($css) )
-				$stylesheet .= file_get_contents($css);
+			if ( file_exists(BLOG_PUBLIC_ROOT.'/'.$css) )
+				$stylesheet .= file_get_contents(BLOG_PUBLIC_ROOT.'/'.$css);
 			else
 				throw new Exception("Resource file \"$css\" does not exist.");
 		}
 
-		file_put_contents('cache/css/'.$cacheFileName, CssMin::minify($stylesheet));
+		file_put_contents('cache/css/'.$cacheFileName, $stylesheet);
 		$this->_cssfile = $cacheFileName;
 
 		return $cacheFileName;
@@ -234,7 +248,6 @@ class SBPage
 			return $this->_jsfile;
 
 		$javascript = '';
-		sort($this->_loadedResources['js']);
 		$cacheFileName = md5(implode('', $this->_loadedResources['js'])).'.js';
 
 		if (file_exists('cache/js/'.$cacheFileName))
@@ -247,6 +260,7 @@ class SBPage
 				throw new Exception("Resource file \"$js\" does not exist.");
 		}
 
+		require_once BLOG_ROOT.'/libs/Minifier.class.php';
 		file_put_contents('cache/js/'.$cacheFileName, \JShrink\Minifier::minify($javascript));
 		$this->_jsfile = $cacheFileName;
 
@@ -262,7 +276,7 @@ class SBPage
 	private function loadPluginResources() {
 		foreach ($this->_loadedPlugins as $plugins) {
 			if ($plugins->getPluginLocation() == $this->_pageAction)
-				$this->addResource($plugins->getCSSfiles + $plugins->getJSfiles);
+				$this->addResource($plugins->getCSSfiles() + $plugins->getJSfiles());
 		}
 	}
 
