@@ -20,6 +20,7 @@
         {foreach $post.tags as $tag}
             <a href="#">$tag</a>
         {/foreach}
+		</span>
 			<button class="btn btn-primary reply-button">Leave a reply</button>
     </footer>
 </article>
