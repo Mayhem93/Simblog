@@ -10,6 +10,7 @@ The main objectives of this blogging platform are:
 * Visually stunning
 
 **Web Site**: http://www.simblog.org
+**FreeCode**: https://freecode.com/projects/simblog
 
 This project is still in alpha stage. I'm currently in the process of updating
 the template with one I made myself and also cleaning up the code and refactoring
