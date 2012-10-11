@@ -42,24 +42,28 @@ abstract class AJAX {
 		DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 		DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
 		DEFINE('PLUGIN_DIR',realpath(BLOG_PUBLIC_ROOT.'/plugins'));
-		DEFINE('POSTS_DIR',realpath(BLOG_PUBLIC_ROOT."/posts"));
-		DEFINE('COMMENTS_DIR',realpath(BLOG_PUBLIC_ROOT."/comments"));
 		include BLOG_ROOT."/internal/ITrigger.php";
 		require_once BLOG_ROOT."/internal/SPL_autoload.php";
 		SBFactory::PluginManager();
-		
-		ob_start("ob_gzhandler");
-		$this->beforeAction();
-		$this->doAction();
-		header("Content-type: ".$this->mime_type); 
-		
-		echo $this->response;
-		$this->afterAction();
-		
-		ob_end_flush();
-		exit();
+
 	}
-	
+
+    /**
+     * Runs the ajax request.
+     */
+    public function run() {
+        ob_start("ob_gzhandler");
+        $this->beforeAction();
+        $this->doAction();
+        header("Content-type: ".$this->mime_type);
+
+        echo $this->response;
+        $this->afterAction();
+
+        ob_end_flush();
+        exit();
+    }
+
 	/**
 	 * Checks if the incoming connection is made with AJAX (not secure).
 	 * Also checks if the action supplied is valid.
@@ -74,7 +78,6 @@ abstract class AJAX {
 			$_GET['action'] = "";
 		
 		if(!in_array($_GET['action'], $this->actions_allowed)) {
-			header("Content-type: text/plain");
 			echo "Unrecognized action: \"".$_GET['action']."\"";
 			exit();
 		}

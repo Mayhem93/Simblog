@@ -29,10 +29,6 @@ include "../utils.php";
 
 final class AjaxRequest extends AJAX {
 
-	public function __construct($allowed_actions) {
-		parent::__construct($allowed_actions);
-	}
-
 	protected function beforeAction() {}
 	protected function afterAction() {}
 	
@@ -124,7 +120,7 @@ final class AjaxRequest extends AJAX {
 	
 	private function actionAddComment() {
 		
-		blog_addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName']);
+		blog_addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 		$comment = blog_getCommentById(SBFactory::Database()->getLastInsertID());
 		SBFactory::Template()->assign("comment", $comment);
 		

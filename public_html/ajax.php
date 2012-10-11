@@ -35,3 +35,4 @@ $allowed_actions = array(
 );
 
 $ajax = new AjaxRequest($allowed_actions);
+$ajax->run();
