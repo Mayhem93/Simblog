@@ -48,25 +48,28 @@ class SBPage
 	private $_loadedPlugins;
 	private $_loadedResources;
 	private $_pageAction;
+    private $_templateFile;
 
-	public function __construct($action = null) {
+	public function __construct($action = null, $templateFile = 'index.tpl') {
 		$this->_pageAction = isset($action) ? $action : $_GET['action'];
+        $this->_templateFile = $templateFile;
 
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
 		$this->loadPlugins();
 		$this->loadPluginResources();
 
-		if (count($_POST))
-			$this->postAction();
-		else if (isset($_GET['action']))
-			$this->getAction();
-
 	}
 
 	public function run() {
-		try {
-			SBFactory::Template()->display('index.tpl');
+
+        if (count($_POST))
+            $this->postAction();
+        else if (isset($_GET['action']))
+            $this->getAction();
+
+        try {
+			SBFactory::Template()->display($this->_templateFile);
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
 		}
@@ -211,7 +214,7 @@ class SBPage
 		if ($this->_cssfile !== null)
 			return $this->_cssfile;
 
-		sort($this->_loadedResources['css']);
+		//sort($this->_loadedResources['css']);
 		$cacheFileName = md5(implode('', $this->_loadedResources['css'])).'.css';
 
 		$old = false;
@@ -250,8 +253,19 @@ class SBPage
 		$javascript = '';
 		$cacheFileName = md5(implode('', $this->_loadedResources['js'])).'.js';
 
-		if (file_exists('cache/js/'.$cacheFileName))
-			return $cacheFileName;
+        $old = false;
+
+        if (file_exists('cache/js/'.$cacheFileName)) {
+            foreach($this->_loadedResources['js'] as $js) {
+                if (filemtime('cache/js/'.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$js)) {
+                    $old = true;
+                    break;
+                }
+
+            }
+            if (!$old)
+                return $cacheFileName;
+        }
 
 		foreach($this->_loadedResources['js'] as $js) {
 			if ( file_exists($js) )
