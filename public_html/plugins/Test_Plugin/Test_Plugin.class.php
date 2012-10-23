@@ -4,8 +4,9 @@ class Test_Plugin extends SBPlugin implements ITrigger {
 	
 	public function __construct() {
 		parent::__construct("Test_Plugin");
-		$this->jsRequired = PLUGIN_JS_ADMIN_PAGE | PLUGIN_JS_BLOG_PAGES | PLUGIN_JS_PLUGIN_PAGE;
 		SBEventObserver::addEventListener(SBEvent::ON_POST_ADD, $this);
+        //SBFactory::getCurrentPage()->addResource(array(PLUGIN_DIR.'/Test_Plugin/test_style.css'));
+		var_dump(SBFactory::getCurrentPage()->getCSSfile());
 	}
 	
 	public function render() {
@@ -18,7 +19,7 @@ class Test_Plugin extends SBPlugin implements ITrigger {
 	
 	public function trigger(SBEvent $evt) {
 		if($evt->getType() == SBEvent::ON_POST_ADD)
-			notifyMessage("Hello ".$evt->title, MSG_NOTICE);
+			SBFactory::getCurrentPage()->addNotifyMessage("Test", SBPage::MESSAGE_NOTICE);
 	}
 	
 }

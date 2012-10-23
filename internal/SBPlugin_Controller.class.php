@@ -64,13 +64,19 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 	 */
 	private function _populatePluginList() {
 		$dir = new DirectoryIterator(PLUGIN_DIR);
-		foreach ($dir as $d)
-			if(!$d->isDot() && $d->isDir())
-				if($this->_isValidPlugin((string)$d)) {
-					$class = ucfirst((string)$d);
-					$this->plugin_list[(string)$d] = new $class;
-					$this->plugin_keys[] = (string)$d;
+		foreach ($dir as $d) {
+
+			$dirName = (string)$d;
+
+			if(!$d->isDot() && $d->isDir()) {
+				if($this->_isValidPlugin($dirName)) {
+					$class = ucfirst($dirName);
+					$this->plugin_list[$dirName] = new $class;
+					echo $class;
+					$this->plugin_keys[] = $dirName;
 				}
+			}
+		}
 	}
 	
 	/**
@@ -86,19 +92,19 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 		$valid = true;
 		
 		if(!file_exists($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)." does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			SBFactory::getCurrentPage()->addNotifyMessage('Configuration file'.realpath($file_name)." does not exist. The plugin associated with this file has not been loaded.", SBPage::MESSAGE_ERROR);
 			$valid = false;	
 		}
 		if(!is_writable($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)." is not writeable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			SBFactory::getCurrentPage()->addNotifyMessage('Configuration file'.realpath($file_name)." is not writeable. The plugin associated with this file has not been loaded.", SBPage::MESSAGE_ERROR);
 			$valid = false;	
 		}
 		if(!is_readable($file_name)) {
-			notifyMessage('Configuration file'.realpath($file_name)." is not readable. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			SBFactory::getCurrentPage()->addNotifyMessage('Configuration file'.realpath($file_name)." is not readable. The plugin associated with this file has not been loaded.", SBPage::MESSAGE_ERROR);
 			$valid = false;	
 		}
 		if(!is_readable($class_file)) {
-			notifyMessage("Class file for plugin ".$name." is not readable or does not exist. The plugin associated with this file has not been loaded.", MSG_ERROR);
+			SBFactory::getCurrentPage()->addNotifyMessage("Class file for plugin ".$name." is not readable or does not exist. The plugin associated with this file has not been loaded.", SBPage::MESSAGE_ERROR);
 			$valid = false;	
 		}
 		return $valid;

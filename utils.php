@@ -63,18 +63,6 @@ function throwError($text) {
 	exit();
 }
 
-/**
- * 
- * Sets a message so administrators can review errors, notices and warnings.
- * @param string $text Error message.
- * @param int $type MSG_NOTICE, MSG_ERROR, MSG_WARNING.
- * @return void
- */
-
-function notifyMessage($text, $type) {
-	//TODO
-}
-
 function packCSSfiles() {
 	$css_file = fopen(BLOG_PUBLIC_ROOT."/plugins.css","w+");
 

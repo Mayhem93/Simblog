@@ -36,6 +36,7 @@ class SBFactory
 	private static $smarty_instance;
 	private static $settings_instance;
 	private static $plugin_controller_instance;
+    private static $currentPage;
 	
 	/**
 	 * Simblog Database.
@@ -90,5 +91,13 @@ class SBFactory
 			self::$plugin_controller_instance = new SBPlugin_Controller();
 			
 		return self::$plugin_controller_instance;
+	}
+
+	public static function getCurrentPage() {
+		if (!self::$currentPage instanceof SBPage) {
+			self::$currentPage = new SBPage();
+		}
+
+		return self::$currentPage;
 	}
 }

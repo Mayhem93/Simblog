@@ -6,8 +6,12 @@
  * Time: 6:08 PM
  * To change this template use File | Settings | File Templates.
  */
-class SBPage
-{
+class SBPage {
+
+    const MESSAGE_NOTICE = 0;
+    const MESSAGE_WARNING = 1;
+    const MESSAGE_ERROR = 2;
+
 	private static $_actions = array(
 		'main' => array(
 			'css/posts.css'
@@ -49,6 +53,8 @@ class SBPage
 	private $_loadedResources;
 	private $_pageAction;
     private $_templateFile;
+    private $_messagesVisible = true;
+    private $_messages = array();
 
 	public function __construct($action = null, $templateFile = 'index.tpl') {
 		$this->_pageAction = isset($action) ? $action : $_GET['action'];
@@ -57,7 +63,28 @@ class SBPage
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
 		$this->loadPlugins();
-		$this->loadPluginResources();
+
+		if (empty($_POST)) {
+			$commonDefaultResources = array(
+				'css/common.css',
+				'css/bootstrap.css',
+				'css/bootstrap-responsive.css',
+				'css/kendo/kendo.common.css',
+				'css/kendo/kendo.blueopal.css',
+				'js/jquery-1.7.2.js',
+				'js/bootstrap.js',
+				'js/kendo/kendo.core.js',
+				'js/kendo/kendo.fx.js',
+				'js/kendo/kendo.treeview.js',
+				'js/kendo/kendo.draganddrop.js',
+				'js/kendo/kendo.resizable.js',
+				'js/kendo/kendo.window.js',
+				'js/common.js'
+			);
+
+			$this->addResource($commonDefaultResources);
+			$this->addResource(self::$_actions[$this->_pageAction]);
+		}
 
 	}
 
@@ -65,7 +92,7 @@ class SBPage
 
         if (count($_POST))
             $this->postAction();
-        else if (isset($_GET['action']))
+        else
             $this->getAction();
 
         try {
@@ -93,29 +120,11 @@ class SBPage
 	}
 
 	private function getAction() {
-		$commonDefaultResources = array(
-			'css/common.css',
-			'css/bootstrap.css',
-			'css/bootstrap-responsive.css',
-			'css/kendo/kendo.common.css',
-			'css/kendo/kendo.blueopal.css',
-			'js/jquery-1.7.2.js',
-			'js/bootstrap.js',
-			'js/kendo/kendo.core.js',
-			'js/kendo/kendo.fx.js',
-			'js/kendo/kendo.treeview.js',
-			'js/kendo/kendo.draganddrop.js',
-			'js/kendo/kendo.resizable.js',
-			'js/kendo/kendo.window.js',
-			'js/common.js'
-		);
-
-		$this->addResource($commonDefaultResources);
-		$this->addResource(self::$_actions[$this->_pageAction]);
 
 		SBFactory::Template()->assign("categories", blog_getCategories());
 		SBFactory::Template()->assign("action", $this->_pageAction);
 		SBFactory::Template()->assign("archives", blog_getPostArchives());
+        SBFactory::Template()->assign("notify_msg", $this->_messages);
 
 		switch ($this->_pageAction) {
 			case 'main':
@@ -210,6 +219,28 @@ class SBPage
 		}
 	}
 
+    public function addNotifyMessage($message, $severity) {
+        if ($this->_messagesVisible) {
+            $this->_messages[] = array('message' => $message, 'severiy' => $severity);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isNotifyVisible() {
+        return $this->_messagesVisible;
+    }
+
+    public function setNotifyVisiblity($value) {
+        if ($value == true) {
+            $this->_messagesVisible = true;
+        } else {
+            $this->_messagesVisible = false;
+        }
+    }
+
 	public function getCSSfile() {
 		if ($this->_cssfile !== null)
 			return $this->_cssfile;
@@ -285,13 +316,6 @@ class SBPage
 		$this->_loadedPlugins = SBFactory::PluginManager();
 
 		return;
-	}
-
-	private function loadPluginResources() {
-		foreach ($this->_loadedPlugins as $plugins) {
-			if ($plugins->getPluginLocation() == $this->_pageAction)
-				$this->addResource($plugins->getCSSfiles() + $plugins->getJSfiles());
-		}
 	}
 
 	private function isValidAction() {

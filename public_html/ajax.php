@@ -31,7 +31,8 @@ $allowed_actions = array(
 	"logout",
 	"deletePost",
 	"addComment",
-	"deleteComment"
+	"deleteComment",
+    "getTemplate"
 );
 
 $ajax = new AjaxRequest($allowed_actions);

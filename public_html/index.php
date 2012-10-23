@@ -34,11 +34,14 @@ if (!isset($_GET['action']))
 	$_GET['action'] = 'main';
 
 session_start();
+
+$page = SBFactory::getCurrentPage();
+echo memory_get_usage(true);
+
 $eventData = array(
-		"action" => &$_GET['action']);
+	"page" => $page);
 SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_USER_ACCESS));
 
-$page = new SBPage();
 $page->run();
 
 ob_end_flush();

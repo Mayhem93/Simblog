@@ -133,7 +133,7 @@ class SBDatabase extends ORM {
 	/**
 	 * Executes query.
 	 * @param string $query
-	 * @return Associative array with the results.
+	 * @return array an associative with the results.
 	 */
 	public function query($query) {
 		$results = parent::for_table("")->raw_query($query, array())->find_many();
@@ -187,7 +187,7 @@ class SBDatabase extends ORM {
 		}
 		
 		if (func_num_args() == 1) {
-			$result = parent::for_table($table)->find_many();
+			$results = parent::for_table($table)->find_many();
 			
 			return $this->_toArray($results);
 		}
