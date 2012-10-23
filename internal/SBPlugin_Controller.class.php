@@ -72,7 +72,6 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 				if($this->_isValidPlugin($dirName)) {
 					$class = ucfirst($dirName);
 					$this->plugin_list[$dirName] = new $class;
-					echo $class;
 					$this->plugin_keys[] = $dirName;
 				}
 			}

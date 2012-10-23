@@ -62,7 +62,6 @@ class SBPage {
 
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
-		$this->loadPlugins();
 
 		if (empty($_POST)) {
 			$commonDefaultResources = array(
@@ -90,7 +89,9 @@ class SBPage {
 
 	public function run() {
 
-        if (count($_POST))
+		$this->loadPlugins();
+
+		if (count($_POST))
             $this->postAction();
         else
             $this->getAction();

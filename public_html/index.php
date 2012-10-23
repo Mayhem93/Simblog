@@ -36,7 +36,6 @@ if (!isset($_GET['action']))
 session_start();
 
 $page = SBFactory::getCurrentPage();
-echo memory_get_usage(true);
 
 $eventData = array(
 	"page" => $page);
