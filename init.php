@@ -29,20 +29,15 @@ if(!file_exists("../global.conf")) {
 	exit();
 }
 
-error_reporting(-1);
-
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
-DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'\plugins');
-DEFINE('MSG_NOTICE',0);
-DEFINE('MSG_WARNING',1);
-DEFINE('MSG_ERROR', 2);
+DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'/plugins');
 
 require_once BLOG_ROOT."/internal/SPL_autoload.php";
-include 'smarty/Smarty.class.php';
-include BLOG_ROOT.'/utils.php';
-require BLOG_ROOT.'/internal/smarty_functions.php';
-include BLOG_ROOT.'/internal/Posts.php';
-include BLOG_ROOT.'/internal/ITrigger.php';
+require_once 'smarty/Smarty.class.php';
+require_once BLOG_ROOT.'/utils.php';
+require_once BLOG_ROOT.'/internal/smarty_functions.php';
+require_once BLOG_ROOT.'/internal/Posts.php';
+require_once BLOG_ROOT.'/internal/ITrigger.php';
 
 SBEventObserver::populateEvents();

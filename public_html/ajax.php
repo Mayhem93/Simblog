@@ -24,7 +24,7 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require "../internal/AjaxRequest.class.php";
+require_once "../init.php";
 
 $allowed_actions = array(
 	"login",

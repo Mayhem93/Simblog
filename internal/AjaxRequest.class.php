@@ -24,9 +24,6 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-include "../internal/AJAX.class.php";
-include "../utils.php";
-
 final class AjaxRequest extends AJAX {
 
 	protected function beforeAction() {}
@@ -35,36 +32,25 @@ final class AjaxRequest extends AJAX {
 	protected function doAction() {
 		switch($_GET['action']) {
 			case "login":
-				include 'smarty/Smarty.class.php';
-				require_once BLOG_ROOT."/internal/smarty_functions.php";
 
 				$this->actionLogin();
 				break;
 					
 			case "logout":
-				include 'smarty/Smarty.class.php';
-				require BLOG_ROOT.'/internal/smarty_functions.php';
 
 				$this->actionLogout();
 				break;
 			case "deletePost":
-				include 'smarty/Smarty.class.php';
-				require_once BLOG_ROOT."/internal/Posts.php";
-				require BLOG_ROOT.'/internal/smarty_functions.php';
 
 				$this->actionDeletePost();
 				break;
 
 			case "addComment":
-				include 'smarty/Smarty.class.php';
-				require_once BLOG_ROOT."/internal/Posts.php";
-				require BLOG_ROOT.'/internal/smarty_functions.php';
 
 				$this->actionAddComment();
 				break;
 
 			case "deleteComment":
-				require_once BLOG_ROOT."/internal/Posts.php";
 
 				$this->actionDeleteComment();
 				break;
