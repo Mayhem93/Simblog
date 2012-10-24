@@ -15,7 +15,7 @@ body.simblog a:hover {
 .container > header {
 	margin-bottom: 10px;
 	height: 120px;
-	background-image: url('images/header.png');
+	background-image: url('../../css/images/header.png');
 	border-radius: 25px;
 }
 

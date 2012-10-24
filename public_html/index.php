@@ -41,6 +41,6 @@ $eventData = array(
 	"page" => $page);
 SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_USER_ACCESS));
 
-$page->run();
+$page->run()->display();
 
 ob_end_flush();

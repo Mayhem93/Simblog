@@ -32,6 +32,8 @@ if(!file_exists("../global.conf")) {
 DEFINE('BLOG_PUBLIC_ROOT',getcwd());
 DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
 DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'/plugins');
+DEFINE('CSS_CACHE_DIR', BLOG_PUBLIC_ROOT.'/cache/css/');
+DEFINE('JS_CACHE_DIR', BLOG_PUBLIC_ROOT.'/cache/js/');
 
 require_once BLOG_ROOT."/internal/SPL_autoload.php";
 require_once 'smarty/Smarty.class.php';

@@ -89,20 +89,24 @@ class SBPage {
 
 	public function run() {
 
-		$this->loadPlugins();
-
 		if (count($_POST))
             $this->postAction();
         else
             $this->getAction();
 
-        try {
+		$this->loadPlugins();
+
+		return $this;
+	}
+
+	public function display() {
+		try {
 			SBFactory::Template()->display($this->_templateFile);
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
 		}
 
-		return;
+		return ;
 	}
 
 	public function getResources(){
@@ -251,9 +255,9 @@ class SBPage {
 
 		$old = false;
 
-		if (file_exists('cache/css/'.$cacheFileName)) {
+		if (file_exists(CSS_CACHE_DIR.$cacheFileName)) {
 			foreach($this->_loadedResources['css'] as $css) {
-				if (filemtime('cache/css/'.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$css)) {
+				if (filemtime(CSS_CACHE_DIR.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$css)) {
 					$old = true;
 					break;
 				}
@@ -272,7 +276,7 @@ class SBPage {
 				throw new Exception("Resource file \"$css\" does not exist.");
 		}
 
-		file_put_contents('cache/css/'.$cacheFileName, $stylesheet);
+		file_put_contents(CSS_CACHE_DIR.$cacheFileName, $stylesheet);
 		$this->_cssfile = $cacheFileName;
 
 		return $cacheFileName;
@@ -287,9 +291,9 @@ class SBPage {
 
         $old = false;
 
-        if (file_exists('cache/js/'.$cacheFileName)) {
+        if (file_exists(JS_CACHE_DIR.$cacheFileName)) {
             foreach($this->_loadedResources['js'] as $js) {
-                if (filemtime('cache/js/'.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$js)) {
+                if (filemtime(JS_CACHE_DIR.$cacheFileName) < filemtime(BLOG_PUBLIC_ROOT.'/'.$js)) {
                     $old = true;
                     break;
                 }
@@ -307,7 +311,7 @@ class SBPage {
 		}
 
 		require_once BLOG_ROOT.'/libs/Minifier.class.php';
-		file_put_contents('cache/js/'.$cacheFileName, \JShrink\Minifier::minify($javascript));
+		file_put_contents(JS_CACHE_DIR.$cacheFileName, \JShrink\Minifier::minify($javascript));
 		$this->_jsfile = $cacheFileName;
 
 		return $cacheFileName;
