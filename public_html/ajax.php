@@ -24,15 +24,15 @@
 *   along with Simblog.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once "../init.php";
+require_once '../init.php';
 
 $allowed_actions = array(
-	"login",
-	"logout",
-	"deletePost",
-	"addComment",
-	"deleteComment",
-    "getTemplate"
+	'login',
+	'logout',
+	'deletePost',
+	'addComment',
+	'deleteComment',
+    'getTemplate'
 );
 
 $ajax = new AjaxRequest($allowed_actions);

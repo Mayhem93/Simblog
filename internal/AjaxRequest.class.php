@@ -31,28 +31,33 @@ final class AjaxRequest extends AJAX {
 	
 	protected function doAction() {
 		switch($_GET['action']) {
-			case "login":
+			case 'login':
 
 				$this->actionLogin();
 				break;
 					
-			case "logout":
+			case 'logout':
 
 				$this->actionLogout();
 				break;
-			case "deletePost":
+			case 'deletePost':
 
 				$this->actionDeletePost();
 				break;
 
-			case "addComment":
+			case 'addComment':
 
 				$this->actionAddComment();
 				break;
 
-			case "deleteComment":
+			case 'deleteComment':
 
 				$this->actionDeleteComment();
+				break;
+
+			case 'getTemplate':
+
+				$this->getTemplate();
 				break;
 		}
 	}
@@ -60,19 +65,19 @@ final class AjaxRequest extends AJAX {
 	private function actionLogin() {
 		session_start();
 		
-		$admin_username = SBFactory::Settings()->getSetting("admin_username");
-		$admin_password = SBFactory::Settings()->getSetting("admin_password");
+		$admin_username = SBFactory::Settings()->getSetting('admin_username');
+		$admin_password = SBFactory::Settings()->getSetting('admin_password');
 		
 		if(($_POST['username'] == $admin_username) && ($_POST['password'] == $admin_password)) {
 			$eventData = array(
-					"username" => $admin_username,
-					"password" => $admin_password);
+					'username' => $admin_username,
+					'password' => $admin_password);
 			
 			SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_ADMIN_LOGIN));
 			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
 			SBFactory::Template()->assign('simblog_conf', SBFactory::Settings()->getAll());
 			$this->response = SBFactory::Template()->fetch('bits/admin_box.tpl');
-			$this->setMimeType("text/html");
+			$this->setMimeType('text/html');
 		}
 		else
 			setHTTP(HTTP_FORBIDDEN);
@@ -86,7 +91,7 @@ final class AjaxRequest extends AJAX {
 			unset($_SESSION[$_SERVER['REMOTE_ADDR']]);
 			$this->response = SBFactory::Template()->fetch('bits/admin_login.tpl');
 			session_regenerate_id(true);
-			$this->setMimeType("text/html");
+			$this->setMimeType('text/html');
 		}
 	}
 	
@@ -96,7 +101,7 @@ final class AjaxRequest extends AJAX {
 		if(!smarty_isAdminSession())
 			setHTTP(HTTP_UNAUTHORIZED);
 		
-		$this->response = blog_deletePost($_POST['id']) ? "1" : "0";
+		$this->response = blog_deletePost($_POST['id']) ? '1' : '0';
 	}
 	
 	private function actionDeleteComment() {
@@ -108,9 +113,19 @@ final class AjaxRequest extends AJAX {
 		
 		blog_addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 		$comment = blog_getCommentById(SBFactory::Database()->getLastInsertID());
-		SBFactory::Template()->assign("comment", $comment);
+		SBFactory::Template()->assign('comment', $comment);
 		
-		$this->setMimeType("text/html");
-		$this->response = SBFactory::Template()->fetch("bits/comment.tpl");
+		$this->setMimeType('text/html');
+		$this->response = SBFactory::Template()->fetch('bits/comment.tpl');
+	}
+
+	private function getTemplate() {
+		$this->setMimeType('text/html');
+
+		foreach($_GET['templateData'] as $key => $value) {
+			SBFactory::Template()->assign($key, $value);
+		}
+
+		$this->response = SBFactory::Template()->fetch($_GET['template']);
 	}
 }
