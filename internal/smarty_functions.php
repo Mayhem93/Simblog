@@ -13,9 +13,3 @@ function smarty_isLastPage($page_number) {
 					SBFactory::Settings()->getSetting("no_posts_per_page"));
 	return ($total_pages == $page_number);
 }
-
-function smarty_prepareDisplayContent($string) {
-	return removeBreaksFromLists(newline2br($string));
-}
-
-SBFactory::Template()->registerPlugin("modifier", "prepare", "smarty_prepareDisplayContent");

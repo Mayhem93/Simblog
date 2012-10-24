@@ -13,7 +13,7 @@
         </p>
     </header>
     <div class="postBody">
-        {$post.content|prepare }
+        {$post.content }
     </div>
     <footer>
         <span class="tags">Tags:
