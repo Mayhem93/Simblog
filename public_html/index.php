@@ -28,19 +28,14 @@
 require_once '../init.php';
 
 ob_start('ob_gzhandler');
-header("Content-type: text/html; charset=utf-8");
+header('Content-type: text/html; charset=utf-8');
 
 if (!isset($_GET['action']))
 	$_GET['action'] = 'main';
 
-session_start();
-
+SBFactory::getCurrentUser();
 $page = SBFactory::getCurrentPage();
-
-$eventData = array(
-	"page" => $page);
-SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_USER_ACCESS));
-
+SBEventObserver::fire(new SBEvent(array(), SBEvent::ON_USER_ACCESS));
 $page->run()->display();
 
 ob_end_flush();

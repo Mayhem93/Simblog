@@ -37,6 +37,8 @@ class SBFactory
 	private static $settings_instance;
 	private static $plugin_controller_instance;
     private static $currentPage;
+	private static $stateManager;
+	private static $currentUser;
 	
 	/**
 	 * Simblog Database.
@@ -99,5 +101,21 @@ class SBFactory
 		}
 
 		return self::$currentPage;
+	}
+
+	public static function getStateManager() {
+		if (!self::$stateManager instanceof SBClientStateManager) {
+			self::$stateManager = new SBClientStateManager();
+		}
+
+		return self::$stateManager;
+	}
+
+	public static function getCurrentUser() {
+		if (!self::$currentUser instanceof SBUser) {
+			self::$currentUser = new SBUser();
+		}
+
+		return self::$currentUser;
 	}
 }

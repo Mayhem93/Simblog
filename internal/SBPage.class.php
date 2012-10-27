@@ -195,7 +195,7 @@ class SBPage {
 		switch ($this->_pageAction) {
 			case 'post':
 
-				blog_addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
+				SBFactory::getCurrentUser()->addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 				header("Location: /?action=post&id=" . $_GET['post_id']);
 				exit();
 
@@ -206,7 +206,7 @@ class SBPage {
 				//Hardcoded -- needs to go !
 				$category = (!isset($_POST['category'])) ? "" : $_POST['category'];
 
-				blog_addPost($_POST['title'], $_POST['content'], $category, $pinned);
+				SBFactory::getCurrentUser()->addPost($_POST['title'], $_POST['content'], $category, $pinned);
 				redirectMainPage();
 
 				break;
@@ -217,7 +217,7 @@ class SBPage {
 				$title = $_POST['post_title'];
 				$category = ($_POST['category'] == "no categories available") ? "" : $_POST['category'];
 
-				blog_modifyPost($post_id, $title, $content, $category);
+				SBFactory::getCurrentUser()->modifyPost($post_id, $title, $content, $category);
 				redirectMainPage();
 
 				break;

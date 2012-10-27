@@ -63,55 +63,42 @@ final class AjaxRequest extends AJAX {
 	}
 	
 	private function actionLogin() {
-		session_start();
-		
-		$admin_username = SBFactory::Settings()->getSetting('admin_username');
-		$admin_password = SBFactory::Settings()->getSetting('admin_password');
-		
-		if(($_POST['username'] == $admin_username) && ($_POST['password'] == $admin_password)) {
-			$eventData = array(
-					'username' => $admin_username,
-					'password' => $admin_password);
+
+		if(SBFactory::getCurrentUser()->adminLogIn($_POST['username'], $_POST['password'])) {
+			$eventData = array();
 			
 			SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_ADMIN_LOGIN));
-			$_SESSION[$_SERVER['REMOTE_ADDR']]['admin'] = true;
 			SBFactory::Template()->assign('simblog_conf', SBFactory::Settings()->getAll());
 			$this->response = SBFactory::Template()->fetch('bits/admin_box.tpl');
 			$this->setMimeType('text/html');
 		}
-		else
+		else {
 			setHTTP(HTTP_FORBIDDEN);
+		}
 	}
 	
 	private function actionLogout() {
-		session_start();
 		
-		if(smarty_isAdminSession()) {
+		if(SBFactory::getCurrentUser()->isAdmin()) {
 			SBEventObserver::fire(new SBEvent(array(), SBEvent::ON_ADMIN_LOGOUT));
-			unset($_SESSION[$_SERVER['REMOTE_ADDR']]);
 			$this->response = SBFactory::Template()->fetch('bits/admin_login.tpl');
-			session_regenerate_id(true);
 			$this->setMimeType('text/html');
 		}
 	}
 	
 	private function actionDeletePost() {
-		session_start();
 		
-		if(!smarty_isAdminSession())
-			setHTTP(HTTP_UNAUTHORIZED);
-		
-		$this->response = blog_deletePost($_POST['id']) ? '1' : '0';
+		$this->response = SBFactory::getCurrentUser()->deletePost($_POST['id']) ? '1' : '0';
 	}
 	
 	private function actionDeleteComment() {
 		
-		$this->response = blog_deleteComment($_POST['cid']);
+		$this->response = SBFactory::getCurrentUser()->deleteComment($_POST['cid']);
 	}
 	
 	private function actionAddComment() {
-		
-		blog_addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
+
+		SBFactory::getCurrentUser()->addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 		$comment = blog_getCommentById(SBFactory::Database()->getLastInsertID());
 		SBFactory::Template()->assign('comment', $comment);
 		
