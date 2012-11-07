@@ -109,8 +109,10 @@ final class AjaxRequest extends AJAX {
 	private function getTemplate() {
 		$this->setMimeType('text/html');
 
-		foreach($_GET['templateData'] as $key => $value) {
-			SBFactory::Template()->assign($key, $value);
+		if (isset($_GET['templateData'])) {
+			foreach($_GET['templateData'] as $key => $value) {
+				SBFactory::Template()->assign($key, $value);
+			}
 		}
 
 		$this->response = SBFactory::Template()->fetch($_GET['template']);

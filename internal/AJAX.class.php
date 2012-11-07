@@ -38,14 +38,10 @@ abstract class AJAX {
 	public function __construct(array $actions) {
 		$this->actions_allowed = $actions;
 		$this->checkHXR(); 
-		
-		DEFINE('BLOG_PUBLIC_ROOT',getcwd());
-		DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
-		DEFINE('PLUGIN_DIR',realpath(BLOG_PUBLIC_ROOT.'/plugins'));
-		include BLOG_ROOT."/internal/ITrigger.php";
-		require_once BLOG_ROOT."/internal/SPL_autoload.php";
-		SBFactory::PluginManager();
 
+		require_once '../init.php';
+
+		SBFactory::PluginManager();
 	}
 
     /**

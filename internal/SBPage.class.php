@@ -50,7 +50,7 @@ class SBPage {
 	 * @var SBPlugin_Controller
 	 */
 	private $_loadedPlugins;
-	private $_loadedResources;
+	private $_loadedResources = array('css' => array(), 'js' => array());
 	private $_pageAction;
     private $_templateFile;
     private $_messagesVisible = true;
@@ -115,9 +115,9 @@ class SBPage {
 
 	public function addResource(array $resources) {
 		foreach ($resources as $file) {
-			if (substr($file, -4) == '.css')
+			if (substr($file, -4) == '.css' && !in_array($file, $this->_loadedResources['css']))
 				$this->_loadedResources['css'][] = $file;
-			else if (substr($file, -3) == '.js')
+			else if (substr($file, -3) == '.js' && !in_array($file, $this->_loadedResources['js']))
 				$this->_loadedResources['js'][] = $file;
 		}
 
@@ -317,6 +317,10 @@ class SBPage {
 		return $cacheFileName;
 	}
 
+	public function getActionName() {
+		return $this->_pageAction;
+	}
+
 	private function loadPlugins() {
 		$this->_loadedPlugins = SBFactory::PluginManager();
 
@@ -326,4 +330,5 @@ class SBPage {
 	private function isValidAction() {
 		return isset(self::$_actions[$this->_pageAction]);
 	}
+
 }
