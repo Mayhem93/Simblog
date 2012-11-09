@@ -98,7 +98,7 @@ class SBUser {
 			'utime' => time());
 		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_ADD));
 
-		return $database->insertRow(TABLE_PREFIX.'post', $row);
+		return $database->insertRow(DB_TABLE_PREFIX.'post', $row);
 	}
 
 	/**
@@ -118,7 +118,7 @@ class SBUser {
 
 		$filter = array('id' => $id);
 
-		return $database->deleteRows(TABLE_PREFIX.'post', $filter);
+		return $database->deleteRows(DB_TABLE_PREFIX.'post', $filter);
 	}
 
 	/**
@@ -161,7 +161,7 @@ class SBUser {
 		if ($tags)
 			$update_set['tags'] = $tags;
 
-		return $database->updateRows(TABLE_PREFIX.'post', $filter, $update_set);
+		return $database->updateRows(DB_TABLE_PREFIX.'post', $filter, $update_set);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class SBUser {
 		else
 			$update_set['pinned'] = '1';
 
-		return $database->updateRows(TABLE_PREFIX.'post', $filter, $update_set);
+		return $database->updateRows(DB_TABLE_PREFIX.'post', $filter, $update_set);
 	}
 
 	/**
@@ -218,7 +218,7 @@ class SBUser {
 			'utime'	=> time()
 		);
 
-		return $database->insertRow(TABLE_PREFIX.'comment', $row);
+		return $database->insertRow(DB_TABLE_PREFIX.'comment', $row);
 	}
 
 	/**
@@ -236,6 +236,6 @@ class SBUser {
 		SBEventObserver::fire(new SBEvent(array('id' => $commentid), SBEvent::ON_COMMENT_DELETE));
 		$filter = array('id' => $commentid);
 
-		return $database->deleteRows(TABLE_PREFIX.'comment', $filter);
+		return $database->deleteRows(DB_TABLE_PREFIX.'comment', $filter);
 	}
 }

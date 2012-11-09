@@ -16,7 +16,7 @@ class SBPageTab {
 	private $_dirty			= false;
 
 	public function __construct($id) {
-		$result = SBFactory::Database()->selectRows(TABLE_PREFIX.'page', '*', array('id' => $id));
+		$result = SBFactory::Database()->selectRows(DB_TABLE_PREFIX.'page', '*', array('id' => $id));
 		if (empty($result)) {
 			throw new Exception('PageTab with id '.$id.' does not exist.');
 		}
@@ -33,7 +33,7 @@ class SBPageTab {
 			$updateSet = array('name' => $this->_name, 'description' => $this->_description, 'parent' => $this->_parent,
 				'content' => $this->_content);
 
-			$result = SBFactory::Database()->updateRows(TABLE_PREFIX.'page', array('id' => $this->_id), $updateSet);
+			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'page', array('id' => $this->_id), $updateSet);
 
 			if ($result) {
 				$this->_dirty = false;
@@ -43,6 +43,27 @@ class SBPageTab {
 		}
 
 		return false;
+	}
+
+	public static function createPageTab($name, $content, $description = '', $parent = null) {
+		$insertArray = array('name' => $name, 'content' => $content);
+
+		if ($description) {
+			$insertArray['description'] = $description;
+		}
+		if ($parent) {
+			$insertArray['parent'] = $parent;
+		}
+
+		$result = SBFactory::Database()->insertRow(DB_TABLE_PREFIX.'page', $insertArray);
+		if ($result === false)
+			return false;
+
+		return SBFactory::Database()->getLastInsertID();
+	}
+
+	public static function deletePageTab($id) {
+		return SBFactory::Database()->deleteRows(DB_TABLE_PREFIX.'page', array('id' => $id));
 	}
 
 	public function __set($var, $value) {

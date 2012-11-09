@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}page` (
 	`name` TINYTEXT NOT NULL,
 	`content` MEDIUMTEXT NOT NULL,
 	`description` TINYTEXT NULL DEFAULT NULL,
+	`parent` INT(10) UNSIGNED NULL DEFAULT NULL,
 	PRIMARY KEY (`id`)
 )
 COLLATE='utf8_general_ci'

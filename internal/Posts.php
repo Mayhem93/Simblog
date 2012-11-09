@@ -33,7 +33,7 @@ function blog_getPosts($page=1) {
 	$database = SBFactory::Database();
 
 	$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
-	$results = $database->selectRows(TABLE_PREFIX.'post', "*", null, null, 'DESC', 'id', ($page-1)*$nr_posts, $nr_posts);
+	$results = $database->selectRows(DB_TABLE_PREFIX.'post', "*", null, null, 'DESC', 'id', ($page-1)*$nr_posts, $nr_posts);
 	if (!$results)
 		return false;
 	$results['tags'] = explode(' ', $results['tags']);
@@ -52,7 +52,7 @@ function blog_getPostsByCategory($category, $page=1) {
 	$nr_posts = SBFactory::Settings()->getSetting("no_posts_per_page");
 
 	$where = array('category' => $category);
-	return $database->selectRows(TABLE_PREFIX.'post', "*", $where, null, 'DESC', 'id', ($page-1)*$nr_posts, $nr_posts);
+	return $database->selectRows(DB_TABLE_PREFIX.'post', "*", $where, null, 'DESC', 'id', ($page-1)*$nr_posts, $nr_posts);
 }
 
 /**
@@ -64,7 +64,7 @@ function blog_getPost($id) {
 	$database = SBFactory::Database();
 
 	$filter = array("id" => $id);
-	$result = $database->selectRows(TABLE_PREFIX."post", "*", $filter);
+	$result = $database->selectRows(DB_TABLE_PREFIX."post", "*", $filter);
 
 	return $result[0];
 }
@@ -77,7 +77,7 @@ function blog_getPinnedPosts() {
 	$database = SBFactory::Database();
 
 	$filter = array("pinned" => 1);
-	return $database->selectRows(TABLE_PREFIX."post", "*", $filter);
+	return $database->selectRows(DB_TABLE_PREFIX."post", "*", $filter);
 }
 /**
  * See if a post is pinned.
@@ -87,7 +87,7 @@ function blog_getPinnedPosts() {
 function blog_postIsPinned($id) {
 	$database = SBFactory::Database();
 
-	$query = "SELECT `pinned` FROM `".TABLE_PREFIX."post` WHERE `id` = '$id';";
+	$query = "SELECT `pinned` FROM `".DB_TABLE_PREFIX."post` WHERE `id` = '$id';";
 
 	$result = $database->querySingleValue($query);
 	if($result == "1")
@@ -103,7 +103,7 @@ function blog_postIsPinned($id) {
 function blog_getCategories() {
 	$database = SBFactory::Database();
 
-	$result = $database->selectRows(TABLE_PREFIX."category", "*");
+	$result = $database->selectRows(DB_TABLE_PREFIX."category", "*");
 	return count($result) ? $result : false;
 }
 
@@ -128,7 +128,7 @@ function blog_getComments($postid) {
 function blog_getCommentById($id) {
 	$database = SBFactory::Database();
 	$where = array("id" => $id);
-	$result = $database->selectRows(TABLE_PREFIX."comment", "*", $where);
+	$result = $database->selectRows(DB_TABLE_PREFIX."comment", "*", $where);
 	
 	return $result[0];
 }
@@ -142,7 +142,7 @@ function blog_getCommentsNumber($postid) {
 	$database = SBFactory::Database();
 
 	$filter = array("post_id" => $postid);
-	return $database->countRows(TABLE_PREFIX."comment", $filter);
+	return $database->countRows(DB_TABLE_PREFIX."comment", $filter);
 }
 
 /**
@@ -153,7 +153,7 @@ function blog_getPostArchives() {
 	$database = SBFactory::Database();
 	
 	$columns = array("id","title", "utime");
-	$archives = $database->selectRows(TABLE_PREFIX."post", $columns, 
+	$archives = $database->selectRows(DB_TABLE_PREFIX."post", $columns,
 			null, null, "DESC", "utime");
 	
 	$result = array();

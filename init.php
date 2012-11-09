@@ -37,7 +37,7 @@ DEFINE('JS_CACHE_DIR', BLOG_PUBLIC_ROOT.'/cache/js/');
 
 require_once BLOG_ROOT."/internal/SPL_autoload.php";
 
-DEFINE('TABLE_PREFIX', SBFactory::Settings()->getSetting('tbl_prefix'));
+DEFINE('DB_TABLE_PREFIX', SBFactory::Settings()->getSetting('tbl_prefix'));
 
 require_once 'smarty/Smarty.class.php';
 require_once BLOG_ROOT.'/utils.php';
