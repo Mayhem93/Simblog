@@ -33,3 +33,13 @@ CREATE TABLE IF NOT EXISTS `{prefix}category` (
 )
 COLLATE='utf8_general_ci'
 ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `{prefix}page` (
+	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` TINYTEXT NOT NULL,
+	`content` MEDIUMTEXT NOT NULL,
+	`description` TINYTEXT NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=MyISAM;
