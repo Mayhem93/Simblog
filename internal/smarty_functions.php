@@ -1,5 +1,9 @@
 <?php
 
+function smarty_isAdmin() {
+	return SBFactory::getCurrentUser()->isAdmin();
+}
+
 function smarty_getSetting($setting) {
 	return SBFactory::Settings()->getSetting($setting);
 }

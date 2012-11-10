@@ -8,7 +8,7 @@
 	<script type="application/javascript" src="cache/js/{$jsFile}"></script>
 </head>
 <body class="simblog">
-{if smarty_isAdminSession()}
+{if smarty_isAdmin()}
 	{include file="bits/admin_box.tpl"}
 {/if}
 <div class="container mainBody">
