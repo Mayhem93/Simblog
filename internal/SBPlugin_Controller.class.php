@@ -43,7 +43,7 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 	 */
 	public static function enablePlugin($name) {
 		$c = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
-		$c->set(null, disabled, false);
+		$c->set(null, 'disabled', false);
 		$c->save();
 	}
 	/**
@@ -54,7 +54,7 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 	 */
 	public static function disablePlugin($name) {
 		$c = new Config_Lite(PLUGIN_DIR.'/'.$name.'/plugin.conf');
-		$c->set(null, disabled, true);
+		$c->set(null, 'disabled', true);
 		$c->save();
 	}
 	/**

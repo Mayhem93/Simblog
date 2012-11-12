@@ -78,27 +78,7 @@ class SBUser {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
 
-		$database = SBFactory::Database();
-
-		$row = array(
-			'title' => $title,
-			'pinned' => $pinned ? 1 : 0,
-			'category' => $category,
-			'tags' => $tags,
-			'content' => $content,
-			'utime' => time()
-		);
-
-		$eventData = array(
-			'title' => &$title,
-			'content' => &$content,
-			'category' => &$category,
-			'tags' => &$tags,
-			'pinned' => &$pinned,
-			'utime' => time());
-		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_ADD));
-
-		return $database->insertRow(DB_TABLE_PREFIX.'post', $row);
+		return SBPost::createPost($title, $content, $category, $tags, $pinned = false);
 	}
 
 	/**
@@ -111,14 +91,7 @@ class SBUser {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
 
-		$database = SBFactory::Database();
-
-		$eventData = array('id' => $id);
-		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_DELETE));
-
-		$filter = array('id' => $id);
-
-		return $database->deleteRows(DB_TABLE_PREFIX.'post', $filter);
+		return SBPost::deletePost($id);
 	}
 
 	/**
@@ -135,11 +108,6 @@ class SBUser {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
 
-		$database = SBFactory::Database();
-
-		if ($title == null && $content == null && $category == null)
-			return false;
-
 		$eventData = array(
 			'id' => $id,
 			'title' => &$title,
@@ -149,26 +117,24 @@ class SBUser {
 		);
 		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_MOD));
 
-		$filter = array('id' => $id);
-		$update_set = array();
-
+		$post = new SBPost($id);
 		if ($title)
-			$update_set['title'] = $title;
+			$post->title = $title;
 		if ($content)
-			$update_set['content'] = $content;
+			$post->content = $content;
 		if ($category)
-			$update_set['category'] = $category;
+			$post->category = $category;
 		if ($tags)
-			$update_set['tags'] = $tags;
+			$post->tags = $tags;
 
-		return $database->updateRows(DB_TABLE_PREFIX.'post', $filter, $update_set);
+		return $post->commit();
 	}
 
-	/**
+/*	/**
 	 * Pins a post. Pinned posts show up first on the blog.
 	 * @param int $id
 	 * @return boolean true if successful
-	 */
+
 	public function togglePinPost($id) {
 		if (!$this->_isAdmin) {
 			setHTTP(HTTP_UNAUTHORIZED);
@@ -177,16 +143,8 @@ class SBUser {
 		$database = SBFactory::Database();
 		//TODO event on toggle pinned post
 
-		$filter = array('id' => $id);
-		$update_set = array();
-
-		if (blog_postIsPinned($id))
-			$update_set['pinned'] = '0';
-		else
-			$update_set['pinned'] = '1';
-
-		return $database->updateRows(DB_TABLE_PREFIX.'post', $filter, $update_set);
-	}
+		return $database->query('UPDATE post SET pinned = !pinned WHERE id = '.$id.';');
+	}*/
 
 	/**
 	 * Adds a comment to the post ID.
@@ -201,24 +159,7 @@ class SBUser {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
 
-		$database = SBFactory::Database();
-		$eventData = array(
-			'post_id' => $postid,
-			'content' => &$content,
-			'author' => &$author,
-			'email' => &$email,
-			'utime' => time());
-		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_USER_COMMENT));
-		$row = array(
-			'post_id' => $postid,
-			'author'	=>	$author,
-			'email' => $email,
-			'ip'	=> $_SERVER['REMOTE_ADDR'],
-			'content'	=> $content,	//TODO verify content by using DOM extension
-			'utime'	=> time()
-		);
-
-		return $database->insertRow(DB_TABLE_PREFIX.'comment', $row);
+		return SBPost::addComment($postid, $author, $email, $content);
 	}
 
 	/**
@@ -231,11 +172,6 @@ class SBUser {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
 
-		$database = SBFactory::Database();
-
-		SBEventObserver::fire(new SBEvent(array('id' => $commentid), SBEvent::ON_COMMENT_DELETE));
-		$filter = array('id' => $commentid);
-
-		return $database->deleteRows(DB_TABLE_PREFIX.'comment', $filter);
+		return SBPost::deleteComment($commentid);
 	}
 }

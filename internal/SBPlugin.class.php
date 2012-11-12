@@ -94,10 +94,6 @@ abstract class SBPlugin
 	public function getJSfiles() {
 		return $this->js_files;
 	}
-	
-	public function getJSreq() {
-		return $this->jsRequired;
-	}
 
     public function getPluginLocation() {
         return $this->pluginLocation;

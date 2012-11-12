@@ -63,15 +63,6 @@ function throwError($text) {
 	exit();
 }
 
-function packCSSfiles() {
-	$css_file = fopen(BLOG_PUBLIC_ROOT."/plugins.css","w+");
-
-	foreach(SBFactory::PluginManager() as $name => $plugin)
-		fwrite($css_file, file_get_contents(PLUGIN_DIR."/".$name."/".$plugin->getCSSfile()));
-	
-	fclose($css_file);
-}
-
 function containsBit($value, $mask) {
 	return $mask&$value ? true : false;
 }

@@ -99,7 +99,7 @@ final class AjaxRequest extends AJAX {
 	private function actionAddComment() {
 
 		SBFactory::getCurrentUser()->addComment($_POST['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
-		$comment = blog_getCommentById(SBFactory::Database()->getLastInsertID());
+		$comment = SBPost::getCommentById(SBFactory::Database()->getLastInsertID());
 		SBFactory::Template()->assign('comment', $comment);
 		
 		$this->setMimeType('text/html');

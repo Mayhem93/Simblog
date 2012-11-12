@@ -42,7 +42,6 @@ DEFINE('DB_TABLE_PREFIX', SBFactory::Settings()->getSetting('tbl_prefix'));
 require_once 'smarty/Smarty.class.php';
 require_once BLOG_ROOT.'/utils.php';
 require_once BLOG_ROOT.'/internal/smarty_functions.php';
-require_once BLOG_ROOT.'/internal/Posts.php';
 require_once BLOG_ROOT.'/internal/ITrigger.php';
 
 SBEventObserver::populateEvents();

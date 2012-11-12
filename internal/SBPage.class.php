@@ -126,16 +126,16 @@ class SBPage {
 
 	private function getAction() {
 
-		SBFactory::Template()->assign("categories", blog_getCategories());
+		SBFactory::Template()->assign("categories", SBPost::getCategoriesList());
 		SBFactory::Template()->assign("action", $this->_pageAction);
-		SBFactory::Template()->assign("archives", blog_getPostArchives());
+		SBFactory::Template()->assign("archives", SBPost::getPostArchives());
         SBFactory::Template()->assign("notify_msg", $this->_messages);
 
 		switch ($this->_pageAction) {
 			case 'main':
 				$page = isset($_GET['page']) ? $_GET['page'] : 1;
 
-				SBFactory::Template()->assign("blog_posts", blog_getPosts($page));
+				SBFactory::Template()->assign("blog_posts", SBPost::getPostsList($page));
 				SBFactory::Template()->assign("page", $page);
 				SBFactory::Template()->assign("page_title", SBFactory::Settings()->getSetting("blog_title"));
 				SBFactory::Template()->assign("page_template", "main.tpl");
@@ -143,8 +143,8 @@ class SBPage {
 				break;
 
 			case 'post':
-				$post = blog_getPost($_GET['id']);
-				$comments = blog_getComments($_GET['id']);
+				$post = new SBPost($_GET['id']);
+				$comments = $post->getComments();
 
 				SBFactory::Template()->assign('post', $post);
 				SBFactory::Template()->assign('commentCount', count($comments));
@@ -158,7 +158,7 @@ class SBPage {
 			case 'category':
 				$category = urldecode($_GET['name']);
 				$page = isset($_GET['page']) ? $_GET['page'] : 1;
-				$post = blog_getPostsByCategory($category, $page);
+				$post = SBPost::getPostsList($page, $category);
 
 				SBFactory::Template()->assign("blog_posts", $post);
 				SBFactory::Template()->assign("page", $page);
@@ -176,7 +176,7 @@ class SBPage {
 				break;
 
 			case 'modifyPost':
-				$post = blog_getPost($_GET['id']);
+				$post = new SBPost($_GET['id']);
 
 				SBFactory::Template()->assign("post", $post);
 				SBFactory::Template()->assign("page_title", "Modify Post - " . SBFactory::Settings()->getSetting("blog_title"));
@@ -202,11 +202,11 @@ class SBPage {
 				break;
 
 			case 'addpost':
-				$pinned = isset($_POST['pinned']);
-				//Hardcoded -- needs to go !
+				$pinned = isset($_POST['pinned']) ? 1 : 0;
+				$tags = isset($_POST['tags']) ? $_POST['tags'] : '';
 				$category = (!isset($_POST['category'])) ? "" : $_POST['category'];
 
-				SBFactory::getCurrentUser()->addPost($_POST['title'], $_POST['content'], $category, $pinned);
+				SBFactory::getCurrentUser()->addPost($_POST['title'], $_POST['content'], $category, $tags, $pinned);
 				redirectMainPage();
 
 				break;
