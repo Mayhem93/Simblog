@@ -44,3 +44,11 @@ CREATE TABLE IF NOT EXISTS `{prefix}page` (
 )
 COLLATE='utf8_general_ci'
 ENGINE=MyISAM;
+
+CREATE TABLE IF NOT EXISTS `{prefix}skin_content` (
+	`zone_id` INT(2) UNSIGNED NOT NULL,
+	`content` TEXT NULL,
+	PRIMARY KEY (`zone_id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=MyISAM;

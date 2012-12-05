@@ -29,9 +29,10 @@ if(!file_exists("../global.conf")) {
 	exit();
 }
 
-DEFINE('BLOG_PUBLIC_ROOT',getcwd());
-DEFINE('BLOG_ROOT',realpath(BLOG_PUBLIC_ROOT.'/..'));
-DEFINE('PLUGIN_DIR',BLOG_PUBLIC_ROOT.'/plugins');
+DEFINE('BLOG_PUBLIC_ROOT', getcwd());
+DEFINE('BLOG_ROOT', realpath(BLOG_PUBLIC_ROOT.'/..'));
+DEFINE('PLUGIN_DIR', BLOG_PUBLIC_ROOT.'/plugins');
+DEFINE('SKINS_DIR', BLOG_PUBLIC_ROOT.'/skins');
 DEFINE('CSS_CACHE_DIR', BLOG_PUBLIC_ROOT.'/cache/css/');
 DEFINE('JS_CACHE_DIR', BLOG_PUBLIC_ROOT.'/cache/js/');
 

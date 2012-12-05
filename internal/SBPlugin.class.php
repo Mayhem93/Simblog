@@ -99,18 +99,6 @@ abstract class SBPlugin
         return $this->pluginLocation;
     }
 	
-	/**
-	 * 
-	 * The rendering of the plugin on the plugin page.
-	 */
-	abstract public function render();
-	
-	/**
-	 * 
-	 * The admin page (configuration).
-	 */
-	abstract public function admin();
-	
 	public function __toString() {
 		return $this->name;
 	}

@@ -1,6 +1,6 @@
 <?php
 
-class Test_Plugin extends SBPlugin implements ITrigger {
+class Test_Plugin extends SBPlugin implements ITrigger, IRenderable {
 	
 	public function __construct() {
 		parent::__construct("Test_Plugin");
@@ -8,12 +8,8 @@ class Test_Plugin extends SBPlugin implements ITrigger {
         SBFactory::getCurrentPage()->addResource(array('plugins\Test_Plugin\test_style.css'));
 	}
 	
-	public function render() {
-		
-	}
-	
-	public function admin() {
-		
+	public function getRenderContent($contentVars=null) {
+		return "Notify message added.";
 	}
 	
 	public function trigger(SBEvent $evt) {

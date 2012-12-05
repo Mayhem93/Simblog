@@ -132,7 +132,11 @@ class SBPlugin_Controller implements Iterator, ArrayAccess, Countable
 	public function offsetExists($offset) {
 		return isset($this->plugin_list[$offset]);
 	}
-	
+
+	/**
+	 * @param string $offset
+	 * @return SBPlugin
+	 */
 	public function offsetGet($offset) {
 		return $this->plugin_list[$offset];
 	}
