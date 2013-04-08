@@ -15,6 +15,7 @@ class SBZone implements IteratorAggregate {
 
 	private $_id = '';
 	private $_role = null;
+	private $_tpl_path = '';
 
 	/**
 	 * @var SBBlock[] Blocks of content found in this zone.
@@ -24,18 +25,28 @@ class SBZone implements IteratorAggregate {
 	public function __construct($id, $role, $tpl_path) {
 		$this->_id = $id;
 		$this->_role = $role;
+		$this->_tpl_path = $tpl_path;
 	}
 
 	public function addBlock(SBBlock $block) {
+		if ($this->_role != self::ROLE_PANEL)
+			return;
+
 		$name = (string)$block;
 
-		if (empty($this->_blocks)) {
+		if (!isset($this->_blocks[$name])) {
 			$this->_blocks[$name] = $block;
+
+			return true;
 		}
 
+		return false;
 	}
 
 	public function removeBlock(SBBlock $block) {
+		if ($this->_role != self::ROLE_PANEL)
+			return;
+
 		$name = (string)$block;
 
 		if (isset($this->_blocks[$name])) {
@@ -49,6 +60,14 @@ class SBZone implements IteratorAggregate {
 
 	public function getID() {
 		return $this->_id;
+	}
+
+	public function getRole() {
+		return $this->_role;
+	}
+
+	public function getTplPath() {
+		return $this->_tpl_path;
 	}
 
 	public function getIterator() {

@@ -13,13 +13,8 @@ class SBPage {
     const MESSAGE_ERROR = 2;
 
 	private static $_actions = array(
-		'main' => array(
-			'css/posts.css'
-		),
-		'post' => array(
-			'css/posts.css',
-			'css/comments.css'
-		),
+		'main' => array(),
+		'post' => array(),
 		'category' => array(),
 		'dashboard' => array(),
 		'addpost' => array(
@@ -43,6 +38,20 @@ class SBPage {
 		)
 	);
 
+	private static $_commonResources = array(
+		'css/bootstrap.css',
+		'css/bootstrap-responsive.css',
+		'js/jquery-1.7.2.js',
+		'js/bootstrap.js',
+		'js/kendo/kendo.core.js',
+		'js/kendo/kendo.fx.js',
+		'js/kendo/kendo.treeview.js',
+		'js/kendo/kendo.draganddrop.js',
+		'js/kendo/kendo.resizable.js',
+		'js/kendo/kendo.window.js',
+		'js/framework.js'
+	);
+
 	private $_cssfile = null;
 	private $_jsfile = null;
 
@@ -52,36 +61,18 @@ class SBPage {
 	private $_loadedPlugins;
 	private $_loadedResources = array('css' => array(), 'js' => array());
 	private $_pageAction;
-    private $_templateFile;
     private $_messagesVisible = true;
     private $_messages = array();
 
-	public function __construct($action = null, $templateFile = 'index.tpl') {
+	public function __construct($action = null) {
 		$this->_pageAction = isset($action) ? $action : $_GET['action'];
-        $this->_templateFile = $templateFile;
 
 		if (!$this->isValidAction())
 			throw new Exception("$action is not a valid action.");
 
 		if (empty($_POST)) {
-			$commonDefaultResources = array(
-				'css/common.css',
-				'css/bootstrap.css',
-				'css/bootstrap-responsive.css',
-				'css/kendo/kendo.common.css',
-				'css/kendo/kendo.blueopal.css',
-				'js/jquery-1.7.2.js',
-				'js/bootstrap.js',
-				'js/kendo/kendo.core.js',
-				'js/kendo/kendo.fx.js',
-				'js/kendo/kendo.treeview.js',
-				'js/kendo/kendo.draganddrop.js',
-				'js/kendo/kendo.resizable.js',
-				'js/kendo/kendo.window.js',
-				'js/common.js'
-			);
 
-			$this->addResource($commonDefaultResources);
+			$this->addResource(self::$_commonResources);
 			$this->addResource(self::$_actions[$this->_pageAction]);
 		}
 
@@ -101,7 +92,7 @@ class SBPage {
 
 	public function display() {
 		try {
-			SBFactory::Template()->display($this->_templateFile);
+			SBFactory::Template()->display(SBFactory::getSkin()->getIndexTpl());
 		} catch (SmartyException $e) {
 			echo $e->getMessage();
 		}
@@ -126,19 +117,21 @@ class SBPage {
 
 	private function getAction() {
 
-		SBFactory::Template()->assign("categories", SBPost::getCategoriesList());
-		SBFactory::Template()->assign("action", $this->_pageAction);
-		SBFactory::Template()->assign("archives", SBPost::getPostArchives());
-        SBFactory::Template()->assign("notify_msg", $this->_messages);
+		SBFactory::Template()->assign('categories', SBPost::getCategoriesList());
+		SBFactory::Template()->assign('action', $this->_pageAction);
+		SBFactory::Template()->assign('archives', SBPost::getPostArchives());
+        SBFactory::Template()->assign('notify_msg', $this->_messages);
+		SBFactory::Template()->assign('skin', SBFactory::getSkin());
+		SBFactory::Template()->assign('blog_description', SBFactory::Settings()->getSetting('blog_description'));
 
 		switch ($this->_pageAction) {
 			case 'main':
 				$page = isset($_GET['page']) ? $_GET['page'] : 1;
 
-				SBFactory::Template()->assign("blog_posts", SBPost::getPostsList($page));
-				SBFactory::Template()->assign("page", $page);
-				SBFactory::Template()->assign("page_title", SBFactory::Settings()->getSetting("blog_title"));
-				SBFactory::Template()->assign("page_template", "main.tpl");
+				SBFactory::Template()->assign('blog_posts', SBPost::getPostsList($page));
+				SBFactory::Template()->assign('page', $page);
+				SBFactory::Template()->assign('page_title', SBFactory::Settings()->getSetting('blog_title'));
+				SBFactory::Template()->assign('page_template', 'main.tpl');
 
 				break;
 
@@ -198,8 +191,6 @@ class SBPage {
 				SBFactory::getCurrentUser()->addComment($_GET['post_id'], $_POST['commentBody'], $_POST['commentName'], $_POST['email']);
 				header("Location: /?action=post&id=" . $_GET['post_id']);
 				exit();
-
-				break;
 
 			case 'addpost':
 				$pinned = isset($_POST['pinned']) ? 1 : 0;

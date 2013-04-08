@@ -130,6 +130,9 @@ class SBPost extends SBAbstractContent {
 		foreach($results as $key => $post) {
 			$results[$key]['tags'] = explode(',', $post['tags']);
 		}
+		end($results[$key]['tags']);
+		unset($results[$key]['tags'][key($results[$key]['tags'])]);
+		reset($results[$key]['tags']);
 
 		return $results;
 	}

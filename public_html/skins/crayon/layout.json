@@ -1,0 +1,42 @@
+{
+    "id": "crayon",
+    "author": "Cătălin Dogaru",
+    "displayed_name": "Crayon (Default)",
+    "version": 100,
+    "zones_count": 4,
+	"index_tpl": "index.tpl",
+	"resources": {
+		"css": [
+			"assets/css/bootstrap.css",
+			"assets/css/bootstrap-responsive.css",
+			"assets/css/crayon.css",
+			"assets/css/crayon-responsive.css",
+			"assets/css/prettify.css"
+		],
+		"js": [
+			"assets/js/prettify.js"
+		]
+	},
+    "zones": [
+        {
+            "html_id": "header",
+            "role": 0,
+            "tpl_path": "header.tpl"
+        },
+        {
+            "html_id": "main",
+            "role": 2,
+            "tpl_path": "index.tpl"
+        },
+        {
+            "html_id": "footer",
+            "role": 1,
+            "tpl_path": "footer.tpl"
+        },
+        {
+            "html_id": "right_panel",
+            "role": 3,
+            "tpl_path": "panels/right.tpl"
+        }
+    ]
+}

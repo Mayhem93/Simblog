@@ -1,0 +1,15 @@
+/*
+Theme Name: Crayon
+Theme URI: http://simblog.org/
+Author: Cătălin Dogaru
+Author URI: http://swarm.cs.pub.ro/~cdogaru/
+Description: Crayon for Simblog is a sophisticated, lightweight, and fully responsive theme with strong lines, bright colors and a bunch of super-awesome features to keep you busy. Have a look around and make yourself at home.
+Version: 1.0.0
+License: Apache License, Version 2.0
+License URI: http://www.apache.org/licenses/LICENSE-2.0
+Tags: light, white, gray, one-column, two-columns, left-sidebar, right-sidebar, fixed-width, flexible-width, custom-menu, featured-images, full-width-template, microformats, post-formats, pinned-post, pinned-post-header, theme-options, translation-ready
+Text Domain: crayon
+*/
+
+@import "assets/css/crayon.css";
+@import "assets/css/crayon-responsive.css";

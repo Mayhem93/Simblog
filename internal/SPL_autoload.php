@@ -35,8 +35,16 @@ function simblogAutoloadLibraries($name) {
 
 function simblogAutoloadInternals($name) {
 	$class_file = BLOG_ROOT."/internal/".$name.".class.php";
-	if(file_exists($class_file))
+	$interface_file = BLOG_ROOT.'/internal/'.$name.'.php';
+
+	if(file_exists($class_file)) {
 		require_once $class_file;
+
+		return ;
+	}
+
+	if($name[0] === 'I' && file_exists($interface_file))
+		require_once $interface_file;
 }
 
 function simblogAutoloadPlugins($name) {

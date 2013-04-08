@@ -39,6 +39,7 @@ class SBFactory
     private static $currentPage;
 	private static $stateManager;
 	private static $currentUser;
+	private static $skin_layout;
 	
 	/**
 	 * Simblog Database.
@@ -64,10 +65,15 @@ class SBFactory
 	 */
 	public static function Template() {
 		if (!self::$smarty_instance instanceof Smarty) {
+			$skinDir = SKINS_DIR.'/'.SBFactory::Settings()->getSetting('skin');
+			if (!file_exists($skinDir.'/templates_c')) {
+				mkdir($skinDir.'/templates_c', 0764);
+			}
 			self::$smarty_instance = new Smarty();
-			self::$smarty_instance->setCacheDir('templates_c');
-			self::$smarty_instance->setCompileDir('templates_c');
-			self::$smarty_instance->setTemplateDir('templates');
+			self::$smarty_instance->setCacheDir($skinDir.'/templates_c');
+			self::$smarty_instance->setCompileDir($skinDir.'/templates_c');
+			self::$smarty_instance->setTemplateDir($skinDir);
+			self::$smarty_instance->debugging = true;
 		}
 		
 		return self::$smarty_instance;
@@ -117,5 +123,13 @@ class SBFactory
 		}
 
 		return self::$currentUser;
+	}
+
+	public static function getSkin() {
+		if (!self::$skin_layout instanceof SBLayout) {
+			self::$skin_layout = new SBLayout(SBFactory::Settings()->getSetting('skin'));
+		}
+
+		return self::$skin_layout;
 	}
 }

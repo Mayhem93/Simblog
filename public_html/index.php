@@ -33,9 +33,16 @@ header('Content-type: text/html; charset=utf-8');
 if (!isset($_GET['action']))
 	$_GET['action'] = 'main';
 
+//Initialize session manager
 SBFactory::getCurrentUser();
+
+//Initialize page
 $page = SBFactory::getCurrentPage();
+
+//Initialize skin layout
+SBFactory::getSkin();
 SBEventObserver::fire(new SBEvent(array(), SBEvent::ON_USER_ACCESS));
+//echo "sdadas"; exit();
 $page->run()->display();
 
 ob_end_flush();

@@ -13,3 +13,9 @@ function smarty_isLastPage($page_number) {
 					SBFactory::Settings()->getSetting("no_posts_per_page"));
 	return ($total_pages == $page_number);
 }
+
+function smarty_excerpt_article($string) {
+	return substr($string, 0, 100).' ...';
+}
+
+SBFactory::Template()->registerPlugin('modifier', 'excerpt', 'smarty_excerpt_article');

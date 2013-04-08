@@ -11,18 +11,16 @@ class SBBlock {
 	const TYPE_BLOCK_PLUGIN = 0;
 	const TYPE_BLOCK_ARTICLE = 1;
 	const TYPE_BLOCK_PAGETAB = 2;
-	const TYPE_BLOCK_ARCHIVE = 3;
-	const TYPE_BLOCK_CATEGORIES = 4;
-	const TYPE_BLOCK_RECENT_COMMENTS = 5;
 
 	private $_contentType	=	null;
 	private $_contentId = '';
-	private $_contentVars;
+	private $_contentVars = array();
 
-	public function __construct($type, $contentId=null, $contentVars=null) {
+	public function __construct($type, $contentId=null, $contentVars=array()) {
 		$this->_contentType = $type;
 		$this->_contentId = $contentId;
 		$this->_contentVars = $contentVars;
+
 	}
 
 	public function __toString() {
@@ -39,25 +37,29 @@ class SBBlock {
 
 			case self::TYPE_BLOCK_ARTICLE: {
 				//TODO: output the template for a block article
+
+
 				break;
 			}
 
-			case self::TYPE_BLOCK_ARCHIVE: {
-				//TODO: output the archives block template
-				break;
-			}
+			case self::TYPE_BLOCK_POPULAR_TAGS: {
+				if (file_exists(SBFactory::getSkin()->getSkinFullPath().'/default_blocks/popular_tags.tpl')) {
+					$popularTags = new Smarty();
+					$popularTags->setTemplateDir(SBFactory::getSkin()->getSkinFullPath());
+					$popularTags->setCacheDir(SBFactory::getSkin()->getSkinFullPath().'/cache');
+					$popularTags->setCompileDir(SBFactory::getSkin()->getSkinFullPath().'/cache');
 
-			case self::TYPE_BLOCK_CATEGORIES: {
-				//TODO: output the categories block template
-				break;
-			}
+					foreach($this->_contentVars as $name => $value) {
+						$popularTags->assign($name, $value);
+					}
 
-			case self::TYPE_BLOCK_RECENT_COMMENTS: {
-				//TODO: output the recent comments block template
+					return $popularTags->fetch('default_blocks/popular_tags.tpl');
+				}
+
 				break;
 			}
 		}
 
-		return $this->_contentId;
+		return '';
 	}
 }
