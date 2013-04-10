@@ -7,8 +7,6 @@
 	"index_tpl": "index.tpl",
 	"resources": {
 		"css": [
-			"assets/css/bootstrap.css",
-			"assets/css/bootstrap-responsive.css",
 			"assets/css/crayon.css",
 			"assets/css/crayon-responsive.css",
 			"assets/css/prettify.css"
