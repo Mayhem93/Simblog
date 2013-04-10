@@ -73,7 +73,7 @@ class SBFactory
 			self::$smarty_instance->setCacheDir($skinDir.'/templates_c');
 			self::$smarty_instance->setCompileDir($skinDir.'/templates_c');
 			self::$smarty_instance->setTemplateDir($skinDir);
-			self::$smarty_instance->debugging = true;
+			//self::$smarty_instance->debugging = true;
 		}
 		
 		return self::$smarty_instance;
