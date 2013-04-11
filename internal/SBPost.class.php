@@ -8,38 +8,24 @@
  */
 class SBPost extends SBAbstractContent {
 
-	private $_tags 		= '';
-	private $_category	= '';
-	private $_timestamp	= 0;
-	private $_title		= '';
-	private $_pinned	= null;
-
 	public function __construct($id) {
 		$result = SBFactory::Database()->selectRows(DB_TABLE_PREFIX.'post', '*', array('id' => $id));
 		if (empty($result)) {
 			throw new Exception('Post with id '.$id.' does not exist.');
 		}
 
-		$this->_id 		  = $result[0]['id'];
-		$this->_title 	  = $result[0]['title'];
-		$this->_pinned 	  = $result[0]['pinned'];
-		$this->_category  = $result[0]['category'];
-		$this->_tags 	  = $result[0]['tags'];
-		$this->_content	  = $result[0]['content'];
-		$this->_timestamp = $result[0]['utime'];
+		$this->_fields['id']		= $result[0]['id'];
+		$this->_fields['title']		= $result[0]['title'];
+		$this->_fields['pinned']	= $result[0]['pinned'];
+		$this->_fields['category']	= $result[0]['category'];
+		$this->_fields['tags']		= $result[0]['tags'];
+		$this->_fields['content']	= $result[0]['content'];
+		$this->_fields['timestamp']	= $result[0]['utime'];
+		$this->_fields['modified']	= $result[0]['utime_mod'];
 	}
 
 	public static function createPost($title, $content, $category, $tags, $pinned = 0) {
 		$database = SBFactory::Database();
-
-		$row = array(
-			'title' => $title,
-			'pinned' => $pinned,
-			'category' => $category,
-			'tags' => $tags,
-			'content' => $content,
-			'utime' => time()
-		);
 
 		$eventData = array(
 			'title' => &$title,
@@ -49,6 +35,14 @@ class SBPost extends SBAbstractContent {
 			'pinned' => &$pinned,
 			'utime' => time());
 		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_ADD));
+
+		$row = array(
+			'title' => $title,
+			'pinned' => $pinned,
+			'category' => $category,
+			'tags' => $tags,
+			'content' => $content,
+			'utime' => time());
 
 		return $database->insertRow(DB_TABLE_PREFIX.'post', $row);
 	}
@@ -127,9 +121,11 @@ class SBPost extends SBAbstractContent {
 		$results = $database->query($queryString);
 		if (!$results)
 			return false;
+
 		foreach($results as $key => $post) {
 			$results[$key]['tags'] = explode(',', $post['tags']);
 		}
+
 		end($results[$key]['tags']);
 		unset($results[$key]['tags'][key($results[$key]['tags'])]);
 		reset($results[$key]['tags']);
@@ -176,8 +172,21 @@ class SBPost extends SBAbstractContent {
 
 	public function commit() {
 		if ($this->_dirty) {
-			$updateSet = array('title' => $this->_title, 'pinned' => $this->_pinned, 'category' => $this->_category,
-				'content' => $this->_content, 'tags' => $this->_tags);
+
+			$eventData = array(
+				'title' => &$this->_fields['title'],
+				'content' => &$this->_fields['content'],
+				'category' => &$this->_fields['category'],
+				'tags' => &$this->_fields['tags'],
+				'pinned' => &$this->_fields['pinned'],
+				'utime_mod' => time());
+			SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_MOD));
+
+			$updateSet = array('title' => $this->_fields['title'],
+				'pinned' => $this->_fields['pinned'],
+				'category' => $this->_fields['category'],
+				'content' => $this->_fields['content'],
+				'tags' => $this->_fields['tags']);
 
 			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'post', array('id' => $this->_id), $updateSet);
 

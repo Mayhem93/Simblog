@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS `{prefix}post` (
 	`category` TEXT NOT NULL,
 	`tags` TEXT NOT NULL,
 	`content` TEXT NOT NULL,
-	`utime` INT(10) UNSIGNED NOT NULL,
+	`utime` INT(10) NOT NULL,
+	`utime_mod` INT(10) NULL,
 	PRIMARY KEY (`id`)
 )
 COLLATE='utf8_general_ci'
