@@ -8,35 +8,30 @@
  */
 abstract class SBAbstractContent {
 
-	protected $_id		= '';
-	protected $_content	= '';
-	protected $_dirty	= '';
+	protected $_dirty	= false;
+	protected $_fields = array(
+		'id' => '',
+		'content' => ''
+	);
 
 	public abstract function __construct($id);
 	public abstract function commit();
 
 	public function __set($var, $value) {
-		//this requires PHP 5.3.x+
-		if (property_exists('SBPage', '_'.$var) && $var != 'dirty' && $var != 'id') {
+		if ($var != 'dirty') {
 			$this->_dirty = true;
-			$propName = '_'.$var;
-			$this->$propName = $value;
+			$this->_fields[$var] = $value;
 
 			return true;
 		}
 
-		throw new Exception(__CLASS__.' class does not have property _'.$var);
 	}
 
 	public function __get($var) {
-		//this requires PHP 5.3.x+
-		if (property_exists('SBPage', '_'.$var)) {
-			$propName = '_'.$var;
+		if (!isset($this->_fields[$var]))
+			throw new Exception('Invalid property \''.$var.'\' for class '.__CLASS__.'.');
 
-			return $this->$propName;
-		}
-
-		throw new Exception(__CLASS__.' class does not have property _'.$var);
+		return  $this->_fields[$var];
 	}
 
 	public function __destruct() {

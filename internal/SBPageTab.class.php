@@ -18,19 +18,22 @@ class SBPageTab extends SBAbstractContent {
 			throw new Exception('PageTab with id '.$id.' does not exist.');
 		}
 
-		$this->_id			= $result[0]['id'];
-		$this->_description = $result[0]['description'];
-		$this->_name 		= $result[0]['name'];
-		$this->_parent		= $result[0]['parent'];
-		$this->_content		= $result[0]['content'];
+		$this->_fields['id']			= $result[0]['id'];
+		$this->_fields['description']	= $result[0]['description'];
+		$this->_fields['name']	 		= $result[0]['name'];
+		$this->_fields['parent']		= $result[0]['parent'];
+		$this->_fields['content']		= $result[0]['content'];
 	}
 
 	public function commit() {
 		if ($this->_dirty) {
-			$updateSet = array('name' => $this->_name, 'description' => $this->_description, 'parent' => $this->_parent,
-				'content' => $this->_content);
+			$updateSet = array(
+				'name' => $this->_fields['name'],
+				'description' => $this->_fields['description'],
+				'parent' => $this->_fields['parent'],
+				'content' => $this->_fields['content']);
 
-			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'page', array('id' => $this->_id), $updateSet);
+			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'page', array('id' => $this->_fields['id']), $updateSet);
 
 			if ($result) {
 				$this->_dirty = false;

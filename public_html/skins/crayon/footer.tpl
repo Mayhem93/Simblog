@@ -77,7 +77,6 @@
 				</ul><!-- .thumbnails -->
 			</div><!-- .row-fluid -->
 		</div><!-- .span4 .widget -->
-		<?php // <--- ?>
 	</aside><!-- .row .widget-area -->
 	<hr>
 	<div class="row">
