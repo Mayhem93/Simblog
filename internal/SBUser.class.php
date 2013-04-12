@@ -101,21 +101,11 @@ class SBUser {
 	 * @param string $content The new content.
 	 * @param string $category The new category.
 	 * @param string $tags
-	 * @return boolean true if successful
 	 */
-	public function modifyPost($id, $title=null, $content=null, $category=null, $tags=null) {
+	public function modifyPost($id, $title=null, $content=null, $category=null, array $tags=null) {
 		if (!$this->_isAdmin) {
 			setHTTP(HTTP_UNAUTHORIZED);
 		}
-
-		$eventData = array(
-			'id' => $id,
-			'title' => &$title,
-			'content' => &$content,
-			'category' => &$category,
-			'tags' => &$tags
-		);
-		SBEventObserver::fire(new SBEvent($eventData, SBEvent::ON_POST_MOD));
 
 		$post = new SBPost($id);
 		if ($title)
@@ -127,24 +117,7 @@ class SBUser {
 		if ($tags)
 			$post->tags = $tags;
 
-		return $post->commit();
 	}
-
-/*	/**
-	 * Pins a post. Pinned posts show up first on the blog.
-	 * @param int $id
-	 * @return boolean true if successful
-
-	public function togglePinPost($id) {
-		if (!$this->_isAdmin) {
-			setHTTP(HTTP_UNAUTHORIZED);
-		}
-
-		$database = SBFactory::Database();
-		//TODO event on toggle pinned post
-
-		return $database->query('UPDATE post SET pinned = !pinned WHERE id = '.$id.';');
-	}*/
 
 	/**
 	 * Adds a comment to the post ID.

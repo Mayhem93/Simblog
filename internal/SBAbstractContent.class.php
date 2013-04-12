@@ -35,7 +35,9 @@ abstract class SBAbstractContent {
 	}
 
 	public function __destruct() {
-		$this->commit();
+		if(!$this->commit()) {
+			throw new Exception('Error saving data to database.');
+		}
 	}
 
 }

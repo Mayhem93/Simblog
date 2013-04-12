@@ -44,10 +44,10 @@
 						<a href="/index.php?category={$post.category}" rel="category" title="Viewl all posts in {$post.category}">{$post.category}</a>
 						and tagged
 						{foreach $post.tags as $tag}
-							<a href="/" rel="tag">{$tag}</a>,
+							<a href="/" rel="tag">{$tag}</a>{if !$tag@last}, {/if}
 						{/foreach}
 						|
-						<a href="/index.php?post={$post.id}#reply" title="Comment on {$post.title}"><strong>-1</strong> Comments</a>
+						<a href="/index.php?post={$post.id}#reply" title="Comment on {$post.title}"><strong>{$post.comments_count}</strong> Comments</a>
 					</p>
 				</footer><!-- .entry-meta -->
 			</div><!-- .span6 -->

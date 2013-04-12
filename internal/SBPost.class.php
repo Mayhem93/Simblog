@@ -18,10 +18,11 @@ class SBPost extends SBAbstractContent {
 		$this->_fields['title']		= $result[0]['title'];
 		$this->_fields['pinned']	= $result[0]['pinned'];
 		$this->_fields['category']	= $result[0]['category'];
-		$this->_fields['tags']		= $result[0]['tags'];
+		$this->_fields['tags']		= explode(',', $result[0]['tags']);
 		$this->_fields['content']	= $result[0]['content'];
 		$this->_fields['timestamp']	= $result[0]['utime'];
 		$this->_fields['modified']	= $result[0]['utime_mod'];
+		$this->_fields['comments_count'] = $result[0]['comments_count'];
 	}
 
 	public static function createPost($title, $content, $category, $tags, $pinned = 0) {
@@ -59,7 +60,7 @@ class SBPost extends SBAbstractContent {
 	}
 
 	public function getComments() {
-		$where = array("post_id" => $this->_id);
+		$where = array("post_id" => $this->id);
 
 		return SBFactory::Database()->selectRows("comment", "*", $where, null, "DESC", "id");
 	}
@@ -92,7 +93,9 @@ class SBPost extends SBAbstractContent {
 			'utime'	=> time()
 		);
 
-		return $database->insertRow(DB_TABLE_PREFIX.'comment', $row);
+		$updateQuery = 'UPDATE post SET comments_count = comments_count-1 where id ='.$id;
+
+		return $database->query($updateQuery) && $database->insertRow(DB_TABLE_PREFIX.'comment', $row);
 	}
 
 	public static function deleteComment($id) {
@@ -101,7 +104,9 @@ class SBPost extends SBAbstractContent {
 		SBEventObserver::fire(new SBEvent(array('id' => $id), SBEvent::ON_COMMENT_DELETE));
 		$filter = array('id' => $id);
 
-		return $database->deleteRows(DB_TABLE_PREFIX.'comment', $filter);
+		$updateQuery = 'UPDATE post SET comments_count = comments_count-1 where id ='.$id;
+
+		return $database->query($updateQuery) && $database->deleteRows(DB_TABLE_PREFIX.'comment', $filter);
 	}
 
 	public static function getPostsList($page=1, $category=null, $tag=null) {
@@ -125,10 +130,6 @@ class SBPost extends SBAbstractContent {
 		foreach($results as $key => $post) {
 			$results[$key]['tags'] = explode(',', $post['tags']);
 		}
-
-		end($results[$key]['tags']);
-		unset($results[$key]['tags'][key($results[$key]['tags'])]);
-		reset($results[$key]['tags']);
 
 		return $results;
 	}
@@ -186,9 +187,9 @@ class SBPost extends SBAbstractContent {
 				'pinned' => $this->_fields['pinned'],
 				'category' => $this->_fields['category'],
 				'content' => $this->_fields['content'],
-				'tags' => $this->_fields['tags']);
+				'tags' => implode(',',$this->_fields['tags']));
 
-			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'post', array('id' => $this->_id), $updateSet);
+			$result = SBFactory::Database()->updateRows(DB_TABLE_PREFIX.'post', array('id' => $this->_fields['id']), $updateSet);
 
 			if ($result) {
 				$this->_dirty = false;

@@ -8,10 +8,6 @@
  */
 class SBPageTab extends SBAbstractContent {
 
-	private $_name			= '';
-	private $_description 	= '';
-	private $_parent		= null;
-
 	public function __construct($id) {
 		$result = SBFactory::Database()->selectRows(DB_TABLE_PREFIX.'page', '*', array('id' => $id));
 		if (empty($result)) {
