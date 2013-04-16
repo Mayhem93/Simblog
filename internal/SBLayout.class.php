@@ -15,6 +15,11 @@ class SBLayout implements ArrayAccess {
 	private $_zones = array();
 	private $_skinId = '';
 
+	/**
+	 * Creates a new Layout object that represents a skin
+	 * @param string $name The name of the skin (identifier)
+	 * @throws Exception if the skin doesn't exist (or the config file is missing)
+	 */
 	public function __construct($name) {
 		if (file_exists(SKINS_DIR.'/'.$name.'/layout.json')) {
 			$this->_skinId = $name;
@@ -27,34 +32,69 @@ class SBLayout implements ArrayAccess {
 		$this->buildZones();
 	}
 
+	/**
+	 * Returns the ID of the skin
+	 * @return string
+	 */
 	public function getSkinId() {
 		return $this->_skinId;
 	}
 
+	/**
+	 * Returns the absolute path of the skin directory
+	 * @return string
+	 */
 	public function getSkinFullPath() {
 		return SKINS_DIR.'/'.$this->getSkinId();
 	}
 
+	/**
+	 * Returns the URI for the skin used in the template to refer resources
+	 * @return string
+	 */
 	public function getSkinWWWuri() {
 		return 'skins/'.$this->getSkinId();
 	}
 
+	/**
+	 * Gets a zone from the layout specified by its id
+	 * @param string $id id of the zone
+	 * @return null|SBZone If the zone id is invalid null is returned.
+	 */
 	public function getZone($id) {
 		return isset($this->_zones[$id]) ? $this->_zones[$id] : null;
 	}
 
+	/**
+	 * Returns the index template file name
+	 * @return string
+	 */
 	public function getIndexTpl() {
 		return $this->_skinSettings['index_tpl'];
 	}
 
+	/**
+	 * Returns the index template file path
+	 * @return string
+	 */
 	public function getIndexTplPath() {
 		return $this->getSkinFullPath().$this->getIndexTpl();
 	}
 
+	/**
+	 * Returns the number of total zones.
+	 * @return int
+	 */
 	public function countZones() {
 		return $this->_skinSettings['zones_count'];
 	}
 
+	/**
+	 * Reads the configuration file and validates it.
+	 * It reads the layout.json file of the skin
+	 * @return bool true
+	 * @throws Exception When the validation fails.
+	 */
 	private function loadSettings() {
 		$decodedFile = json_decode(file_get_contents(SKINS_DIR.'/'.$this->getSkinId().'/layout.json'), true);
 
@@ -100,6 +140,10 @@ class SBLayout implements ArrayAccess {
 		return true;
 	}
 
+	/**
+	 * Reads the content from the database to build the zones.
+	 * @return bool true
+	 */
 	private function buildZones() {
 		foreach ($this->_skinSettings['zones'] as $zone) {
 			$this->_zones[$zone['role']][$zone['html_id']] = new SBZone($zone['html_id'], (int)$zone['role'], $zone['tpl_path']);
@@ -119,12 +163,19 @@ class SBLayout implements ArrayAccess {
 		return true;
 	}
 
+	/**
+	 * Adds the resources specified by the configuration file.
+	 */
 	private function addSkinResources() {
 		$resources = $this->_skinSettings['resources']['css'] + $this->_skinSettings['resources']['js'];
 		$resources = array_map(function($string) { return 'skins/'.$this->getSkinId().'/'.$string;}, $resources);
 		SBFactory::getCurrentPage()->addResource($resources);
 	}
 
+	/**
+	 * Gets the displayed name of the skin
+	 * @return string
+	 */
 	public function getSkinName() {
 		return $this->_skinSettings['displayed_name'];
 	}

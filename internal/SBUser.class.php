@@ -16,6 +16,9 @@ class SBUser {
 
 	private $_comments = array();
 
+	/**
+	 * Constructs a new User object
+	 */
 	public function __construct() {
 
 		$this->_stateManager = SBFactory::getStateManager();
@@ -33,10 +36,20 @@ class SBUser {
 
 	}
 
+	/**
+	 * Returns true of the user is admin, false otherwise.
+	 * @return bool
+	 */
 	public function isAdmin() {
 		return $this->_isAdmin;
 	}
 
+	/**
+	 * Logs in the administrator and sets the session variable
+	 * @param string $username
+	 * @param string $password
+	 * @return bool false if login failed
+	 */
 	public function adminLogIn($username, $password) {
 		if ($this->isAdmin()) {
 			$admin_username = SBFactory::Settings()->getSetting('admin_username');
@@ -53,6 +66,10 @@ class SBUser {
 
 	}
 
+	/**
+	 * Logs out the admin
+	 * @return bool false if the user is not admin
+	 */
 	public function adminLogOut() {
 		if ($this->isAdmin()) {
 			$this->_stateManager->unsetSessionVar('admin');
